@@ -5,6 +5,7 @@ import eventManager from "../core/event";
 
 const mouseOver = {
     name: "Mouse Over",
+    description: "Party target selection with strict 1:1 input mapping",
     state: {
         enabled: false
     },
