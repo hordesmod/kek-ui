@@ -1,4 +1,32 @@
-## kek-ui with [POG](https://sites.google.com/view/hordes-io-data/)
+## 🚀 Install KEK-UI
+
+Make sure Tampermonkey is installed and [**Developer Mode Enabled**](https://www.tampermonkey.net/faq.php?locale=en#Q209) in your browser before clicking the button.
+
+<a href="https://update.greasyfork.org/scripts/486797/KEK%20UI.user.js"
+   style="
+     display: inline-block;
+     padding: 10px 20px;
+     font-size: 16px;
+     font-weight: bold;
+     color: #ffffff;
+     background-color: #1e90ff;
+     border-radius: 6px;
+     text-align: center;
+     text-decoration: none;
+     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+     transition: background-color 0.2s ease;
+   "
+   onmouseover="this.style.backgroundColor='#0066cc';"
+   onmouseout="this.style.backgroundColor='#1e90ff';">
+   Install KEK-UI
+</a>
+
+
+
+## 💻 Local Development
+For instructions on setting up the project locally, see [Local Setup for Development](docs/LOCAL_SETUP_FOR_DEVELOPMENT.md).
+
+## 🎮 KEK-UI with [POG](https://sites.google.com/view/hordes-io-data/)
 
 ![POG](/img/pog.png)
 
