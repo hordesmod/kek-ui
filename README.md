@@ -4,19 +4,22 @@
 
 > ⚠️ After the script opens, click the **Install** / **Upgrade** / **Downgrade** button. Do **not** just close the page or click **Cancel**.
 
+<div align = center>
+
 [![Install KEK-UI](https://img.shields.io/badge/Install%20KEK--UI-37a779?style=for-the-badge)](https://github.com/hordesmod/kek-ui/releases/latest/download/kekui.min.user.js)
 
-&nbsp;
-&nbsp;
-&nbsp;
+</div>
+
+<br>
+<br>
+<br>
 
 ## 💻 Local Development
 For instructions on setting up the project locally, see [Local Setup for Development](docs/LOCAL_SETUP_FOR_DEVELOPMENT.md).
 
-&nbsp;
-&nbsp;
-&nbsp;
-
+<br>
+<br>
+<br>
 
 ## 🎮 KEK-UI with [POG](https://sites.google.com/view/hordes-io-data/)
 
