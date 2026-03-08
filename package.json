@@ -3,6 +3,7 @@
     "version": "0.50.704",
     "type": "module",
     "devDependencies": {
+        "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^15.0.1",
         "@rollup/plugin-terser": "^0.4.4",
         "eslint": "^8.56.0",
