@@ -1,6 +1,6 @@
 {
     "name": "kekui",
-    "version": "0.50.703",
+    "version": "0.50.704",
     "type": "module",
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^15.0.1",
