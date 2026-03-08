@@ -1,0 +1,10 @@
+{
+    "name": "KEK UI",
+    "namespace": "https://hordes.io/",
+    "match": "https://hordes.io/play",
+    "run-at": "document-start",
+    "icon": "https://www.google.com/s2/favicons?sz=64&domain=hordes.io",
+    "license": "KEK",
+    "description": "Hordes UI Script",
+    "author": "Scrizz and Grigory. QA Contributors: POG."
+}   
