@@ -2,7 +2,7 @@
 
 > ⚠️ Make sure [**Tampermonkey**](https://www.tampermonkey.net) is installed and [**Developer Mode Enabled**](https://www.tampermonkey.net/faq.php?locale=en#Q209) in your browser before clicking the button.
 
-> ⚠️ After the script opens, click the **Install** / **Upgrade** / **Downgrade** button. Do **not** just close the page or click **Cancel**.
+> ⚠️ After the script opens, click the **[Install]** or **[Update]** or **[Downgrade]** button. **Do not** just **[close]** the page or click **[Cancel]**.
 
 <div align = center>
 
