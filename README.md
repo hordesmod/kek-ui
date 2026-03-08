@@ -1,13 +1,22 @@
 ## 🚀 Install KEK-UI
 
-Make sure Tampermonkey is installed and [**Developer Mode Enabled**](https://www.tampermonkey.net/faq.php?locale=en#Q209) in your browser before clicking the button.
+> ⚠️ Make sure [**Tampermonkey**](https://www.tampermonkey.net) is installed and [**Developer Mode Enabled**](https://www.tampermonkey.net/faq.php?locale=en#Q209) in your browser before clicking the button.
 
-[![Install KEK-UI](https://img.shields.io/badge/Install%20KEK--UI-37a779?style=for-the-badge)](https://update.greasyfork.org/scripts/486797/KEK%20UI.user.js)
+> ⚠️ After the script opens, click the **Install** / **Upgrade** / **Downgrade** button. Do **not** just close the page or click **Cancel**.
 
+[![Install KEK-UI](https://img.shields.io/badge/Install%20KEK--UI-37a779?style=for-the-badge)](https://github.com/hordesmod/kek-ui/releases/latest/download/kekui.min.user.js)
 
+&nbsp;
+&nbsp;
+&nbsp;
 
 ## 💻 Local Development
 For instructions on setting up the project locally, see [Local Setup for Development](docs/LOCAL_SETUP_FOR_DEVELOPMENT.md).
+
+&nbsp;
+&nbsp;
+&nbsp;
+
 
 ## 🎮 KEK-UI with [POG](https://sites.google.com/view/hordes-io-data/)
 
