@@ -1,7 +1,8 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import versionInjector from 'rollup-plugin-version-injector';
 import metablock from 'rollup-plugin-userscript-metablock';
-import pkg from './package.json' assert {type: 'json'};
+// import pkg from './package.json' assert {type: 'json'};
+import pkg from './package.json' with { type: 'json' };
 import terser from '@rollup/plugin-terser';
 // import { obfuscator } from 'rollup-obfuscator';
 
