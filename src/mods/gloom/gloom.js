@@ -1,10 +1,10 @@
-import apiManager from "../core/api";
-import element from "../core/widgets/element";
-import eventManager from "../core/event";
-import profileManager from "../core/profile";
-import { createGrid, createWindow } from "../core/widgets/widgets";
-import { addSysbtn } from "../core/widgets/btnbar";
-import ui from "../core/ui";
+import apiManager from "../../core/api";
+import element from "../../core/widgets/element";
+import eventManager from "../../core/event";
+import profileManager from "../../core/profile";
+import { createGrid, createWindow } from "../../core/widgets/widgets";
+import { addSysbtn } from "../../core/widgets/btnbar";
+import ui from "../../core/ui";
 
 const gloom = {
     name: "Gloom Timer/Data",

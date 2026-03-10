@@ -5,7 +5,7 @@ import blockPlayers from "./blockPlayers"
 import expbar from "./expBar"
 import mouseOver from "./mouseOver"
 import runeTracker from "./runeTracker"
-import gloom from "./gloom"
+// import gloom from "./gloom"
 import whispers from "./whispers"
 import itemSharing from "./itemSharing"
 import isbis from "./isbis"
@@ -48,7 +48,7 @@ const mods = [
     expbar,
     mouseOver,
     runeTracker,
-    gloom,
+    // gloom,
     gui,
     timers,
     whispers,
