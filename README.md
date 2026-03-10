@@ -1,3 +1,5 @@
+[![Total Downloads](https://img.shields.io)](https://github.com)
+
 ## 🚀 Install KEK-UI
 
 > ⚠️ Make sure [**Tampermonkey**](https://www.tampermonkey.net) is installed and [**Developer Mode Enabled**](https://www.tampermonkey.net/faq.php?locale=en#Q209) in your browser before clicking the button.
