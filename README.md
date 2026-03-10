@@ -1,5 +1,5 @@
 ![Total Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhordesmod%2Fkek-ui%2Fgh-pages%2Fgh-dl%2Fdownloads.json&query=%24.stats.total&label=Total%20Downloads&color=0A7EA4)
-![latest](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fhordesmod%2Fkek-ui%2Freleases%2Flatest&query=%24%5B'assets'%5D%5B0%5D%5B'download_count'%5D&label=Latest&color=%2300a400)
+![Latest Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fhordesmod%2Fkek-ui%2Freleases%2Flatest&query=%24%5B'assets'%5D%5B0%5D%5B'download_count'%5D&label=Latest&color=%2300a400)
 
 
 ## 🚀 Install KEK-UI
