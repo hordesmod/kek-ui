@@ -7,7 +7,7 @@ import mouseOver from "./mouseOver"
 
 const menuFunctions = {
     "Edit": uiModeToggle,
-    "Mouse Over Mode": () => { eventManager.trigger("click.mouseOver") },
+    // "Mouse Over Mode": () => { eventManager.trigger("click.mouseOver") },
     // "Hide EXP": () => { eventManager.trigger("click.expbar") },
     "Picture Mode": togglePictureMode,
     // "Blocked Players": () => { eventManager.trigger("click.blockPlayers") },
@@ -84,9 +84,9 @@ const mainMenu = {
         "Hide EXP": () => {
             return (ui.expbar.element.style.display == "none") ? true : false
         },
-        "Mouse Over Mode": () => {
-            return mouseOver.state.enabled ? true : false
-        },
+        // "Mouse Over Mode": () => {
+        //     return mouseOver.state.enabled ? true : false
+        // },
         "Edit": () => {
             const kekInput = document.querySelector(".kek-ui-input")
             if (kekInput)
@@ -146,7 +146,9 @@ const mainMenu = {
         panelBlackBar.className = "panel-black bar"
         // Hardcoded choices
         const choices = [
-            "Edit", "Mouse Over Mode", "Picture Mode", "Disable Class Colors", "Export", "Import", "Reset",
+            "Edit", 
+            // "Mouse Over Mode", 
+            "Picture Mode", "Disable Class Colors", "Export", "Import", "Reset",
         ];
 
         // Add choices to the context menu
