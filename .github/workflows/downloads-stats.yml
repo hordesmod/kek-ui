@@ -22,7 +22,7 @@ jobs:
         uses: justagwas/github-downloads-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          window_days: "45"
+          window_days: "365"
           enable_hourly_profile: "false"
           output_branch: "gh-pages"
           output_path: "gh-dl/downloads.json"
