@@ -1,16 +1,15 @@
 ![Total Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fhordesmod%2Fkek-ui%2Fgh-pages%2Fgh-dl%2Fdownloads.json&query=%24.stats.total&label=Total%20Downloads&color=0A7EA4)
 ![Latest Downloads](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.github.com%2Frepos%2Fhordesmod%2Fkek-ui%2Freleases%2Flatest&query=%24%5B'assets'%5D%5B0%5D%5B'download_count'%5D&label=Latest&color=%2300a400)
 
-
 ## 🚀 Install KEK-UI
 
 > ⚠️ Make sure [**Tampermonkey**](https://www.tampermonkey.net) is installed and [**Developer Mode Enabled**](https://www.tampermonkey.net/faq.php?locale=en#Q209) in your browser before clicking the button.
 
-> ⚠️ After the script opens, click the **[Install]** or **[Update]** or **[Downgrade]** button. **Do not** just **[close]** the page or click **[Cancel]**.
+> ⚠️ After the script opens, click the <code>**Install**</code> or <code>**Update**</code> or <code>**Downgrade**</code> button. **Do not** just **close** the page or click <code>**Cancel**</code>.
 
 <div align = center>
 
-[![Install KEK-UI](https://img.shields.io/badge/Install%20KEK--UI-37a779?style=for-the-badge)](https://github.com/hordesmod/kek-ui/releases/latest/download/kekui.min.user.js)
+[![Install KEK-UI](https://img.shields.io/badge/Install%20KEK--UI-37a779?style=for-the-badge&logo=tampermonkey&labelColor=black&color=lightgreen)](https://github.com/hordesmod/kek-ui/releases/latest/download/kekui.min.user.js)
 
 </div>
 
