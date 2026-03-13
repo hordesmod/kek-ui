@@ -19,12 +19,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests psycopg2 
+          pip install requests
 
       - name: Run Script in Folder
         working-directory: ./bosslog 
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: python update.py
 
