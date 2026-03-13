@@ -15,6 +15,9 @@
         "rollup-plugin-version-injector": "^1.3.3"
     },
     "scripts": {
-        "watch": " npm version patch && rollup --watch -c"
+        "watch": "rollup --watch -c",
+        "patch": "npm version patch --no-git-tag-version",
+        "minor": "npm version minor --no-git-tag-version",
+        "build": "rollup -c"
     }
 }

@@ -1,6 +1,8 @@
 import chatEmoji from "./chatEmoji"
 // import test from "./test/test"
 import mainMenu from "./mainMenu"
+import _party from "./party"
+
 import blockPlayers from "./blockPlayers"
 import expbar from "./expBar"
 import mouseOver from "./mouseOver"
@@ -40,6 +42,7 @@ import MinimalUI from "./minUI"
 const mods = [
     // test,
     // friendsInfo,
+    _party,
     partyBtnTweaks,
     MinimalUI,
     buffOnly,
