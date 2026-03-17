@@ -1,8 +1,7 @@
 import chatEmoji from "./chatEmoji"
 // import test from "./test/test"
 import mainMenu from "./mainMenu"
-import _party from "./party"
-
+// import _party from "./party"
 import blockPlayers from "./blockPlayers"
 import expbar from "./expBar"
 import mouseOver from "./mouseOver"
@@ -37,12 +36,13 @@ import chatLog from "./chatLog"
 import skillbar from "./skillBar"
 import targetTooltip from "./targetTooltip"
 import MinimalUI from "./minUI"
+import bosslog from "./bossLog"
 // import friendsInfo from "./friendsInfo"
 
 const mods = [
     // test,
     // friendsInfo,
-    _party,
+    // _party,
     partyBtnTweaks,
     MinimalUI,
     buffOnly,
@@ -77,7 +77,7 @@ const mods = [
     chatLog,
     skillbar,
     targetTooltip,
-    
+    bosslog,
 ]
 
 if(config.devMode == true) mods.push(debugInfo)
