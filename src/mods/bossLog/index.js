@@ -226,7 +226,7 @@ const bosslog = {
         ]}
     ],
     initFrame() {
-        this.frame = element("div").css("window-pos bosslog-frame");
+        this.frame = element("div").css("window-pog bosslog-frame");
         const panel = element("div").css("window panel-black bosslog-panel");
         const titleFrame = element("div").css("titleframe bosslog-header");
         titleFrame.add(element("div").css("textexp bosslog-icon")
