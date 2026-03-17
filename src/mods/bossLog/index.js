@@ -232,7 +232,9 @@ const bosslog = {
         titleFrame.add(element("div").css("textexp bosslog-icon")
             .style({"position": "relative", "top": "25px", "left": "60px", "transform": "scale(2.5)"})
             .text("B"));
-        titleFrame.add(element("div").css("textexp").style({ "flex-grow": "1" }));
+        titleFrame.add(element("div").css("textsecondary")
+            .style({"flex-grow": "1", "text-align": "center", "font-size": "10px", "letter-spacing": "1px", "opacity": "0.6","font-style": "italic" })
+            .text("The rules don't matter — only the data and the chaos do."));
         titleFrame.add(element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
             .on("click", () => this.toggleFrame()));
         const toolbarSlot = element("div").css("slot");
