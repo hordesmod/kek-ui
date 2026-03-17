@@ -1,6 +1,6 @@
 {
     "name": "kekui",
-    "version": "0.52.708",
+    "version": "0.53.0",
     "type": "module",
     "devDependencies": {
         "@rollup/plugin-json": "^6.1.0",
