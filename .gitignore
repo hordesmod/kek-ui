@@ -1,1 +1,14 @@
+# Dependency directories
 node_modules/
+
+# Repomix output
+.repomix/
+repomix-output.txt
+repomix-output.xml
+repomix-output.md
+repomix-output.json
+repomix-output.*
+
+# private files
+img/
+hordes/
