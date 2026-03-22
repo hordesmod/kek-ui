@@ -7,16 +7,16 @@
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=hordes.io
 // @license     KEK
 // @author      Scrizz and Grigory. QA Contributors: POG.
-// @version     0.53.300
+// @version     0.53.500
 // @grant       none
 // ==/UserScript==
-/* Version: 0.53.300 - March 17, 2026 22:01:47 */
+/* Version: 0.53.500 - March 22, 2026 23:47:32 */
 'use strict';
 
 const config = {
     appName: "KEK",
     devMode: false,
-    version: "0.53.300",
+    version: "0.53.500",
     localStorageKey: "kekStorage"
 };
 
@@ -12483,7 +12483,7 @@ const bosslog = {
         .bosslog-btn-icon {display: inline-flex;align-items: center;justify-content: center;aspect-ratio: 1 / 1;height: 1em;border: 2px solid #e7963f80;border-radius: 5px;font-weight: bold;}
         .bosslog-btn-icon + .textexp {margin-left: 0px;}
         .bosslog-filter-bar {background: rgba(0, 0, 0, 0.2);border-radius: 4px;}
-        .bosslog-btn {text-align: center;min-width: 60px; }
+        .bosslog-btn {text-align: center;min-width: 47px; }
         .bosslog-row {display: flex;align-items: center;padding: 6px 8px;border-bottom: 1px solid #ffffff05;gap: 10px;}
         .bosslog-row:hover {background: rgba(255, 255, 255, 0.03);}
         .blnum {font-family: monospace;}
@@ -12554,7 +12554,9 @@ const bosslog = {
             .text("B"));
         titleFrame.add(element("div").css("textsecondary")
             .style({"flex-grow": "1", "text-align": "center", "font-size": "10px", "letter-spacing": "1px", "opacity": "0.6","font-style": "italic" })
-            .text("The rules don't matter — only the data and the chaos do."));
+            // .text("The rules don't matter — only the data and the chaos do."));
+            .text("Net positive Digital Valhalla (Whiners Excluded)"));
+            
         titleFrame.add(element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
             .on("click", () => this.toggleFrame()));
         const toolbarSlot = element("div").css("slot");
@@ -12657,7 +12659,9 @@ const bosslog = {
             { items: [
                 { text: "Warrior", color: "textc0" }, { text: "Mage", color: "textc1" },
                 { text: "Archer", color: "textc2" }, { text: "Shaman", color: "textc3" }
-            ]}
+            ]},
+            { items: [{ text: "Toxicity", color: "textf1" }] },
+
         ];
         if (['haste', 'hp', 'mp', 'block'].includes(this.activeMode.id)) {
             groups.push({ items: [{ text: "noMods", color: "textfame" }] });
@@ -12803,12 +12807,15 @@ const bosslog = {
         const mode = this.activeMode.id;
         const hasFactionFilter = this.filters.vg || this.filters.bl;
         const hasClassFilter = this.filters.warrior || this.filters.mage || this.filters.archer || this.filters.shaman;
+        const isToxicity = this.filters.toxicity;
         const noMods = this.filters.nomods === 1;
         const filtered = array.filter(e => {
             const fKey = factionMap[e[0]];
             const cKey = classMap[e[1]];
             const val = e[3];
+            const tox = e[e.length - 1];
             if (hasFactionFilter && !this.filters[fKey]) return false;
+            if (tox === 1 && !isToxicity) return false
             if (hasClassFilter && !this.filters[cKey]) return false;
             if (noMods) {
                 if ((mode === "haste" && val > 600) || (mode === "hp" && val > 5000) || 
@@ -12935,6 +12942,7 @@ const bosslog = {
         return res.ok ? res.json() : null;
     }
 };
+window.bl = bosslog;
 
 // import friendsInfo from "./friendsInfo"
 
