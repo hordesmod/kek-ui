@@ -7,16 +7,16 @@
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=hordes.io
 // @license     KEK
 // @author      Scrizz and Grigory. QA Contributors: POG.
-// @version     0.54.0
+// @version     0.55.0
 // @grant       none
 // ==/UserScript==
-/* Version: 0.54.0 - March 28, 2026 20:37:48 */
+/* Version: 0.55.0 - March 28, 2026 20:39:49 */
 'use strict';
 
 const config = {
     appName: "KEK",
     devMode: true,
-    version: "0.54.0",
+    version: "0.55.0",
     localStorageKey: "kekStorage"
 };
 
