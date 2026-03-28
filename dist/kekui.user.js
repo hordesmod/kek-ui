@@ -10,12 +10,12 @@
 // @version     0.55.0
 // @grant       none
 // ==/UserScript==
-/* Version: 0.55.0 - March 28, 2026 20:39:49 */
+/* Version: 0.55.0 - March 28, 2026 20:43:08 */
 'use strict';
 
 const config = {
     appName: "KEK",
-    devMode: true,
+    devMode: false,
     version: "0.55.0",
     localStorageKey: "kekStorage"
 };
@@ -221,15 +221,13 @@ const bootManager = new BootManager();
 
 function log(...args) {
  
-    const trace = new Error().stack
+    new Error().stack
         .split("\n")
         .map(line => line.split(" "))
         .filter(parts => parts.length > 6 && !parts[6].includes("(<anonymous>)"))
         .map(parts => parts[5])
         .reverse()
         .join("::");
-
-    console.log(`%c [${config.appName}::${trace}] ${(Date.now() / 1000).toFixed(3)}:`, "color: #0f0", ...args);
 }
 
 /**
@@ -10546,94 +10544,6 @@ class Frame {
 
 }
 
-const debugInfo = {
-    name: "_DEBUG INFO_",
-    description: "_THIS CONTENT IS NOT INTENDED FOR VIEWING_",
-    style: `
-        .dbg.data {
-            height: 400px;
-        }
-        .dbg.select {
-            margin-bottom: 50px;
-        }
-    `,
-    start() {
-        if (ui?.partyBtnbar?.element) {
-            this.addBtn(ui.partyBtnbar.element);
-        }
-        eventManager.on("ui.partyBtnbar", this.addBtn, this);
-        this.createFrame();
-    },
-    stop() {
-        if (ui.partyBtnbar.element) {
-            ui.partyBtnbar.element.removeChild(this.btn.element);
-        }
-        eventManager.off("ui.partyBtnbar", this.addBtn, this);
-        this.createFrame();
-    },
-    addBtn(partyBtnbar) {
-        partyBtnbar = partyBtnbar.element;
-        this.btnLabel = element("span").css("textexp").text("DISABLE devMode!");
-
-        this.btn = element("div").css("btn border black textgrey")
-            .on("click", this.toggleFrame.bind(this))
-            .add(this.btnLabel);
-
-        partyBtnbar.appendChild(this.btn.element);
-    },
-    toggleFrame() {
-        this.frame.isOn ? this.removeFrame() : this.showFrame();
-    },
-    createFrame() {
-        this.frame = frame({ title: "DEBUG", y: 10 });
-        const frameSelect = element("div").css("dbg select");
-        const select = element("select").css("btn grey").on("change", () => {
-            this.updateFrame(select.element.value);
-        });
-        frameSelect.add(select);
-        const coreModules = ["ui", "style"];
-        for (const coreModule of coreModules) {
-            const option = element("option").attr("value", coreModule).text(coreModule);
-            select.add(option);
-        }
-
-        this.frameData = element("div").css("dbg data");
-        this.frame.slot.add(frameSelect);
-        this.frame.slot.add(this.frameData);
-    },
-    showFrame() {
-        this.frame.show();
-        this.updateFrame();
-    },
-    removeFrame() {
-        this.frame.remove();
-    },
-    updateFrame(moduleName = "ui") {
-        this.frameData.clear();
-        if (moduleName == "ui") {
-            for (const [objName, obj] of Object.entries(ui)) {
-                // log(obj)
-                const field = element("div").text(objName)
-                    .on("mouseenter", () => {
-                        field.toggle("textgreen");
-                        if (obj.element) {
-                            obj.element.style.outline = "5px solid red";
-                            obj.element.style.filter = "contrast(0.5)";
-                        }
-                    })
-                    .on("mouseleave", () => {
-                        field.toggle("textgreen");
-                        if (obj.element) {
-                            obj.element.style.outline = "";
-                            obj.element.style.filter = "";
-                        }
-                    });
-                this.frameData.add(field);
-            }
-        }
-    }
-};
-
 var itemTypes = [
     "amulet",
     "armlet",
@@ -13123,8 +13033,6 @@ const mods = [
     bosslog,
 ];
 
-mods.push(debugInfo);
-
 class ModuleManager {
     
     #registry = {}
@@ -13878,26 +13786,10 @@ class CacheManager {
 
 }
 
-const cacheManager = new CacheManager();
+new CacheManager();
 
 class Core {
     constructor(){
-        {
-            Object.assign(window, {
-                em: eventManager,
-                api: apiManager,
-                pm: profileManager,
-                stm: storageManager,
-                km: keyManager,
-                sm: styleManager,
-                st: stateManager,
-                set: settingsManager,
-                mm: moduleManager$1,
-                ui: ui,
-                cm: cacheManager,
-                snd: soundManager,
-            });
-        }
     }
     init() {
         const ufplayer = document.querySelector("#ufplayer");
