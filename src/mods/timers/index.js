@@ -229,5 +229,5 @@ const timers = {
     }
 
 }
-window.timer = timers
+// window.timer = timers
 export default timers

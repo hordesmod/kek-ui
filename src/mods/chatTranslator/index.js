@@ -322,5 +322,5 @@ const chatTranslator = {
         }
     },
 }
-window.tr = chatTranslator
+// window.tr = chatTranslator
 export default chatTranslator

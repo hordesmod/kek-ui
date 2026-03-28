@@ -13,7 +13,7 @@ import isbis from "./isbis"
 import statsSim from "./statsSim"
 import gui from "./gui"
 import itemLocking from "./itemLocking"
-import skillPreset from "./skillPresets.js"
+import presetManager from "./presetManager"
 import speculatePrestige from "./speculatePrestige"
 import fameInfo from "./fameInfo"
 import chatTranslator from "./chatTranslator"
@@ -59,7 +59,7 @@ const mods = [
     // isbis,
     itemLocking,
     statsSim,
-    skillPreset,
+    presetManager,
     speculatePrestige,
     mainMenu,
     fameInfo, 

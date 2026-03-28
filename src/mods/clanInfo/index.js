@@ -260,5 +260,5 @@ const clanInfo = {
     },
 
 }
-window.ci = clanInfo
+// window.ci = clanInfo
 export default clanInfo

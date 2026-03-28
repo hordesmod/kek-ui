@@ -10,12 +10,12 @@
 // @version     0.54.0
 // @grant       none
 // ==/UserScript==
-/* Version: 0.54.0 - March 22, 2026 23:54:42 */
+/* Version: 0.54.0 - March 28, 2026 20:37:48 */
 'use strict';
 
 const config = {
     appName: "KEK",
-    devMode: false,
+    devMode: true,
     version: "0.54.0",
     localStorageKey: "kekStorage"
 };
@@ -221,13 +221,15 @@ const bootManager = new BootManager();
 
 function log(...args) {
  
-    new Error().stack
+    const trace = new Error().stack
         .split("\n")
         .map(line => line.split(" "))
         .filter(parts => parts.length > 6 && !parts[6].includes("(<anonymous>)"))
         .map(parts => parts[5])
         .reverse()
         .join("::");
+
+    console.log(`%c [${config.appName}::${trace}] ${(Date.now() / 1000).toFixed(3)}:`, "color: #0f0", ...args);
 }
 
 /**
@@ -7404,354 +7406,407 @@ const itemLocking = {
     }
 };
 
-const skillPreset = {
-    name: "Skill Presets",
+const presetManager = {
+    name: "Preset Manager",
+    description: "Skill Preset Manager.",
     state: {
-        skillPreset: {},
+        active: false,
     },
-    _profiles: true,
+    style:`
+        .container.panel-black.svelte-um60d1 {
+            display: none;
+        }
+        .preset-manager.btn {
+            min-width: 60px; 
+            text-align: center;
+        }
+        #skilllist {
+            grid-template-columns: auto auto;
+        }
+        
+        .flexer.svelte-1e0alkc.kek {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2px;
+        }
+
+        .flexer.svelte-1e0alkc.kek > *:not(:nth-child(3)):not(:nth-child(4)) {
+            grid-column: 1 / span 2;
+        }
+
+        .flexer.svelte-1e0alkc.kek > :nth-child(3),
+        .flexer.svelte-1e0alkc.kek > :nth-child(4) {
+            align-self: center;
+        }
+
+    `,
     start() {
-        eventManager.on("ui.skillsMenuParent", this.addskillPresetUI, this);
+        eventManager.on("ui.skillsMenuParent", this.handler, this);
     },
     stop() {
-        eventManager.off("ui.skillsMenuParent", this.addskillPresetUI, this);
-
+        eventManager.off("ui.skillsMenuParent", this.handler, this);
     },
-    addskillPresetUI(skillsMenu) {
-        skillsMenu = skillsMenu.element;
-        // console.log(
-        //     "skills menu found initializing preset functionality for " +
-        //     profileManager.playerName
-        // );
-        if (skillsMenu) {
-            const skillListContainer = skillsMenu.querySelector("#skilllist");
-            if(skillListContainer) {
-                skillListContainer.style.gridTemplateColumns = "repeat(2, auto)";
+    handler() {
+        const skillMenu = ui.skillsMenuParent?.element;
+        if (!skillMenu) return;
+
+        this.flexser = skillMenu.querySelector(".flexer.svelte-1e0alkc");
+        this.barTop = this.flexser?.querySelector(".bar-top-config"); 
+        if (!this.barTop) return;
+        //////////////////////////
+        this.barTop && (this.barTop.style.display = "none");
+
+        this.toggleBtn = this.toggleBtn || element("div").css("btn grey")
+            .style({
+                "margin-left": "auto",
+                "width": "20px",
+                "text-align": "center"
+            })
+            .text(this.state.active ? "▶" : "◀")
+            .on("click", this.toggle.bind(this));
+        this.actionBar = this.actionBar || element("div").css("panel-black preset-manager top-bar");
+        this.manager = this.manager || element("div").css("scrollbar panel-black").style({
+            "min-width": "200px", "padding": "8px", "display": "flex",
+            "flex-direction": "column", "gap": "4px", "height": "452px",
+        });
+
+        this.barObserver?.disconnect();
+        this.barObserver = new MutationObserver((mutations) => {
+            for (let m of mutations) {
+                if (m.target.classList.contains('bar-top-config')) {
+                    this.btnObservers(); 
+                    this.managerUpdate();
+                } else {
+                    this.selectObserver?.disconnect();
+                }
             }
-            // Create a window panel with preset functionality
-            const windowPanel = document.createElement("div");
-            windowPanel.className = "window panel-black";
+        });
+        this.barObserver.observe(this.barTop, { attributes: true, attributeFilter: ['class'] });
 
-            const titleFrame = document.createElement("div");
-            titleFrame.className = "titleframe svelte-yjs4p5";
-
-            const savePresetFrame = document.createElement("div");
-            savePresetFrame.className = "panel-black bar slot preset-btn-container";
-            savePresetFrame.style.display = "grid";
-            savePresetFrame.style.gridTemplateColumns = "repeat(2, auto)";
-
-            const title = document.createElement("div");
-            title.className = "textprimary title svelte-yjs4p5";
-            title.textContent = "Presets";
-            title.style.width = "200px";
-            title.style.padding = "10px";
-
-            const presetList = document.createElement("div");
-            presetList.className = "preset-list panel-black bar slot";
-
-            // Add input field for preset name
-            const presetInput = document.createElement("input");
-            presetInput.type = "text";
-            presetInput.classList.add("btn", "black", "textsecondary");
-            presetInput.placeholder = "Enter preset name";
-            // Add save button
-            const saveButton = document.createElement("div");
-            saveButton.className = "btn black textsecondary";
-            saveButton.textContent = "Save";
-            saveButton.style.textAlign = "center";
-            saveButton.addEventListener("click", () => {
-                const presetName = presetInput.value.trim();
-                if (presetName) {
-                    this.savePreset(presetName);
-                    presetInput.value = ""; // Clear the input field
-                }
-            });
-
-            // Add input field for importing this.state.skillPreset
-            const importInput = document.createElement("textarea");
-            importInput.placeholder = "Enter Preset Data";
-            importInput.classList.add("btn", "black", "textsecondary");
-            importInput.style.height = "35px";
-            importInput.style.overflow = "hidden";
-            importInput.addEventListener("wheel", (event) => {
-                // Adjust the scrollTop property based on your scrolling logic
-                importInput.scrollTop += event.deltaY;
-            });
-            // Add import button
-            const importButton = document.createElement("div");
-            importButton.className = "btn black textsecondary";
-            importButton.textContent = "Import";
-            importButton.style.textAlign = "center";
-            importButton.addEventListener("click", (event) => {
-                const importedData = importInput.value.trim();
-                if (importedData) {
-                    // Call the this.savePreset function with the imported data
-                    this.importPreset(event, importedData);
-                    importInput.value = ""; // Clear the input field after import
-                }
-            });
-
-            // Append elements to the title frame
-            titleFrame.appendChild(title);
-            // Append import elements
-            savePresetFrame.appendChild(importInput);
-            savePresetFrame.appendChild(importButton);
-
-            savePresetFrame.appendChild(presetInput);
-            savePresetFrame.appendChild(saveButton);
-
-            // Append elements to the window panel
-            windowPanel.appendChild(titleFrame);
-            windowPanel.appendChild(savePresetFrame);
-            windowPanel.appendChild(presetList);
-
-            // Append the window panel to the skillsMenu
-            skillsMenu.appendChild(windowPanel);
-            skillsMenu.style.display = "flex";
-
-            // Initialize the preset list
-            this.updatePresetList();
+        this.skilllist = this.flexser.querySelector("#skilllist");
+        if (this.skilllist) {
+            this.flexser.classList.add("kek");
+            this.skilllist.before(this.actionBar.element);
+            this.skilllist.after(this.manager.element);
+            
+            this.actionBar.element.style.display = "flex";
+            this.manager.element.style.display = "flex";
+            
+            this.btnObservers(); 
+            this.actionUpdate();
+            this.managerUpdate();
         }
     },
-    // Example: Set skill points allocation on the page
-    setSkillPoints(skillPoints) {
-        const skillsMenu = ui.skillsMenuParent.element;
-        console.log(skillPoints);
-        const skillBoxes = skillsMenu.querySelectorAll(".skillbox"); // Select all skill boxes
-        const applyBtn = skillsMenu.querySelector("#tutapplyskills");
-        skillBoxes.forEach((skillBox) => {
-            const divs = skillBox.children;
-            const skillPointsInfo = divs[1];
-            const skillBtnInfo = divs[2];
-            const skillPointsElement = skillPointsInfo.querySelector(".skillpoints");
-            if (skillPointsElement) {
-                const skillName = skillBox
-                    .querySelector(".textprimary.name")
-                    .textContent.trim();
-                const btns = skillBtnInfo.querySelectorAll("div.btn");
-                let spentPoints =
-                    skillPointsElement.querySelectorAll(".btn.incbtn.white").length;
-                if (!spentPoints) {
-                    spentPoints =
-                        skillPointsElement.querySelectorAll(".btn.incbtn.green").length;
+    btnSync() {
+        const gameBtnSave = this.barTop?.children[2];
+        const isSaveDisabled = gameBtnSave?.classList.contains("disabled") || gameBtnSave?.classList.contains("black");
+        if (this.btnSave) {
+            this.btnSave.element.style.opacity = isSaveDisabled ? "0.5" : "1";
+            this.btnSave.element.style.pointerEvents = isSaveDisabled ? "none" : "auto";
+        }
+
+        const gameBtnDelete = this.barTop?.children[3];
+        const isDeleteDisabled = gameBtnDelete?.classList.contains("disabled") || gameBtnDelete?.classList.contains("black");
+        if (this.btnDelete) {
+            this.btnDelete.element.style.opacity = isDeleteDisabled ? "0.5" : "1";
+            this.btnDelete.element.style.pointerEvents = isDeleteDisabled ? "none" : "auto";
+            if (this.btnRename) {
+                this.btnRename.element.style.opacity = isDeleteDisabled ? "0.5" : "1";
+                this.btnRename.element.style.pointerEvents = isDeleteDisabled ? "none" : "auto";
+            }
+        }
+    },
+    btnObservers() {
+        this.select = this.barTop?.querySelector("select");
+        if (!this.select || this.select._optionHooked) return;
+        this.select._optionHooked = true;
+        
+        const self = this;
+        const descriptor = Object.getOwnPropertyDescriptor(HTMLOptionElement.prototype, 'selected');
+        Object.defineProperty(HTMLOptionElement.prototype, 'selected', {
+            set: function(v) {
+                descriptor.set.call(this, v);
+                if (v && this.closest('select') === self.select) {
+                    Promise.resolve().then(() => self.managerUpdate());
                 }
-                const decBtn = btns[0];
-                if (decBtn) {
-                    for (let i = 0; i < spentPoints; i++) {
-                        decBtn.click();
+            },
+            get: function() { return descriptor.get.call(this); },
+            configurable: true
+        });
+        
+        const gameBtnSave = this.barTop?.children[2];
+        const gameBtnDelete = this.barTop?.children[3];
+        if (!gameBtnSave || !gameBtnDelete) return;
+
+        this.saveObserver?.disconnect();
+        this.deleteObserver?.disconnect();
+
+        this.saveObserver = new MutationObserver(() => {
+            this.btnSync();
+            this.managerUpdate();
+        });
+
+        this.deleteObserver = new MutationObserver(() => {
+            this.btnSync();
+            this.managerUpdate();
+        });
+
+        const cfg = { attributes: true, attributeFilter: ['class', 'disabled'] };
+        
+        this.saveObserver.observe(gameBtnSave, cfg);
+        this.deleteObserver.observe(gameBtnDelete, cfg);
+
+        this.btnSync();
+    },
+    actionUpdate(action = "default") {
+        if (action === "default") {
+            this.actionBar.clear();
+            this.actionBar.style({"display": "flex", "gap": "8px", "align-items": "center"});
+
+            this.btnSave = this.btnSave || element("div").css("btn grey textgreen").text("Create").on("click", () => this.actionUpdate("create"));
+            this.btnRename = this.btnRename || element("div").css("btn grey textcyan").text("Rename").on("click", () => this.actionUpdate("rename"));
+            this.btnDelete = this.btnDelete || element("div").css("btn grey textred").text("Delete").on("click", () => this.actionUpdate("delete"));
+
+            this.btnImport = this.btnImport || element("div").css("btn grey").text("Import").on("click", () => this.actionUpdate("import"));
+            this.btnExport = this.btnExport || element("div").css("btn grey").text("Export").on("click", () => this.actionUpdate("export"));
+
+            this.actionBar.add(this.btnSave).add(this.btnRename).add(this.btnDelete).add(this.btnImport).add(this.btnExport).add(this.toggleBtn);
+            this.btnSync();
+        }
+        else if (action === "grid") {
+            this.actionBar.clear();
+            this.actionBar.style({"display": "flex", "gap": "8px", "align-items": "center"});
+
+            this.actionBar.add(this.toggleBtn);
+        }
+        else if (action === "import") {
+            this.actionBar.clear();
+            this.actionBar.style({"display": "flex", "gap": "8px", "align-items": "center"});
+
+            const lbl = element('div').css("textorange").text('Ready to import from Clipboard? GAME WILL RELOAD!!!11');
+            
+            const btnPaste = element('div').css("btn green").text('Paste & Load').on("click", async () => {
+                try {
+                    const text = await navigator.clipboard.readText();
+                    const data = JSON.parse(text);
+                    
+                    if (Array.isArray(data)) {
+                        localStorage.setItem("skillConfigs", JSON.stringify(data));
+                        this.skillConfigs = data;
+                        log("Import successful!");
+                        location.reload(); 
                     }
-                    let incBtn = skillBtnInfo.querySelector("#tutsetskillpoint");
-                    if (incBtn) {
-                        for (let i = 0; i < skillPoints[skillName]; i++) {
-                            incBtn.click();
-                        }
-                    } else {
-                        // Use MutationObserver to wait for #tutsetskillpoint to be added
-                        const observer = new MutationObserver(function (mutationsList) {
-                            mutationsList.forEach((mutation) => {
-                                const addedNodes = Array.from(mutation.addedNodes);
-                                const incBtn = addedNodes.find(
-                                    (node) => node.id === "tutsetskillpoint"
-                                );
-                                if (incBtn) {
-                                    for (let i = 0; i < skillPoints[skillName]; i++) {
-                                        incBtn.click();
-                                    }
-                                }
-                            });
-                        });
+                } catch (err) {
+                    lbl.text("Import Failed! Invalid config in clipboard!").css("textred");
+                }
+            });
 
-                        // Configuration of the observer
-                        const config = { childList: true, subtree: true };
+            const btnCancel = element('div').css("btn orange").text('Cancel').on("click", () => {
+                this.actionUpdate("default");
+            });
 
-                        // Start observing the target node (skillBtnInfo)
-                        observer.observe(skillBtnInfo, config);
-                        // Stop observing after a reasonable time or when the incBtn is found
-                        setTimeout(() => observer.disconnect(), 100);
-                    }
+            this.actionBar.add(lbl).add(btnPaste).add(btnCancel);
+        }
+        else if (action === "export") {
+            this.actionBar.clear();
+            const raw = localStorage.getItem("skillConfigs");
+            if (raw) {
+                try {
+                    const data = JSON.parse(raw);
+                    let formatted = JSON.stringify(data, null, 4);
+                    formatted = formatted.replace(/\[[\s\d,]+\]/g, (match) => {
+                        return match.replace(/\s+/g, ' ');
+                    });
+                    navigator.clipboard.writeText(formatted);
+                } catch (e) {
+                    navigator.clipboard.writeText(raw);
                 }
             }
-        });
-        setTimeout(() => applyBtn.click(), 500);
-    },
 
-    // Example: Get skill points allocation from the page
-    getSkillPoints() {
-        const skillsMenu = ui.skillsMenuParent.element;
-        const skillBoxes = skillsMenu.querySelectorAll(".skillbox"); // Select all skill boxes
+            const lbl = element('div').css("textorange").text('Configs copied to clipboard! (ctrl-v it somewhere)');
+            const btnOk = element('div').css("btn green").text('OK').on("click", () => this.actionUpdate("default"));
+            this.actionBar.add(lbl).add(btnOk);
+        }
+        else if(action=="create" || action=="rename"){
+        
+            this.actionBar.clear().style({
+                "display": "grid",
+                "grid-template-columns": "120px 120px 1fr auto auto",
+                "grid-gap": "4px"
+            });
 
-        const skillPoints = {};
-        skillBoxes.forEach((skillBox) => {
-            const divs = skillBox.children;
-            const skillPointsInfo = divs[1];
-            const skillPointsElement = skillPointsInfo.querySelector(".skillpoints");
-            if (skillPointsElement) {
-                const skillName = skillBox
-                    .querySelector(".textprimary.name")
-                    .textContent.trim();
-                let spentPoints =
-                    skillPointsElement.querySelectorAll(".btn.incbtn.white").length;
-                if (!spentPoints) {
-                    spentPoints =
-                        skillPointsElement.querySelectorAll(".btn.incbtn.green").length;
+            const btnStyle = { "min-width": "60px", "text-align": "center" };
+            const inputStyle = { "padding": "2px 5px"};
+
+            const iTag = element("input").attr("placeholder", "Group Name")
+                .style(inputStyle)
+                .on("input", (e) => {e.target.value = e.target.value.replace(/_/g, '');});
+
+            const iOrder = element("input").attr("placeholder", "Order Number").attr("maxlength", "1")
+                .style({ "text-align": "center" })
+                .on("input", (e) => {e.target.value = e.target.value.replace(/\D/g, '');});
+
+            const iName = element("input").attr("placeholder", "Preset Name")
+                .style(inputStyle)
+                .on("input", (e) => {e.target.value = e.target.value.replace(/_/g, '');});
+
+            if(action=="rename") {
+                const currentFullName = this.select?.value || "";
+                const parts = currentFullName.split('_');
+                const isFormatted = parts.length >= 3;
+                iTag.attr("value", isFormatted ? parts[0] : "");
+                iOrder.attr("value", isFormatted ? parts[1] : "");
+                iName.attr("value", isFormatted ? parts.slice(2).join('_') : currentFullName);
+            }
+
+            const btnSave = element("div").css("btn green").text("Save").style(btnStyle).on("click", async () => {
+                const fullName = `${iTag.element.value.trim()}_${iOrder.element.value.trim()}_${iName.element.value.trim()}`;
+                if(action=="rename"){
+                    this.select.value = this.selected;
+                    this.select.dispatchEvent(new Event('input', { bubbles: true }));
+                    this.barTop.children[3].click();
+                    await new Promise(res => setTimeout(res, 5));
                 }
-                console.log(skillName, spentPoints);
-                skillPoints[skillName] = spentPoints;
+                this.barTop.children[2].click();
+                await new Promise(res => setTimeout(res, 5));
+                this.barTop.children[1].value = fullName;
+                this.barTop.children[1].dispatchEvent(new Event('input', { bubbles: true }));
+                this.barTop.children[2].click();
+
+                this.actionUpdate();
+                this.managerUpdate();
+
+            });
+
+            const btnCancel = element("div").css("btn orange").text("Cancel").style(btnStyle).on("click", () => {
+                this.actionUpdate();
+            });
+
+            this.actionBar.add(iTag).add(iOrder).add(iName).add(btnSave).add(btnCancel);
+                
+            iName.element.focus();
+        }
+        else if (action === "delete") {
+            if (this.select && this.barTop?.children[3]) {
+                this.select.value = this.selected;
+                this.select.dispatchEvent(new Event('input', { bubbles: true }));
+                this.barTop.children[3].click();
+                this.actionUpdate();
             }
+        }
+    },
+    managerUpdate() {
+        this.manager.clear();
+        const isGridView = this.state.active;
+        this.skilllist.style.display = isGridView && "none"|| "grid";
+
+        this.manager.style({"min-width": isGridView?"688px":"200px"});
+
+        const presets = Array.from(this.select.options).filter(opt => opt.value !== "" && !opt.disabled).map(opt => opt.value);
+        const grouped = {};
+        const active = this.select.value;
+        let activeElement = null;
+
+        presets.forEach(fullName => {
+            const selected = fullName == active;
+            const parts = fullName.split('_');
+            const isGrouped = parts.length >= 3;
+            const groupKey = isGrouped ? parts[0] : "Other";
+            const order = isGrouped ? parseInt(parts[1]) : 999;
+            const displayName = isGrouped ? parts.slice(2).join('_') : fullName;
+
+            if (!grouped[groupKey]) grouped[groupKey] = [];
+            grouped[groupKey].push({ selected, fullName, displayName, order });
         });
 
-        return skillPoints;
-    },
-    // Function to update the preset list
-    updatePresetList() {
-        const presetList = document.querySelector(".preset-list");
-        if (!presetList) return;
-        presetList.innerHTML = ""; // Clear the preset list
+        Object.keys(grouped).forEach(groupName => {
+            const list = grouped[groupName].sort((a, b) => a.order - b.order);
 
-        const container = document.createElement("div");
-        container.style.overflow = "hidden"; // Enable scrolling
-        container.style.maxHeight = "450px"; // Set the maximum height for the container
-        // Add event listeners to handle scrolling
-        container.addEventListener("wheel", (event) => {
-            // Adjust the scrollTop property based on your scrolling logic
-            container.scrollTop += event.deltaY;
+            if (groupName !== "Other") {
+                this.manager.add(element("div").css("textprimary").text(`${groupName}`).style({"font-weight": "bold", "margin-top": "4px"}));
+            }
+
+
+            const groupContainer = element("div").style({
+                "display": "grid",
+                "grid-template-columns": isGridView ? "repeat(4, 1fr)" : "1fr", 
+                "grid-gap": "4px",
+                "margin-bottom": "8px"
+            });
+
+            list.forEach(item => {
+                
+                let btnPreset = element("div").css(`btn grey`).style({
+                    "display": "flex",
+                    "flex-direction": "column",
+                    "align-items": "flex-start",
+                    "padding": "4px 10px",
+                    "width": "100%",
+                    "max-width": "170px",
+                    "box-sizing": "border-box",
+                    "overflow": "hidden"
+                });
+
+                const title = element("span").css(`${item.selected && "textorange" || "textgrey"}`).text(item.displayName);
+                btnPreset.add(title)
+                .on("click", () => {
+                    this.selected = item.fullName;
+                    this.select.value = item.fullName;
+                    this.select.dispatchEvent(new Event('input', { bubbles: true }));
+                    this.select.dispatchEvent(new Event('change', { bubbles: true }));
+                    this.actionUpdate();
+                    this.managerUpdate();
+                });
+
+                groupContainer.add(btnPreset);
+
+                if (item.selected) {
+                    activeElement = btnPreset.element;
+                }
+            });
+
+            this.manager.add(groupContainer);
         });
-        for (const presetName in this.state.skillPreset) {
-            const flexContainer = document.createElement("div");
-            flexContainer.className = "preset-flex-container"; // Apply styling for the flex container
-            flexContainer.style.display = "flex";
-            const presetItem = document.createElement("div");
-            presetItem.className = "preset-item btn black textsilver";
-            presetItem.style.padding = "5px";
-            presetItem.style.minWidth = "150px";
-            presetItem.textContent = presetName;
-            presetItem.addEventListener("click", () => {
-                this.loadPreset(presetName);
-            });
-            // Add delete button
-            const deleteButton = document.createElement("div");
-            deleteButton.className = "btn black delete-btn textsecondary";
-            deleteButton.style.padding = "5px";
-            deleteButton.textContent = "X";
-            deleteButton.addEventListener("click", (event) => {
-                event.stopPropagation(); // Prevent the click event from reaching the presetItem click event
-                this.deletePreset(presetName);
-            });
-
-            // Add export button
-            const exportButton = document.createElement("div");
-            exportButton.className = "btn black export-btn textsecondary";
-            exportButton.style.padding = "5px";
-            exportButton.textContent = "Copy";
-            exportButton.addEventListener("click", (event) => {
-                event.target.textContent = "Copied!";
-                event.stopPropagation(); // Prevent the click event from reaching the presetItem click event
-                this.copyPresetToClipboard(presetName);
-                setTimeout(() => {
-                    event.target.textContent = "Copy";
-                }, 500);
-            });
-            presetItem.style.flex = 1;
-            // Append elements to the flex container
-            flexContainer.appendChild(presetItem);
-            flexContainer.appendChild(exportButton);
-            flexContainer.appendChild(deleteButton);
-
-            // Append the flex container to the container
-            container.appendChild(flexContainer);
-        }
-
-        // Append the container to the presetList
-        presetList.appendChild(container);
+        
+        activeElement && activeElement.scrollIntoView({alignToTop: false, behavior: 'smooth', block: 'nearest'});
+    },
+    toggle() {
+        this.state.active ^= 1;
+        this.toggleBtn.text(this.state.active ? "▶" : "◀");
+        this.skilllist.style.display = this.state.active && "none"|| "grid";
+        this.managerUpdate();
     },
 
-    // Function to import this.state.skillPreset
-    importPreset(event, importedData) {
-        event.stopPropagation();
-        const target = event.target;
-        try {
-            const parsedData = JSON.parse(importedData);
-            // Validate the imported data format as needed
-            if (this.validateImportedData(parsedData)) {
-                // Extract presetName and skillPoints from the parsed data
-                const presetName = Object.keys(parsedData)[0];
-                const skillPoints = parsedData[presetName];
-
-                // Call the this.savePreset function with the imported data
-                this.savePreset(presetName, skillPoints);
-                this.updatePresetList();
-                target.textContent = "Saved!";
-                setTimeout(() => {
-                    target.textContent = "Import";
-                }, 500);
-            } else {
-                target.textContent = "Failed!";
-                setTimeout(() => {
-                    target.textContent = "Import";
-                }, 500);
-            }
-        } catch (error) {
-            target.textContent = "Failed!";
-            setTimeout(() => {
-                target.textContent = "Import";
-            }, 500);
-        }
-    },
-    // Function to validate the imported data format
-    validateImportedData(importedData) {
-        return (
-            importedData &&
-            typeof importedData === "object" &&
-            Object.keys(importedData).length === 1 &&
-            typeof importedData[Object.keys(importedData)[0]] === "object"
-        );
-    },
-    // Function to copy the preset to the clipboard using Clipboard API
-    async copyPresetToClipboard(presetName) {
-        let skillPoints = {};
-        skillPoints[presetName] = this.state.skillPreset[presetName];
-
-        if (skillPoints) {
-            // Convert skillPoints to a string (customize this based on your data structure)
-            const skillPointsString = JSON.stringify(skillPoints);
-
-            try {
-                // Use Clipboard API to copy the skillPointsString to the clipboard
-                await navigator.clipboard.writeText(skillPointsString);
-                console.log(`Preset "${presetName}" copied to clipboard`);
-            } catch (error) {
-                console.error("Unable to copy to clipboard:", error);
-            }
-        } else {
-            alert(`Preset "${presetName}" not found`);
-        }
-    },
-    // Function to load this.state.skillPreset from localStorage
-    loadPreset(presetName) {
-        const skillPoints = this.state.skillPreset[presetName];
-
-        if (skillPoints) {
-            this.setSkillPoints(skillPoints);
-            console.log(`Preset "${presetName}" loaded successfully`);
-        } else {
-            alert(`Preset "${presetName}" not found`);
-        }
-    },
-    // Function to delete a preset from localStorage
-    deletePreset(presetName) {
-        delete this.state.skillPreset[presetName];
-        this.updatePresetList(); // Update the preset list after deletion
-    },
-    // Function to save this.state.skillPreset to localStorage
-    savePreset(presetName, skillPoints) {
-        if (!skillPoints) {
-            skillPoints = this.getSkillPoints();
-        }
-        // Use playerName as part of the key
-        this.state.skillPreset[presetName] = skillPoints;
-
-        this.updatePresetList();
-    },
+    // icons(name, skills) {
+    //     const stats = element("div").style({ "display": "flex", "gap": "1px", "margin-top": "4px" });
+    //     // Grouping: [43, 43, 43] -> { "43": 3 }
+    //     const counts = skills.reduce((acc, id) => {
+    //         acc[id] = (acc[id] || 0) + 1;
+    //         return acc;
+    //     }, {});
+    //     Object.entries(counts).forEach(([id, count]) => {
+    //         const slot = element("div").css("slot").style({
+    //             "position": "relative",
+    //             "width": "25px",
+    //             "height": "25px",
+    //         });
+    //         const img = element("img").css("icon svelte-1nn7wcb")
+    //             .attr("src", `/data/ui/skills/${id}.avif`)
+    //             .style({ "display": "block", "max-width": "25px" });
+    //         const overlay = element("div").css("time absCentered slottext svelte-1nn7wcb").text(count).style({
+    //             "color": "#e7d510",
+    //             "font-size": "14px",
+    //             "background-color": "#0007",
+    //             "position": "absolute",
+    //             "bottom": "0",
+    //             "right": "0",
+    //             "pointer-events": "none" 
+    //         });
+    //         slot.add(img).add(overlay);
+    //         stats.add(slot);
+    //     });
+    // },
+    
 };
 
 const speculatePrestige = {
@@ -8430,7 +8485,6 @@ const chatTranslator = {
         }
     },
 };
-window.tr = chatTranslator;
 
 const buffOnly = {
     name: "Your Buffs Only",
@@ -9811,7 +9865,6 @@ const clanInfo = {
     },
 
 };
-window.ci = clanInfo;
 
 class SoundManager {
     constructor() {
@@ -10077,8 +10130,6 @@ const merchant = {
     }
 };
 
-window.mr = merchant;
-
 const timers = {
     name: "Timers",
     description: "Enhance time-related features within a game.",
@@ -10304,7 +10355,6 @@ const timers = {
     }
 
 };
-window.timer = timers;
 
 const partyBtnTweaks = {
     name: "Party Button Tweaks",
@@ -10495,6 +10545,94 @@ class Frame {
     }
 
 }
+
+const debugInfo = {
+    name: "_DEBUG INFO_",
+    description: "_THIS CONTENT IS NOT INTENDED FOR VIEWING_",
+    style: `
+        .dbg.data {
+            height: 400px;
+        }
+        .dbg.select {
+            margin-bottom: 50px;
+        }
+    `,
+    start() {
+        if (ui?.partyBtnbar?.element) {
+            this.addBtn(ui.partyBtnbar.element);
+        }
+        eventManager.on("ui.partyBtnbar", this.addBtn, this);
+        this.createFrame();
+    },
+    stop() {
+        if (ui.partyBtnbar.element) {
+            ui.partyBtnbar.element.removeChild(this.btn.element);
+        }
+        eventManager.off("ui.partyBtnbar", this.addBtn, this);
+        this.createFrame();
+    },
+    addBtn(partyBtnbar) {
+        partyBtnbar = partyBtnbar.element;
+        this.btnLabel = element("span").css("textexp").text("DISABLE devMode!");
+
+        this.btn = element("div").css("btn border black textgrey")
+            .on("click", this.toggleFrame.bind(this))
+            .add(this.btnLabel);
+
+        partyBtnbar.appendChild(this.btn.element);
+    },
+    toggleFrame() {
+        this.frame.isOn ? this.removeFrame() : this.showFrame();
+    },
+    createFrame() {
+        this.frame = frame({ title: "DEBUG", y: 10 });
+        const frameSelect = element("div").css("dbg select");
+        const select = element("select").css("btn grey").on("change", () => {
+            this.updateFrame(select.element.value);
+        });
+        frameSelect.add(select);
+        const coreModules = ["ui", "style"];
+        for (const coreModule of coreModules) {
+            const option = element("option").attr("value", coreModule).text(coreModule);
+            select.add(option);
+        }
+
+        this.frameData = element("div").css("dbg data");
+        this.frame.slot.add(frameSelect);
+        this.frame.slot.add(this.frameData);
+    },
+    showFrame() {
+        this.frame.show();
+        this.updateFrame();
+    },
+    removeFrame() {
+        this.frame.remove();
+    },
+    updateFrame(moduleName = "ui") {
+        this.frameData.clear();
+        if (moduleName == "ui") {
+            for (const [objName, obj] of Object.entries(ui)) {
+                // log(obj)
+                const field = element("div").text(objName)
+                    .on("mouseenter", () => {
+                        field.toggle("textgreen");
+                        if (obj.element) {
+                            obj.element.style.outline = "5px solid red";
+                            obj.element.style.filter = "contrast(0.5)";
+                        }
+                    })
+                    .on("mouseleave", () => {
+                        field.toggle("textgreen");
+                        if (obj.element) {
+                            obj.element.style.outline = "";
+                            obj.element.style.filter = "";
+                        }
+                    });
+                this.frameData.add(field);
+            }
+        }
+    }
+};
 
 var itemTypes = [
     "amulet",
@@ -12119,7 +12257,6 @@ const chatLog = {
 
 
 };
-window.kl = chatLog;
 
 class StyleManager {
     constructor() {
@@ -12546,7 +12683,7 @@ const bosslog = {
         ]}
     ],
     initFrame() {
-        this.frame = element("div").css("window-pog bosslog-frame");
+        this.frame = element("div").css("window bosslog-frame");
         const panel = element("div").css("window panel-black bosslog-panel");
         const titleFrame = element("div").css("titleframe bosslog-header");
         titleFrame.add(element("div").css("textexp bosslog-icon")
@@ -12942,7 +13079,6 @@ const bosslog = {
         return res.ok ? res.json() : null;
     }
 };
-window.bl = bosslog;
 
 // import friendsInfo from "./friendsInfo"
 
@@ -12966,7 +13102,7 @@ const mods = [
     // isbis,
     itemLocking,
     statsSim,
-    skillPreset,
+    presetManager,
     speculatePrestige,
     mainMenu,
     fameInfo, 
@@ -12986,6 +13122,8 @@ const mods = [
     targetTooltip,
     bosslog,
 ];
+
+mods.push(debugInfo);
 
 class ModuleManager {
     
@@ -13740,10 +13878,26 @@ class CacheManager {
 
 }
 
-new CacheManager();
+const cacheManager = new CacheManager();
 
 class Core {
     constructor(){
+        {
+            Object.assign(window, {
+                em: eventManager,
+                api: apiManager,
+                pm: profileManager,
+                stm: storageManager,
+                km: keyManager,
+                sm: styleManager,
+                st: stateManager,
+                set: settingsManager,
+                mm: moduleManager$1,
+                ui: ui,
+                cm: cacheManager,
+                snd: soundManager,
+            });
+        }
     }
     init() {
         const ufplayer = document.querySelector("#ufplayer");

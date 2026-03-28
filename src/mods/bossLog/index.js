@@ -226,7 +226,7 @@ const bosslog = {
         ]}
     ],
     initFrame() {
-        this.frame = element("div").css("window-pog bosslog-frame");
+        this.frame = element("div").css("window bosslog-frame");
         const panel = element("div").css("window panel-black bosslog-panel");
         const titleFrame = element("div").css("titleframe bosslog-header");
         titleFrame.add(element("div").css("textexp bosslog-icon")
@@ -622,5 +622,5 @@ const bosslog = {
         return res.ok ? res.json() : null;
     }
 }
-window.bl = bosslog
+// window.bl = bosslog
 export default bosslog

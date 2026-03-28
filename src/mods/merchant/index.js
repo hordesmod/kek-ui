@@ -139,6 +139,6 @@ const merchant = {
     }
 }
 
-window.mr = merchant
+// window.mr = merchant
 
 export default merchant

@@ -1,6 +1,6 @@
 const config = {
     appName: "KEK",
-    devMode: false,
+    devMode: true,
     version: "[VI]{version}[/VI]",
     localStorageKey: "kekStorage"
 }

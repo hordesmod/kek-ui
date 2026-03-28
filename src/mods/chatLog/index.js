@@ -583,7 +583,7 @@ const chatLog = {
 
 
 }
-window.kl = chatLog
+// window.kl = chatLog
 export default chatLog
 
 
