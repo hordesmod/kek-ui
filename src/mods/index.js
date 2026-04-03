@@ -38,6 +38,7 @@ import targetTooltip from "./targetTooltip"
 import MinimalUI from "./minUI"
 import bosslog from "./bossLog"
 // import friendsInfo from "./friendsInfo"
+import skillPreset from "./skillPresets"
 
 const mods = [
     // test,
@@ -56,6 +57,7 @@ const mods = [
     timers,
     whispers,
     itemSharing,
+    skillPreset,
     // isbis,
     itemLocking,
     statsSim,

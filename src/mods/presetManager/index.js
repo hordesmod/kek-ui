@@ -8,35 +8,52 @@ const presetManager = {
     name: "Preset Manager",
     description: "Skill Preset Manager.",
     state: {
-        active: false,
+        cnt: 0,
+        locked: false,
+        columns: 1,
+        presets: []
+    },
+    _profiles: true,
+    defaultPresets: {
+        0: [
+            {name: "GLOOM"},
+            {name: "OBE"},
+            {name: "FARM"},
+        ],
+        1: [
+            {name: "GLOOM"},
+            {name: "OBE"},
+            {name: "FARM"},
+        ],
+        2: [
+            {name: "GLOOM"},
+            {name: "OBE"},
+            {name: "FARM"},
+        ],
+        3: [
+            {name: "GLOOM"},
+            {name: "OBE"},
+            {name: "FARM"},
+        ],
     },
     style:`
         .container.panel-black.svelte-um60d1 {
             display: none;
         }
-        .preset-manager.btn {
-            min-width: 60px; 
-            text-align: center;
-        }
         #skilllist {
             grid-template-columns: auto auto;
         }
-        
         .flexer.svelte-1e0alkc.kek {
             display: grid;
             grid-template-columns: auto 1fr;
             gap: 2px;
         }
-
-        .flexer.svelte-1e0alkc.kek > *:not(:nth-child(3)):not(:nth-child(4)) {
+        .flexer.svelte-1e0alkc.kek > :nth-child(1) {
             grid-column: 1 / span 2;
         }
-
-        .flexer.svelte-1e0alkc.kek > :nth-child(3),
         .flexer.svelte-1e0alkc.kek > :nth-child(4) {
-            align-self: center;
+            grid-column: 1;
         }
-
     `,
     start() {
         eventManager.on("ui.skillsMenuParent", this.handler, this);
@@ -44,367 +61,475 @@ const presetManager = {
     stop() {
         eventManager.off("ui.skillsMenuParent", this.handler, this);
     },
+    n_barTop:NaN,
+    n_select:NaN,
+    n_barBot:NaN,
+    n_tutapplyskills:NaN,
+    n_flexser:NaN,
+    n_skilllist:NaN,
+    // visObserver:NaN,
     handler() {
         const skillMenu = ui.skillsMenuParent?.element;
         if (!skillMenu) return;
 
-        this.flexser = skillMenu.querySelector(".flexer.svelte-1e0alkc");
-        this.barTop = this.flexser?.querySelector(".bar-top-config"); 
-        if (!this.barTop) return;
-        //////////////////////////
-        this.barTop && (this.barTop.style.display = "none");
+        this.n_flexser = skillMenu.querySelector(".flexer");
+        this.n_barTop = this.n_flexser?.querySelector(".bar-top-config"); 
+        this.n_barBot = this.n_flexser?.querySelector(".bar-bot"); 
+        this.n_barBot.style.gridTemplateColumns = "180px auto 1fr"
+        this.n_tutapplyskills = this.n_barBot.querySelector("#tutapplyskills");
+        this.n_skilllist = this.n_flexser.querySelector("#skilllist");
 
-        this.toggleBtn = this.toggleBtn || element("div").css("btn grey")
-            .style({
-                "margin-left": "auto",
-                "width": "20px",
-                "text-align": "center"
+        this.visObserver?.disconnect();
+        this.visObserver = new MutationObserver((mutations) => {
+            mutations.forEach(m => {
+                m.addedNodes.forEach(node => {
+                    if (node.nodeType === 1 && node.classList.contains('bar-top-config')) {
+                        console.log(this)
+                        this.n_barTop = node;
+                        this.uiShow()
+                    }
+                });
+                m.removedNodes.forEach(node => {
+                    if (node.nodeType === 1 && node.classList.contains('bar-top-config')) {
+                        console.log(this)
+                        this.uiHide()
+                    }
+                });
+            });
+        });
+        this.visObserver.observe(this.n_flexser, { childList: true });
+        this.uiCreate()
+        this.n_barTop && this.uiShow()
+    },
+    grid: NaN,
+    actions:NaN,
+    controls:NaN,
+    btnTip: NaN,
+    addBtn: NaN,
+    lblBtn:NaN,
+    impexBtn:NaN,
+    columnsBtn: NaN,
+    toggleBtn: NaN,
+    uiCreate(){
+        this.btnTip ||= element("div").css("btn textgrey textright").text("test")
+        this.addBtn ||= element("div").css("btn black textgrey textcenter").text("🞤")
+            .on("click", e => this.addPreset())
+            .on("pointerenter", e => this.btnTip.text("Add Preset"))
+            .on("pointerleave", e => this.btnTip.text(""))
+        this.lblBtn ||= element("div").css("btn black textgrey textcenter").text("🞸")
+            .on("click", e => this.addLabel())
+            .on("pointerenter", e => this.btnTip.text("Add Label"))
+            .on("pointerleave", e => this.btnTip.text(""))
+
+        this.impexBtn ||= element("div").css("btn black textgrey textcenter").text("🗘")
+            .on("click", e => this.addLabel())
+            .on("pointerenter", e => this.btnTip.text("Import | Export"))
+            .on("pointerleave", e => this.btnTip.text(""))
+        this.columnsBtn ||= element("select").css("btn black textgrey").style({ "width": "40px", "height": "32px" })
+            .on("change", (e) => {
+                this.state.columns = parseInt(e.target.value);
+                this.gridUpdate(); 
+            });
+        [1, 2, 3, 4, 5].forEach(num => {this.columnsBtn.add(element("option").attr("value", num).text(num))});
+        this.columnsBtn.value(this.state.columns || 1)
+            .on("pointerenter", e => this.btnTip.text("Columns"))
+            .on("pointerleave", e => this.btnTip.text(""))
+            
+        this.toggleBtn ||= element("div").css("btn black textgrey")
+                .style({"width": "20px"})
+                .text(this.state.locked ? "🞂" : "🞀")
+                .on("click", () => {
+                    this.state.locked ^= 1;
+                    this.toggleBtn.text(this.state.locked ? "🞂" : "🞀");
+                    this.uiShow()
+                })
+                .on("pointerenter", e => this.btnTip.text("Lock"))
+                .on("pointerleave", e => this.btnTip.text(""))
+
+
+        this.actions ||= element("div")
+            .css("panel-black preset-manager top-bar").style({
+                "display": "none",
+                "grid-template-columns": "30px 80px 60px",
+                "grid-gap": "4px",
+                "height": "32px",
+                "margin-top": "4px",
             })
-            .text(this.state.active ? "▶" : "◀")
-            .on("click", this.toggle.bind(this));
-        this.actionBar = this.actionBar || element("div").css("panel-black preset-manager top-bar");
-        this.manager = this.manager || element("div").css("scrollbar panel-black").style({
-            "min-width": "200px", "padding": "8px", "display": "flex",
-            "flex-direction": "column", "gap": "4px", "height": "452px",
-        });
+        this.grid ||= element("div").css("scrollbar panel-black")
+            .style({
+                "display": "none",
+                "grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)`,
+                "gap": "4px",
+                "height": "460px",
+                "overflow-y": "auto",
+                "align-content": "start",
+                "min-width": "200px",
+            });
 
-        this.barObserver?.disconnect();
-        this.barObserver = new MutationObserver((mutations) => {
-            for (let m of mutations) {
-                if (m.target.classList.contains('bar-top-config')) {
-                    this.btnObservers(); 
-                    this.managerUpdate();
-                } else {
-                    this.selectObserver?.disconnect();
-                }
-            }
-        });
-        this.barObserver.observe(this.barTop, { attributes: true, attributeFilter: ['class'] });
-
-        this.skilllist = this.flexser.querySelector("#skilllist");
-        if (this.skilllist) {
-            this.flexser.classList.add("kek");
-            this.skilllist.before(this.actionBar.element);
-            this.skilllist.after(this.manager.element);
-            
-            this.actionBar.element.style.display = "flex";
-            this.manager.element.style.display = "flex";
-            
-            this.btnObservers(); 
-            this.actionUpdate();
-            this.managerUpdate();
-        }
+        this.n_skilllist.after(this.grid.element);
+        this.n_barBot.after(this.actions.element)
     },
-    btnSync() {
-        const gameBtnSave = this.barTop?.children[2];
-        const isSaveDisabled = gameBtnSave?.classList.contains("disabled") || gameBtnSave?.classList.contains("black");
-        if (this.btnSave) {
-            this.btnSave.element.style.opacity = isSaveDisabled ? "0.5" : "1";
-            this.btnSave.element.style.pointerEvents = isSaveDisabled ? "none" : "auto";
-        }
-
-        const gameBtnDelete = this.barTop?.children[3];
-        const isDeleteDisabled = gameBtnDelete?.classList.contains("disabled") || gameBtnDelete?.classList.contains("black");
-        if (this.btnDelete) {
-            this.btnDelete.element.style.opacity = isDeleteDisabled ? "0.5" : "1";
-            this.btnDelete.element.style.pointerEvents = isDeleteDisabled ? "none" : "auto";
-            if (this.btnRename) {
-                this.btnRename.element.style.opacity = isDeleteDisabled ? "0.5" : "1";
-                this.btnRename.element.style.pointerEvents = isDeleteDisabled ? "none" : "auto";
-            }
-        }
-    },
-    btnObservers() {
-        this.select = this.barTop?.querySelector("select");
-        if (!this.select || this.select._optionHooked) return;
-        this.select._optionHooked = true;
+    selectSync(){
+        this.n_select = this.n_barTop?.querySelector("select");
+        if (!this.n_select || this.n_select._optionHooked) return;
+        this.n_select._optionHooked = true;
         
         const self = this;
         const descriptor = Object.getOwnPropertyDescriptor(HTMLOptionElement.prototype, 'selected');
         Object.defineProperty(HTMLOptionElement.prototype, 'selected', {
             set: function(v) {
                 descriptor.set.call(this, v);
-                if (v && this.closest('select') === self.select) {
-                    Promise.resolve().then(() => self.managerUpdate());
+                if (v && this.closest('select') === self.n_select) {
+                    Promise.resolve().then(() => {self.gridUpdate()});
                 }
             },
             get: function() { return descriptor.get.call(this); },
             configurable: true
         });
-        
-        const gameBtnSave = this.barTop?.children[2];
-        const gameBtnDelete = this.barTop?.children[3];
-        if (!gameBtnSave || !gameBtnDelete) return;
-
-        this.saveObserver?.disconnect();
-        this.deleteObserver?.disconnect();
-
-        this.saveObserver = new MutationObserver(() => {
-            this.btnSync();
-            this.managerUpdate();
-        });
-
-        this.deleteObserver = new MutationObserver(() => {
-            this.btnSync();
-            this.managerUpdate();
-        });
-
-        const cfg = { attributes: true, attributeFilter: ['class', 'disabled'] };
-        
-        this.saveObserver.observe(gameBtnSave, cfg);
-        this.deleteObserver.observe(gameBtnDelete, cfg);
-
-        this.btnSync();
     },
-    actionUpdate(action = "default") {
-        if (action === "default") {
-            this.actionBar.clear();
-            this.actionBar.style({"display": "flex", "gap": "8px", "align-items": "center"});
+    nameSync() {
+        this.selectSync()
 
-            this.btnSave = this.btnSave || element("div").css("btn grey textgreen").text("Create").on("click", () => this.actionUpdate("create"));
-            this.btnRename = this.btnRename || element("div").css("btn grey textcyan").text("Rename").on("click", () => this.actionUpdate("rename"));
-            this.btnDelete = this.btnDelete || element("div").css("btn grey textred").text("Delete").on("click", () => this.actionUpdate("delete"));
+        const n_values = Array.from(this.n_select.options, opt => opt.value)
+            .filter(val => val);
+        
+        this.state.presets = this.state.presets
+            .filter(p => !p.pid || n_values.includes(p.pid));
 
-            this.btnImport = this.btnImport || element("div").css("btn grey").text("Import").on("click", () => this.actionUpdate("import"));
-            this.btnExport = this.btnExport || element("div").css("btn grey").text("Export").on("click", () => this.actionUpdate("export"));
+        n_values.forEach(val => {
+            if (!this.state.presets.some(p => p.pid === val)) {
+                this.state.presets.push({
+                    name: val, 
+                    pid: val, 
+                    s: 0 
+                });
+            }
+        });
+    },
+    uiShow() {
+            this.nameSync()
 
-            this.actionBar.add(this.btnSave).add(this.btnRename).add(this.btnDelete).add(this.btnImport).add(this.btnExport).add(this.toggleBtn);
-            this.btnSync()
-        }
-        else if (action === "grid") {
-            this.actionBar.clear();
-            this.actionBar.style({"display": "flex", "gap": "8px", "align-items": "center"});
-
-            this.actionBar.add(this.toggleBtn);
-        }
-        else if (action === "import") {
-            this.actionBar.clear();
-            this.actionBar.style({"display": "flex", "gap": "8px", "align-items": "center"});
-
-            const lbl = element('div').css("textorange").text('Ready to import from Clipboard? GAME WILL RELOAD!!!11');
+            this.n_barTop && (this.n_barTop.style.display = "none");
+            this.n_flexser.classList.add("kek");
+            this.n_skilllist.style.display = this.state.locked ? "none" : "grid";
+            this.n_barBot.style.gridTemplateColumns = this.state.locked ? "auto auto 1fr" : "180px auto 1fr"
+            this.n_tutapplyskills.style.display = this.state.locked ? "none" : "block";
             
-            const btnPaste = element('div').css("btn green").text('Paste & Load').on("click", async () => {
-                try {
-                    const text = await navigator.clipboard.readText();
-                    const data = JSON.parse(text);
+            this.actions.element.style.display = "grid";
+            
+            if (this.state.locked) {
+                this.n_barBot.children[2].remove()
+                this.actions.clear().style({"grid-template-columns": "40px 30px 1fr"})
+                    .add(this.columnsBtn)
+                    .add(this.toggleBtn)
+            } else {
+                this.n_barBot.children[2]?.remove()
+                this.n_barBot.append(this.btnTip.element)
+                this.actions.clear().style({"grid-template-columns": "30px 30px 50px 40px 30px 1fr"})
+                    .add(this.addBtn)
+                    .add(this.lblBtn)
+                    // .add(this.impexBtn)
+                    .add(element("div"))
+                    .add(this.columnsBtn)
+                    .add(this.toggleBtn)
+            }
+
+            this.grid.element.style.display = "grid";
+            this.grid.element.style.gridColumn = this.state.locked ? "1 / span 2" : "2"
+            
+            this.gridUpdate();
+    },
+    uiHide() {
+        this.n_flexser.classList.remove("kek");
+        this.n_skilllist.style.display = "grid";
+        this.n_barBot.style.gridTemplateColumns = "180px auto 1fr"
+        this.n_tutapplyskills.style.display = "block";
+
+        this.actions.element.style.display = "none";
+        this.grid.element.style.display = "none";
+    },
+    addDefault(){
+        const pclass = profileManager.playerClass;
+        this.state.presets = this.defaultPresets[pclass]
+    },
+    async addLabel() {
+        this.state.presets.push({ name: "New Label" });
+        this.editingIndex = this.state.presets.length - 1;
+        this.gridUpdate(); 
+    },
+    async addPreset() {
+        let pid = this.n_select.value;
+
+        if (pid === "") {
+            this.state.cnt += 1;
+            pid = `preset #${this.state.cnt}`; 
+            this.n_barTop.children[2].click();
+            await new Promise(res => setTimeout(res, 50));
+            this.n_barTop.children[1].value = pid;
+            this.n_barTop.children[1].dispatchEvent(new Event('input', { bubbles: true }));
+            this.n_barTop.children[2].click();
+            await new Promise(res => setTimeout(res, 50));
+            this.n_select = this.n_barTop.querySelector("select");
+            this.n_tutapplyskills.click()
+        }
+        
+        this.state.presets.forEach(p => p.s = 0);
+        this.state.presets.push({ 
+            name: `New Preset #${this.state.cnt}`, 
+            pid: pid, 
+            s: 1 
+        });
+        this.editingIndex = this.state.presets.length - 1;
+        this.gridUpdate(); 
+    },
+    async actionDelete(targetIndex) {
+        const target = this.state.presets[targetIndex];
+        if (!target) return;
+
+        const pidToDelete = target.pid;
+
+        this.state.presets.splice(targetIndex, 1);
+
+        const isStillUsed = this.state.presets.some(p => p.pid === pidToDelete);
+        if (pidToDelete && !isStillUsed) {
+            this.n_select.value = pidToDelete;
+            this.n_select.dispatchEvent(new Event('input', { bubbles: true }));
+            this.n_select.dispatchEvent(new Event('change', { bubbles: true })); 
+            
+            if (this.n_barTop.children[3]) this.n_barTop.children[3].click(); 
+            
+            await new Promise(res => setTimeout(res, 50));
+            
+            this.state.presets.forEach(p => { p.s = 0; });
+        }
+
+        this.editingIndex = null;
+        this.gridUpdate();
+    },
+    editingIndex: null,
+    gridUpdate() {
+        this.grid.clear().style({"grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)`});
+
+        // if (this.state.presets.length==0) {
+        //     this.addDefault()
+        // }
+
+        this.state.presets.forEach((p, i) => {
+            p.s = (p.pid === this.n_select.value) ? 1 : 0;
+        });
+
+        const presets = this.state.presets || [];
+
+        presets.forEach((item, index) => {
+            const card = this.createCard(item, index);
+            this.grid.add(card);
+        });
+
+        const bottomDropZone = this.createBottomDropZone(presets.length);
+        this.grid.add(bottomDropZone);
+    },
+    createBottomDropZone(lastIndex) {
+        const zone = element("div").style({
+            "width": "100%",
+            "height": "10px",
+            "margin-top": "5px",
+            "border": "1px dashed transparent",
+            "transition": "all 0.1s ease"
+        });
+
+        zone.on("dragover", (e) => {
+            e.preventDefault();
+            zone.style({
+                "border": "1px dashed orange",
+                "background": "rgba(255, 165, 0, 0.1)",
+                "height": "30px"
+            });
+        });
+
+        zone.on("dragleave", () => {
+            zone.style({ "border": "1px dashed transparent", "background": "transparent", "height": "10px" });
+        });
+
+        zone.on("drop", (e) => {
+            e.preventDefault();
+            const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+            const toIndex = lastIndex; 
+
+            this.handleReorder(fromIndex, toIndex);
+        });
+
+        return zone;
+    },
+    createCard(item, index) {
+        const isLabel = !item.pid;
+        const isEditing = this.editingIndex === index;
+        const isActive = item.s === 1;
+
+        const colCount = this.state.columns || 1;
+        
+        let cardClass = isLabel ? "textwhite bold" : "grey";
+        
+        let card = element("div").css(`btn ${cardClass}`)
+            .style({
+                "display": "flex",          
+                "align-items": "center",
+                "min-height": "32px",
+                "min-width": "100px",
+                "gap": "4px",
+                "width": "100%",            
+                "box-sizing": "border-box",
+                "grid-column": isLabel ? `1 / span ${colCount}` : "auto",
+                "cursor": isLabel ? "default" : "pointer"
+            });
+
+        isEditing && card.css("")
+
+        const dotControl = element("div").css(`${isEditing && "textred "}textcenter`).text(isEditing && "✎" || "⋮")
+            .style({
+                "width": "12px",
+                "opacity": isEditing ? "1" : "0",
+                "cursor": "pointer"
+            })
+            .on("mouseenter", () => {dotControl.style({
+                "opacity": "1"
+            })})
+            .on("mouseleave", () => {dotControl.style({
+                "opacity": isEditing ? "1" : "0.2"
+            })})
+            .on("click", (e) => {
+                e.stopPropagation();
+                this.editingIndex = index;
+                this.gridUpdate();
+            })
+            .on("mousedown", () => card.attr("draggable", "true"));
+        
+        const delControl = element("div")
+            .css(`${isEditing && "textred "}textcenter`)
+            .text("🞮")
+            .style({
+                "width": "12px",
+                "opacity": isEditing ? "1" : "0",
+                "cursor": "pointer"
+            })
+            .on("mousedown", async (e) => {
+                e.stopPropagation(); 
+                e.preventDefault(); 
+
+                const targetIndex = index;
+                this.editingIndex = null; 
+                
+                await this.actionDelete(targetIndex); 
+            });
+            
+        const label = element(isEditing ? "input" : "span")
+            .css(isLabel ? "textwhite bold" : (isActive && !isEditing ? "textorange" : "textgrey"))
+            .style({ 
+                "flex-grow": "1", 
+                "text-align": "left", 
+                "padding-left": "4px" 
+            });
+
+        if (isEditing) {
+            label.element.value = item.name;
+            setTimeout(() => label.element.select(), 0);
+            label.element.focus()
+
+            label.on("keyup", (e) => {
+                if (e.key === "Enter" || e.key === "Escape") {
+                    e.stopPropagation();
+                    e.preventDefault();
                     
-                    if (Array.isArray(data)) {
-                        localStorage.setItem("skillConfigs", JSON.stringify(data));
-                        this.skillConfigs = data;
-                        log("Import successful!");
-                        location.reload(); 
+                    if (e.key === "Enter") {
+                        const newVal = label.element.value.trim();
+                        if (newVal) {
+                            this.state.presets[index].name = newVal;
+                        }
                     }
-                } catch (err) {
-                    lbl.text("Import Failed! Invalid config in clipboard!").css("textred");
+                    this.editingIndex = null;
+                    this.gridUpdate();
                 }
             });
-
-            const btnCancel = element('div').css("btn orange").text('Cancel').on("click", () => {
-                this.actionUpdate("default");
+            label.on("blur", () => {
+                if (this.editingIndex === index) {
+                    // If we are still in editing mode (meaning we didn't click delete)
+                    const newVal = label.element.value.trim();
+                    if (newVal) this.state.presets[index].name = newVal;
+                    this.editingIndex = null;
+                    this.gridUpdate();
+                }
             });
-
-            this.actionBar.add(lbl).add(btnPaste).add(btnCancel);
+            
+        } else {
+            label.text(item.name); // Span uses text
         }
-        else if (action === "export") {
-            this.actionBar.clear();
-            const raw = localStorage.getItem("skillConfigs");
-            if (raw) {
-                try {
-                    const data = JSON.parse(raw);
-                    let formatted = JSON.stringify(data, null, 4);
-                    formatted = formatted.replace(/\[[\s\d,]+\]/g, (match) => {
-                        return match.replace(/\s+/g, ' ');
-                    });
-                    navigator.clipboard.writeText(formatted)
-                } catch (e) {
-                    navigator.clipboard.writeText(raw);
+
+        if (!isLabel) card.on("click", () => {
+            this.state.presets.forEach((p, i) => {
+                p.s = (i === index) ? 1 : 0;
+            });
+            this.n_select.value = item.pid;
+            this.n_select.dispatchEvent(new Event('input', { bubbles: true }));
+            this.n_select.dispatchEvent(new Event('change', { bubbles: true }));
+            this.gridUpdate();
+          });
+            
+        card
+            .on("mouseenter", () => {dotControl.style({
+                "opacity": isEditing ? "1" : "0.2"
+            })})
+            .on("mouseleave", () => {dotControl.style({
+                "opacity": isEditing ? "1" : "0"
+            })})
+            .on("dragstart", (e) => {
+                this.draggedIndex = index;
+                e.dataTransfer.setData("text/plain", index.toString());
+                this.editingIndex = null 
+            })
+            .on("dragover", (e) => {
+                e.preventDefault();
+                if (this.draggedIndex !== index) {
+                    const isSingleCol = (this.state.columns || 1) === 1;
+                    if (isSingleCol) {
+                        card.style({ "box-shadow": "inset 0 3px 0 0 orange" });
+                    } else {
+                        card.style({ "box-shadow": "inset 3px 0 0 0 orange" });
+                    }
                 }
-            }
-
-            const lbl = element('div').css("textorange").text('Configs copied to clipboard! (ctrl-v it somewhere)');
-            const btnOk = element('div').css("btn green").text('OK').on("click", () => this.actionUpdate("default"));
-            this.actionBar.add(lbl).add(btnOk);
-        }
-        else if(action=="create" || action=="rename"){
-        
-            this.actionBar.clear().style({
-                "display": "grid",
-                "grid-template-columns": "120px 120px 1fr auto auto",
-                "grid-gap": "4px"
-            });
-
-            const btnStyle = { "min-width": "60px", "text-align": "center" };
-            const inputStyle = { "padding": "2px 5px"};
-
-            const iTag = element("input").attr("placeholder", "Group Name")
-                .style(inputStyle)
-                .on("input", (e) => {e.target.value = e.target.value.replace(/_/g, '')});
-
-            const iOrder = element("input").attr("placeholder", "Order Number").attr("maxlength", "1")
-                .style({ "text-align": "center" })
-                .on("input", (e) => {e.target.value = e.target.value.replace(/\D/g, '');});
-
-            const iName = element("input").attr("placeholder", "Preset Name")
-                .style(inputStyle)
-                .on("input", (e) => {e.target.value = e.target.value.replace(/_/g, '');});
-
-            if(action=="rename") {
-                const currentFullName = this.select?.value || "";
-                const parts = currentFullName.split('_');
-                const isFormatted = parts.length >= 3;
-                iTag.attr("value", isFormatted ? parts[0] : "");
-                iOrder.attr("value", isFormatted ? parts[1] : "");
-                iName.attr("value", isFormatted ? parts.slice(2).join('_') : currentFullName);
-            }
-
-            const btnSave = element("div").css("btn green").text("Save").style(btnStyle).on("click", async () => {
-                const fullName = `${iTag.element.value.trim()}_${iOrder.element.value.trim()}_${iName.element.value.trim()}`;
-                if(action=="rename"){
-                    this.select.value = this.selected;
-                    this.select.dispatchEvent(new Event('input', { bubbles: true }));
-                    this.barTop.children[3].click()
-                    await new Promise(res => setTimeout(res, 5));
-                }
-                this.barTop.children[2].click()
-                await new Promise(res => setTimeout(res, 5));
-                this.barTop.children[1].value = fullName
-                this.barTop.children[1].dispatchEvent(new Event('input', { bubbles: true }));
-                this.barTop.children[2].click()
-
-                this.actionUpdate();
-                this.managerUpdate();
-
-            });
-
-            const btnCancel = element("div").css("btn orange").text("Cancel").style(btnStyle).on("click", () => {
-                this.actionUpdate();
-            });
-
-            this.actionBar.add(iTag).add(iOrder).add(iName).add(btnSave).add(btnCancel);
+            })
+            .on("dragleave", () => {
+                card.style({ "box-shadow": "none" });
+            })
+            .on("drop", (e) => {
+                e.preventDefault();
+                card.style({ "border-top": "", "border-left": "" });
                 
-            iName.element.focus();
-        }
-        else if (action === "delete") {
-            if (this.select && this.barTop?.children[3]) {
-                this.select.value = this.selected;
-                this.select.dispatchEvent(new Event('input', { bubbles: true }));
-                this.barTop.children[3].click();
-                this.actionUpdate();
-            }
-        }
-    },
-    managerUpdate() {
-        this.manager.clear();
-        const isGridView = this.state.active;
-        this.skilllist.style.display = isGridView && "none"|| "grid";
-
-        this.manager.style({"min-width": isGridView?"688px":"200px"});
-
-        const presets = Array.from(this.select.options).filter(opt => opt.value !== "" && !opt.disabled).map(opt => opt.value);
-        const grouped = {};
-        const active = this.select.value
-        let activeElement = null;
-
-        presets.forEach(fullName => {
-            const selected = fullName == active
-            const parts = fullName.split('_');
-            const isGrouped = parts.length >= 3;
-            const groupKey = isGrouped ? parts[0] : "Other";
-            const order = isGrouped ? parseInt(parts[1]) : 999;
-            const displayName = isGrouped ? parts.slice(2).join('_') : fullName;
-
-            if (!grouped[groupKey]) grouped[groupKey] = [];
-            grouped[groupKey].push({ selected, fullName, displayName, order });
-        });
-
-        Object.keys(grouped).forEach(groupName => {
-            const list = grouped[groupName].sort((a, b) => a.order - b.order);
-
-            if (groupName !== "Other") {
-                this.manager.add(element("div").css("textprimary").text(`${groupName}`).style({"font-weight": "bold", "margin-top": "4px"}));
-            }
-
-
-            const groupContainer = element("div").style({
-                "display": "grid",
-                "grid-template-columns": isGridView ? "repeat(4, 1fr)" : "1fr", 
-                "grid-gap": "4px",
-                "margin-bottom": "8px"
-            });
-
-            list.forEach(item => {
-                
-                let btnPreset = element("div").css(`btn grey`).style({
-                    "display": "flex",
-                    "flex-direction": "column",
-                    "align-items": "flex-start",
-                    "padding": "4px 10px",
-                    "width": "100%",
-                    "max-width": "170px",
-                    "box-sizing": "border-box",
-                    "overflow": "hidden"
-                });
-
-                const title = element("span").css(`${item.selected && "textorange" || "textgrey"}`).text(item.displayName);
-                btnPreset.add(title)
-                .on("click", () => {
-                    this.selected = item.fullName;
-                    this.select.value = item.fullName;
-                    this.select.dispatchEvent(new Event('input', { bubbles: true }));
-                    this.select.dispatchEvent(new Event('change', { bubbles: true }));
-                    this.actionUpdate()
-                    this.managerUpdate()
-                });
-
-                groupContainer.add(btnPreset);
-
-                if (item.selected) {
-                    activeElement = btnPreset.element;
+                const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+                if (fromIndex !== index) {
+                    this.handleReorder(fromIndex, index);
                 }
+                this.draggedIndex = null;
             });
-
-            this.manager.add(groupContainer);
-        });
+        if (!this.state.locked && !isEditing) card.add(dotControl)
         
-        activeElement && activeElement.scrollIntoView({alignToTop: false, behavior: 'smooth', block: 'nearest'});
+            card.add(label)
+        if (isEditing) card.add(delControl)
+        return card
     },
-    toggle() {
-        this.state.active ^= 1;
-        this.toggleBtn.text(this.state.active ? "▶" : "◀");
-        this.skilllist.style.display = this.state.active && "none"|| "grid";
-        this.managerUpdate()
-    },
+    handleReorder(fromIndex, toIndex) {
+        const list = this.state.presets;
+        if (!list) return;
 
-    // icons(name, skills) {
-    //     const stats = element("div").style({ "display": "flex", "gap": "1px", "margin-top": "4px" });
-    //     // Grouping: [43, 43, 43] -> { "43": 3 }
-    //     const counts = skills.reduce((acc, id) => {
-    //         acc[id] = (acc[id] || 0) + 1;
-    //         return acc;
-    //     }, {});
-    //     Object.entries(counts).forEach(([id, count]) => {
-    //         const slot = element("div").css("slot").style({
-    //             "position": "relative",
-    //             "width": "25px",
-    //             "height": "25px",
-    //         });
-    //         const img = element("img").css("icon svelte-1nn7wcb")
-    //             .attr("src", `/data/ui/skills/${id}.avif`)
-    //             .style({ "display": "block", "max-width": "25px" });
-    //         const overlay = element("div").css("time absCentered slottext svelte-1nn7wcb").text(count).style({
-    //             "color": "#e7d510",
-    //             "font-size": "14px",
-    //             "background-color": "#0007",
-    //             "position": "absolute",
-    //             "bottom": "0",
-    //             "right": "0",
-    //             "pointer-events": "none" 
-    //         });
-    //         slot.add(img).add(overlay);
-    //         stats.add(slot);
-    //     });
-    // },
-    
+        const [movedItem] = list.splice(fromIndex, 1);
+        
+        let target = toIndex;
+        if (fromIndex < toIndex) {
+            target = toIndex - 1; 
+        }
+
+        list.splice(target, 0, movedItem);
+
+        this.gridUpdate(); 
+    },
 };
-
+// window.pmm = presetManager
 export default presetManager;
