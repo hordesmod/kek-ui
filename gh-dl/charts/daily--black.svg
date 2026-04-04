@@ -19,7 +19,7 @@
   </defs>
   <rect class="bg" x="0" y="0" width="1000" height="360" rx="16" />
   <text class="title" x="64" y="34">hordesmod/kek-ui release downloads</text>
-  <text class="sub" x="64" y="352">Generated 2026-04-03</text>
+  <text class="sub" x="64" y="352">Generated 2026-04-04</text>
   <line x1="64" y1="52.00" x2="976" y2="52.00" class="grid"/>
   <text x="56" y="56.00" text-anchor="end" class="axis">132</text>
   <line x1="64" y1="94.00" x2="976" y2="94.00" class="grid"/>
@@ -34,16 +34,15 @@
   <text x="56" y="266.00" text-anchor="end" class="axis">22</text>
   <line x1="64" y1="304.00" x2="976" y2="304.00" class="grid"/>
   <text x="56" y="308.00" text-anchor="end" class="axis">0</text>
-  <path d="M 64.00 304 L 64.00 304.00 L 102.00 172.27 L 140.00 160.82 L 178.00 181.82 L 216.00 242.91 L 254.00 244.82 L 292.00 239.09 L 330.00 237.18 L 368.00 223.82 L 406.00 246.73 L 444.00 252.45 L 482.00 250.55 L 520.00 237.18 L 558.00 220.00 L 596.00 254.36 L 634.00 241.00 L 672.00 179.91 L 710.00 151.27 L 748.00 149.36 L 786.00 52.00 L 824.00 124.55 L 862.00 149.36 L 900.00 116.91 L 938.00 147.45 L 976.00 160.82 L 976.00 304 Z" fill="url(#fill-daily-black)"/>
-  <polyline class="line" points="64.00,304.00 102.00,172.27 140.00,160.82 178.00,181.82 216.00,242.91 254.00,244.82 292.00,239.09 330.00,237.18 368.00,223.82 406.00,246.73 444.00,252.45 482.00,250.55 520.00,237.18 558.00,220.00 596.00,254.36 634.00,241.00 672.00,179.91 710.00,151.27 748.00,149.36 786.00,52.00 824.00,124.55 862.00,149.36 900.00,116.91 938.00,147.45 976.00,160.82"/>
-  <circle class="dot" cx="976.00" cy="160.82" r="4.5"/>
+  <path d="M 64.00 304 L 64.00 304.00 L 100.48 172.27 L 136.96 160.82 L 173.44 181.82 L 209.92 242.91 L 246.40 244.82 L 282.88 239.09 L 319.36 237.18 L 355.84 223.82 L 392.32 246.73 L 428.80 252.45 L 465.28 250.55 L 501.76 237.18 L 538.24 220.00 L 574.72 254.36 L 611.20 241.00 L 647.68 179.91 L 684.16 151.27 L 720.64 149.36 L 757.12 52.00 L 793.60 124.55 L 830.08 149.36 L 866.56 116.91 L 903.04 147.45 L 939.52 160.82 L 976.00 147.45 L 976.00 304 Z" fill="url(#fill-daily-black)"/>
+  <polyline class="line" points="64.00,304.00 100.48,172.27 136.96,160.82 173.44,181.82 209.92,242.91 246.40,244.82 282.88,239.09 319.36,237.18 355.84,223.82 392.32,246.73 428.80,252.45 465.28,250.55 501.76,237.18 538.24,220.00 574.72,254.36 611.20,241.00 647.68,179.91 684.16,151.27 720.64,149.36 757.12,52.00 793.60,124.55 830.08,149.36 866.56,116.91 903.04,147.45 939.52,160.82 976.00,147.45"/>
+  <circle class="dot" cx="976.00" cy="147.45" r="4.5"/>
   
   <text class="axis" x="64.00" y="336" text-anchor="start">2026-03-10</text>
-  <text class="axis" x="216.00" y="336" text-anchor="middle">2026-03-14</text>
-  <text class="axis" x="368.00" y="336" text-anchor="middle">2026-03-18</text>
-  <text class="axis" x="520.00" y="336" text-anchor="middle">2026-03-22</text>
-  <text class="axis" x="672.00" y="336" text-anchor="middle">2026-03-26</text>
-  <text class="axis" x="824.00" y="336" text-anchor="middle">2026-03-30</text>
-  <text class="axis" x="976.00" y="336" text-anchor="end">2026-04-03</text>
-  <text class="latest" x="976" y="34" text-anchor="end">Latest day: 75</text>
+  <text class="axis" x="246.40" y="336" text-anchor="middle">2026-03-15</text>
+  <text class="axis" x="428.80" y="336" text-anchor="middle">2026-03-20</text>
+  <text class="axis" x="611.20" y="336" text-anchor="middle">2026-03-25</text>
+  <text class="axis" x="793.60" y="336" text-anchor="middle">2026-03-30</text>
+  <text class="axis" x="976.00" y="336" text-anchor="end">2026-04-04</text>
+  <text class="latest" x="976" y="34" text-anchor="end">Latest day: 82</text>
 </svg>
