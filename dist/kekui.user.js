@@ -10,7 +10,7 @@
 // @version     0.55.0
 // @grant       none
 // ==/UserScript==
-/* Version: 0.55.0 - April 4, 2026 23:59:35 */
+/* Version: 0.55.0 - April 6, 2026 00:52:39 */
 'use strict';
 
 const config = {
@@ -7410,129 +7410,371 @@ const presetManager = {
     state: {
         locked: false,
         columns: 1,
-        presets: {
-            0:[],
-            1:[],
-            2:[],
-            3:[]
-        }
+        presets: []
     },
+    _profiles: 1,
     defaultPresets: {
         0: [
-            {"name": "STARTER WARPACK"},
-            {"name": "Gloomfury", "pid": "gloom", "skills": [0,1,8,21,40]},
-            {"name": "Obelisk", "pid": "obelisk", "skills": [0,1,8,21,40]},
-            {"name": "Farming", "pid": "farming", "skills": [0,1,8,21,40]},
-            {"name": "Arena Builds"},
-            {"name": "2vs2", "pid": "obelisk", "skills": [0,1,8,21,40]},
+            "STARTER WARPACK",
+            { "Gloomfury": { "Filler": 5 } },
+            { "Obelisk": { "Filler": 5 } },
+            { "Farming": { "Filler": 5 } },
+            "Arena Builds",
+            { "2vs2": { "Filler": 5 } },
         ],
         1: [
-            {"name": "STARTER MAGPACK"},
-            {"name": "Gloomfury", "pid": "gloom", "skills": [4,8,40]},
-            {"name": "Obelisk", "pid": "obelisk", "skills": [4,8,40]},
-            {"name": "Farming", "pid": "farming", "skills": [4,8,40]},
-            {"name": "Arena Builds"},
-            {"name": "2vs2", "pid": "obelisk", "skills": [4,8,40]},
+            "STARTER MAGPACK",
+            { "Gloomfury": { "Filler": 5 } },
+            { "Obelisk": { "Filler": 5 } },
+            { "Farming": { "Filler": 5 } },
+            "Arena Builds",
+            { "2vs2": { "Filler": 5 } },
         ],
         2: [
-            {"name": "STARTER ARCHPACK"},
-            {"name": "Gloomfury", "pid": "gloom", "skills": [5,8,9,9,9,9,9,10,10,10,10,10,11,11,11,11,11,29,29,29,29,29,31,31,31,31,38,39,40,54,54,54,54,54]},
-            {"name": "Obelisk", "pid": "obelisk", "skills": [0,7,7,7,8,40]},
-            {"name": "Farming", "pid": "farming", "skills": [0,7,7,7,8,40]},
-            {"name": "Arena Builds"},
-            {"name": "2vs2", "pid": "obelisk", "skills": [0,7,7,7,8,40]},
+            "STARTER ARCHPACK",
+            { "Gloomfury": { "Filler": 5 } },
+            { "Obelisk": { "Filler": 5 } },
+            { "Farming": { "Filler": 5 } },
+            "Arena Builds",
+            { "2vs2": { "Filler": 5 } },
         ],
         3: [
-            {"name": "STARTER SHAMPACK"},
-            {"name": "Gloomfury", "pid": "gloom", "skills": [0,7,7,7,8,40]},
-            {"name": "Obelisk", "pid": "obelisk", "skills": [0,7,7,7,7,7,8,40]},
-            {"name": "Farming", "pid": "farming", "skills": [0,7,7,7,7,8,40]},
-            {"name": "Arena Builds"},
-            {"name": "2vs2", "pid": "obelisk", "skills": [0,7,7,7,7,7,8,40]},
+            "STARTER SHAMPACK",
+            { "Gloomfury": { "Filler": 5 } },
+            { "Obelisk": { "Filler": 5 } },
+            { "Farming": { "Filler": 5 } },
+            "Arena Builds",
+            { "2vs2": { "Filler": 5 } },
         ]
     },
-    style:`
+    style: `
         .container.panel-black.svelte-um60d1 {
             display: none;
         }
+        .pm-kek {
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+            contain: layout;
+        }
         #skilllist {
             grid-template-columns: auto auto;
+            grid-column: 1;
+            grid-template-columns: 1fr 1fr !important; 
+            contain: layout style; 
         }
-        .flexer.svelte-1e0alkc.kek {
+        .flexer.svelte-1e0alkc {
             display: grid;
-            grid-template-columns: auto 1fr;
             gap: 2px;
         }
-        .flexer.svelte-1e0alkc.kek > :nth-child(1) {
-            grid-column: 1 / span 2;
+        .pm-tooltip {
         }
-        .flexer.svelte-1e0alkc.kek > :nth-child(4) {
-            grid-column: 1;
+        .ghost { 
+            border: 2px dashed orange !important;
+            background: transparent !important;
+            opacity: 0.4;
+        }
+        .pm-card {
+            display: flex;
+            align-items: center;
+            height: 32px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 3px;
+            border: 3px solid rgba(0, 0, 0, 0);
+            border-radius: 3px;
+            font-weight: 700;
+            color: #5b858e;
+            contain: layout paint; 
+            transform: translateZ(0); 
+            will-change: transform, background-color;
+        }
+        .pm-label {
+            grid-column: 1 / -1;
+            cursor: default;
+            color: #dae8ea;
+        }
+        .pm-preset {
+            cursor: pointer;
+            background-color: #19202d;
+        }
+        .pm-preset:hover {
+            border: 3px solid #a4bfc5;
+        }
+        .pm-preset.active {
+            color: #ff9800;
+            border-color: rgba(255, 152, 0, 0.4);
+        }
+        .pm-card:has(input):hover {
+            border-color: transparent !important;
+        }
+        .pm-card-edit {
+            flex: 1 1 0%;
+            min-width: 0;
+            max-width: 100%;
+            border: none;
+        }
+        input.pm-card-edit {
+            flex: 1 1 0%; 
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            border: none;
+        }
+        .pm-card-dots { 
+            width: 20px;   
+            text-align: center;
+            cursor: pointer;
+            opacity: 0;    
+            user-select: none;
+        }
+        .pm-card:hover .pm-card-dots {
+            opacity: 0.3;
+        }
+        .pm-card-dots:hover {
+            opacity: 1 !important;
+        }
+        .pm-card.is-editing {
+            transition: none !important; 
+            border-color: transparent !important;
+        }
+        .pm-card.is-editing .pm-card-dots {
+            opacity: 1;
+            color: green
+        }
+        .pm-card-delete {
+            width: 20px;           
+            text-align: center;
+            cursor: pointer;
+            color: #ff4444;        
+            visibility: hidden;    
+            user-select: none;
+            flex-shrink: 0;        
+        }
+        .pm-card-action {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            min-height: 20px;
+            cursor: pointer;
+            text-align: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .is-exporting {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20px' height='20px' viewBox='0 0 24 24' fill='none' %3E%3Cg id='Edit / Copy'%3E%3Cpath id='Vector' d='M9 9V6.2002C9 5.08009 9 4.51962 9.21799 4.0918C9.40973 3.71547 9.71547 3.40973 10.0918 3.21799C10.5196 3 11.0801 3 12.2002 3H17.8002C18.9203 3 19.4801 3 19.9079 3.21799C20.2842 3.40973 20.5905 3.71547 20.7822 4.0918C21.0002 4.51962 21.0002 5.07967 21.0002 6.19978V11.7998C21.0002 12.9199 21.0002 13.48 20.7822 13.9078C20.5905 14.2841 20.2839 14.5905 19.9076 14.7822C19.4802 15 18.921 15 17.8031 15H15M9 9H6.2002C5.08009 9 4.51962 9 4.0918 9.21799C3.71547 9.40973 3.40973 9.71547 3.21799 10.0918C3 10.5196 3 11.0801 3 12.2002V17.8002C3 18.9203 3 19.4801 3.21799 19.9079C3.40973 20.2842 3.71547 20.5905 4.0918 20.7822C4.5192 21 5.07899 21 6.19691 21H11.8036C12.9215 21 13.4805 21 13.9079 20.7822C14.2842 20.5905 14.5905 20.2839 14.7822 19.9076C15 19.4802 15 18.921 15 17.8031V15M9 9H11.8002C12.9203 9 13.4801 9 13.9079 9.21799C14.2842 9.40973 14.5905 9.71547 14.7822 10.0918C15 10.5192 15 11.079 15 12.1969L15 15' stroke='%235b858e' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0;
+        }
+        .pm-preset:hover .is-exporting {
+            opacity: 0.3;
+        }
+        .is-exporting:hover {
+            opacity: 1 !important;
+        }
+        .is-deleting::after {
+            content: "🞮";
+            color: #ff4d4d;
+        }
+        .is-deleting:hover::after {
+            color: #ff0000;
+        }
+        .pm-label .is-exporting {
+            display: none;
         }
     `,
     start() {
         eventManager.on("ui.skillsMenuParent", this.handler, this);
         eventManager.on("ui.contextMenu", this.contextMenu, this);
-        
     },
     stop() {
         eventManager.off("ui.skillsMenuParent", this.handler, this);
         eventManager.off("ui.contextMenu", this.contextMenu, this);
     },
-    n_barTop:NaN,
-    n_select:NaN,
-    n_barBot:NaN,
-    n_tutapplyskills:NaN,
-    n_flexser:NaN,
-    n_skilllist:NaN,
-    // visObserver:NaN,
-    pclass: NaN,
     handler() {
+        if (!Array.isArray(this.state.presets)) {
+            this.state.presets = [];
+        }
+
         const skillMenu = ui.skillsMenuParent?.element;
         if (!skillMenu) return;
 
-        this.pclass = profileManager.playerClass;
+        // -----------------------------------------------
+        // Promote the whole skills frame to a GPU layer
+        // -----------------------------------------------
+        skillMenu.classList.add("pm-kek");
+        // -----------------------------------------------
 
-        this.n_flexser = skillMenu.querySelector(".flexer");
-        this.n_barTop = this.n_flexser?.querySelector(".bar-top-config"); 
-        this.n_barBot = this.n_flexser?.querySelector(".bar-bot"); 
-        this.n_barBot.style.gridTemplateColumns = "180px auto 1fr";
+        this.n_skilllist = skillMenu.querySelector('#skilllist');
+        this.n_barBot = skillMenu.querySelector(".bar-bot");
+
+        if (!this.n_skilllist || !this.n_barBot) return;
+
         this.n_tutapplyskills = this.n_barBot.querySelector("#tutapplyskills");
-        this.n_skilllist = this.n_flexser.querySelector("#skilllist");
 
-        this.visObserver?.disconnect();
-        this.visObserver = new MutationObserver((mutations) => {
-            mutations.forEach(m => {
-                m.addedNodes.forEach(node => {
-                    if (node.nodeType === 1 && node.classList.contains('bar-top-config')) {
-                        this.n_barTop = node;
-                        this.uiShow();
-                    }
-                });
-                m.removedNodes.forEach(node => {
-                    if (node.nodeType === 1 && node.classList.contains('bar-top-config')) {
-                        this.n_barTop = null;
-                        this.uiHide();
-                    }
-                });
+        this.toolTip = this.n_barBot.children[2];
+        this.toolTip.classList.add("textgrey", "textright");
+
+        this.n_barBot.style.gridTemplateColumns = "180px auto 1fr";
+
+        this.updateControls();
+    },
+
+    updateControls() {
+        this.addBtn ||= element("div").css("btn black textgrey textcenter").text("🞤")
+            .on("click", (e) => e.shiftKey ? this.addLabel() : this.addPreset())
+            .data("tip", "Preset (Shift: Label)");
+
+        if (!this.columnsBtn) {
+            this.columnsBtn = element("select").css("btn black textgrey").style({ "width": "40px", "height": "32px" })
+                .on("change", (e) => {
+                    this.state.columns = parseInt(e.target.value);
+                    this.updateControls();
+                })
+                .data("tip", "Grid size");
+            [1, 2, 3, 4, 5].forEach(num => {
+                this.columnsBtn.add(element("option").attr("value", num).text(num));
             });
+        }
+        this.columnsBtn.value(this.state.columns || 1);
+
+        this.toggleBtn ||= element("div").css("btn black textgrey textcenter")
+            .style({ "width": "20px" })
+            .data("tip", "Lock")
+            .on("click", () => {
+                this.state.locked ^= 1;
+                this.updateControls();
+            });
+        this.toggleBtn.text(this.state.locked ? "🞂" : "🞀");
+
+        this.actions ||= element("div").css("panel-black preset-manager top-bar")
+            .style({
+                "display": "grid",
+                "grid-gap": "4px",
+                "height": "32px",
+                "margin-top": "4px",
+            })
+            .on("mouseover", e => {
+                const tip = e.target.dataset.tip;
+                if (tip && !this.state.locked) this.toolTip.innerText = tip;
+            })
+            .on("mouseout", e => {
+                if (e.target.dataset.tip) this.toolTip.innerText = "";
+            });
+
+        this.grid ||= element("div").css("scrollbar panel-black").style({
+            "display": "grid",
+            "gap": "4px",
+            "height": "460px",
+            "overflow-y": "auto",
+            "align-content": "start",
+            "min-width": "235px",
         });
-        this.visObserver.observe(this.n_flexser, { childList: true });
-        this.uiCreate();
-        this.n_barTop && this.uiShow();
+        if (!this.grid._initialized) {
+            this.initGridEvents();
+            this.grid._initialized = true;
+        }
+
+        if (this.grid.element.parentElement !== this.n_skilllist.parentElement) {
+            this.n_skilllist.after(this.grid.element);
+        }
+        if (this.actions.element.parentElement !== this.n_barBot.parentElement) {
+            this.n_barBot.after(this.actions.element);
+        }
+
+        this.n_skilllist.style.display = this.state.locked ? "none" : "grid";
+        this.n_barBot.style.gridTemplateColumns = this.state.locked ? "auto auto 1fr" : "180px auto 1fr";
+        this.n_tutapplyskills.style.display = this.state.locked ? "none" : "block";
+
+        this.actions.clear();
+        if (this.state.locked) {
+            this.actions.style({ "grid-template-columns": "40px 100px 40px 30px 1fr" })
+                .add(this.columnsBtn)
+                .add(this.toggleBtn);
+            this.grid.style({ "grid-column": "1 / span 2" });
+        } else {
+            this.actions.style({ "grid-template-columns": "40px 100px 40px 30px 1fr" })
+                .add(this.addBtn)
+                .add(element("div"))
+                .add(this.columnsBtn)
+                .add(this.toggleBtn);
+            this.grid.style({ "grid-column": "2" });
+        }
+
+        this.grid.style({ "grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)` });
+        this.gridUpdate();
+    },
+    getSkills() {
+        const ignored = ["Summon", "Mount Riding"];
+        return Array.from(this.n_skilllist.children).reduce((acc, box) => {
+            const nameEl = box.children[1]?.firstElementChild; // name div
+            const levelSpan = box.children[2]?.firstElementChild?.firstElementChild; // level span
+            const name = nameEl?.innerText.trim();
+            const level = parseInt(levelSpan?.innerText);
+
+            if (name && level > 0 && !ignored.includes(name)) {
+                acc[name] = level;
+            }
+            return acc;
+        }, {});
+    },
+    resetSkills() {
+        const ignored = ["Summon", "Mount Riding"];
+        Array.from(this.n_skilllist.children).forEach(box => {
+            const name = box.children[1]?.firstElementChild?.innerText.trim();
+            const levelSpan = box.children[2]?.firstElementChild?.firstElementChild;
+            const level = parseInt(levelSpan?.innerText) || 0;
+            if (!name || level === 0 || ignored.includes(name)) return;
+            const minusBtn = box.children[2]?.lastElementChild?.firstElementChild;
+            if (minusBtn) {
+                for (let i = 0; i < level; i++) {
+                    minusBtn.click();
+                }
+            }
+        });
+    },
+    updateSkills(targetSkills) {
+        this.resetSkills();
+        // this.n_tutapplyskills.click()
+        const ignored = ["Summon", "Mount Riding"];
+
+        Array.from(this.n_skilllist.children).forEach(box => {
+            const name = box.children[1]?.firstElementChild?.innerText.trim();
+            if (!name || ignored.includes(name)) return;
+
+            const levelSpan = box.children[2]?.firstElementChild?.firstElementChild;
+            const minusBtn = box.children[2]?.lastElementChild?.firstElementChild;
+            const plusBtn = box.children[2]?.lastElementChild?.lastElementChild;
+            
+            const targetLevel = targetSkills[name] || 0;
+            let currentLevel = parseInt(levelSpan?.innerText) || 0;
+
+            while (currentLevel > targetLevel && minusBtn) {
+                minusBtn.click();
+                currentLevel--;
+            }
+
+            while (currentLevel < targetLevel && plusBtn) {
+                plusBtn.click();
+                currentLevel++;
+            }
+        });
+
+        this.n_tutapplyskills.click();
     },
     contextMenu() {
         let contextMenu = ui.contextMenu.element;
-        if (!this.n_barTop || contextMenu.children[0]?.innerText !== 'Skills') return;
-        if (contextMenu.querySelector('.preset-action')) return; 
+        if (contextMenu.children[0]?.innerText !== 'Skills') return;
+        if (contextMenu.querySelector('.preset-action')) return;
 
-        const exportBtn = element("div").css("choice preset-action").text("Export (Clipboard)")
+        const exportBtn = element("div").css("choice preset-action").text("Export - clipboard")
             .on("click", () => {
                 this.export();
                 ui.contextMenu.element.remove();
             });
 
-        const importBtn = element("div").css("choice preset-action").text("Import (Clipboard)")
+        const importBtn = element("div").css("choice preset-action").text("Import - clipboard")
             .on("click", async () => {
                 try {
                     this.import();
@@ -7545,290 +7787,76 @@ const presetManager = {
         contextMenu.append(exportBtn.element);
         contextMenu.append(importBtn.element);
     },
-    grid: NaN,
-    actions:NaN,
-    controls:NaN,
-    btnTip: NaN,
-    addBtn: NaN,
-    lblBtn:NaN,
-    impexBtn:NaN,
-    columnsBtn: NaN,
-    toggleBtn: NaN,
-    uiCreate(){
-        this.btnTip ||= element("div").css("btn textgrey textright");
-        this.addBtn ||= element("div").css("btn black textgrey textcenter").text("🞤")
-            .on("click", e => this.addPreset())
-            .on("pointerenter", e => this.btnTip.text("Add Preset"))
-            .on("pointerleave", e => this.btnTip.text(""));
-        this.lblBtn ||= element("div").css("btn black textgrey textcenter").text("🞸")
-            .on("click", e => this.addLabel())
-            .on("pointerenter", e => this.btnTip.text("Add Label"))
-            .on("pointerleave", e => this.btnTip.text(""));
-
-        this.impexBtn ||= element("div").css("btn black textgrey textcenter").text("🗘")
-            .on("click", e => this.addLabel())
-            .on("pointerenter", e => this.btnTip.text("Import | Export"))
-            .on("pointerleave", e => this.btnTip.text(""));
-        
-        if (!this.columnsBtn) {
-            this.columnsBtn = element("select").css("btn black textgrey").style({ "width": "40px", "height": "32px" })
-                .on("change", (e) => {
-                    this.state.columns = parseInt(e.target.value);
-                    this.gridUpdate(); 
-                });
-            [1, 2, 3, 4, 5].forEach(num => {this.columnsBtn.add(element("option").attr("value", num).text(num));});
-        }
-        
-        this.columnsBtn.value(this.state.columns || 1)
-            .on("pointerenter", e => this.btnTip.text("Columns"))
-            .on("pointerleave", e => this.btnTip.text(""));
-            
-        this.toggleBtn ||= element("div").css("btn black textgrey textcenter")
-                .style({"width": "20px"})
-                .text(this.state.locked ? "🞂" : "🞀")
-                .on("click", () => {
-                    this.state.locked ^= 1;
-                    this.toggleBtn.text(this.state.locked ? "🞂" : "🞀");
-                    this.uiShow();
-                })
-                .on("pointerenter", e => this.btnTip.text("Lock"))
-                .on("pointerleave", e => this.btnTip.text(""));
-
-        this.actions ||= element("div")
-            .css("panel-black preset-manager top-bar").style({
-                "display": "none",
-                "grid-template-columns": "30px 80px 60px",
-                "grid-gap": "4px",
-                "height": "32px",
-                "margin-top": "4px",
-            });
-        this.grid ||= element("div").css("scrollbar panel-black")
-            .style({
-                "display": "none",
-                "grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)`,
-                "gap": "4px",
-                "height": "460px",
-                "overflow-y": "auto",
-                "align-content": "start",
-                "min-width": "200px",
-            });
-
-        this.n_skilllist.after(this.grid.element);
-        this.n_barBot.after(this.actions.element);
-        this.initGridEvents();
-    },
-    selectSync(){
-        this.n_select = this.n_barTop?.querySelector("select");
-        if (!this.n_select || this.n_select._optionHooked) return;
-        this.n_select._optionHooked = true;
-        
-        const self = this;
-        const descriptor = Object.getOwnPropertyDescriptor(HTMLOptionElement.prototype, 'selected');
-        Object.defineProperty(HTMLOptionElement.prototype, 'selected', {
-            set: function(v) {
-                descriptor.set.call(this, v);
-                if (v && this.closest('select') === self.n_select) {
-                    Promise.resolve().then(() => {self.gridUpdate();});
-                }
-            },
-            get: function() { return descriptor.get.call(this); },
-            configurable: true
-        });
-    },
-    nameSync() {
-        this.selectSync();
-
-        if (!Array.isArray(this.state.presets[this.pclass])) {
-            this.state.presets[this.pclass] = [];
-        }
-
-        const n_values = Array.from(this.n_select.options, opt => opt.value)
-            .filter(val => val);
-        
-        this.state.presets[this.pclass] = this.state.presets[this.pclass]
-            .filter(p => p && (!p.pid || n_values.includes(p.pid)));
-
-        n_values.forEach(val => {
-            if (!this.state.presets[this.pclass].some(p => p && p.pid === val)) {
-                this.state.presets[this.pclass].push({
-                    name: val, 
-                    pid: val, 
-                    s: 0 
-                });
-            }
-        });
-        
-        this.gridUpdate(); 
-    },
-    uiShow() {
-            this.nameSync();
-
-            this.n_barTop && (this.n_barTop.style.display = "none");
-            this.n_flexser.classList.add("kek");
-            this.n_skilllist.style.display = this.state.locked ? "none" : "grid";
-            this.n_barBot.style.gridTemplateColumns = this.state.locked ? "auto auto 1fr" : "180px auto 1fr";
-            this.n_tutapplyskills.style.display = this.state.locked ? "none" : "block";
-            
-            this.actions.element.style.display = "grid";
-            
-            if (this.state.locked) {
-                this.n_barBot.children[2].remove();
-                this.actions.clear().style({"grid-template-columns": "40px 30px 1fr"})
-                    .add(this.columnsBtn)
-                    .add(this.toggleBtn);
-            } else {
-                this.n_barBot.children[2]?.remove();
-                this.n_barBot.append(this.btnTip.element);
-                this.actions.clear().style({"grid-template-columns": "30px 30px 50px 40px 30px 1fr"})
-                    .add(this.addBtn)
-                    .add(this.lblBtn)
-                    // .add(this.impexBtn)
-                    .add(element("div"))
-                    .add(this.columnsBtn)
-                    .add(this.toggleBtn);
-            }
-
-            this.grid.element.style.display = "grid";
-            this.grid.element.style.gridColumn = this.state.locked ? "1 / span 2" : "2";
-            
-            this.gridUpdate();
-    },
-    uiHide() {
-        this.n_flexser.classList.remove("kek");
-        this.n_skilllist.style.display = "grid";
-        this.n_barBot.style.gridTemplateColumns = "180px auto 1fr";
-        this.n_tutapplyskills.style.display = "block";
-
-        this.actions.element.style.display = "none";
-        this.grid.element.style.display = "none";
-    },
     async import(isDefault = false) {
-        const pclass = this.pclass;
-        let presets = [];
-
+        let incoming;
         if (isDefault) {
-            presets = this.defaultPresets[pclass] || [];
+            incoming = this.defaultPresets[profileManager.playerClass] || [];
         } else {
             try {
                 const text = await navigator.clipboard.readText();
-                presets = JSON.parse(text);
-            } catch (e) { return console.error("Clipboard error"); }
-        }
-        this.state.presets[pclass] = presets.map(({ s, skills, ...rest }) => rest);
-
-        let storage = JSON.parse(localStorage.getItem("skillConfigs")) || [];
-        storage = storage.filter(item => item.pclass !== pclass);
-
-        presets.forEach(item => {
-            if (item.pid && item.skills) {
-                if (!storage.some(s => s.name === item.pid && s.pclass === pclass)) {
-                    storage.push({ name: item.pid, skills: [...item.skills], pclass });
-                }
+                incoming = JSON.parse(text);
+            } catch (e) {
+                return console.error("Clipboard / JSON error", e);
             }
-        });
-
-        localStorage.setItem("skillConfigs", JSON.stringify(storage));
-        window.location.reload();
-    },
-    async export() {
-        const pclass = this.pclass;
-        const presets = this.state.presets[pclass] || [];
-        const storageData = JSON.parse(localStorage.getItem("skillConfigs")) || [];
-
-        const fullConfig = presets.map(item => {
-            let skills = [];
-            if (item.pid) {
-                const config = storageData.find(s => s.name === item.pid && s.pclass === pclass);
-                skills = config ? [...config.skills] : [];
-            }
-            const { s, ...cleanItem } = item;
-            return item.pid ? { ...cleanItem, skills } : cleanItem;
-        });
-
-        const compactJson = "[\n" + fullConfig.map(item => "  " + JSON.stringify(item)).join(",\n") + "\n]";
-
-        await navigator.clipboard.writeText(compactJson);
-        console.log("Export in clipboard!");
-    },
-    async addLabel() {
-        this.state.presets[this.pclass].push({ name: "New Label" });
-        this.editingIndex = this.state.presets[this.pclass].length - 1;
-        this.gridUpdate(); 
-    },
-    getNextNum() {
-        const list = this.state.presets[this.pclass] || [];
-        const nums = list.map(p => {
-            const match = p?.name?.match(/#(\d+)$/);
-            return match ? parseInt(match[1]) : 0;
-        });
-        return Math.max(0, ...nums) + 1;
-    },
-    async addPreset() {
-        const nextNum = this.getNextNum(); // Dynamic calculation
-        let pid = this.n_select.value;
-
-        if (pid === "") {
-            pid = `preset #${nextNum}`; 
-            this.n_barTop.children[2].click();
-            await new Promise(res => setTimeout(res, 50));
-            this.n_barTop.children[1].value = pid;
-            this.n_barTop.children[1].dispatchEvent(new Event('input', { bubbles: true }));
-            this.n_barTop.children[2].click();
-            await new Promise(res => setTimeout(res, 50));
-            this.n_select = this.n_barTop.querySelector("select");
-            this.n_tutapplyskills.click();
         }
-        
-        this.state.presets[this.pclass].forEach(p => p.s = 0);
-
-        this.state.presets[this.pclass].push({ 
-            name: `New Preset #${nextNum}`, 
-            pid: pid, 
-            s: 1 
-        });
-
-        this.editingIndex = this.state.presets[this.pclass].length - 1;
-        this.gridUpdate(); 
-    },
-    async actionDelete(targetIndex) {
-        const target = this.state.presets[this.pclass][targetIndex];
-        if (!target) return;
-
-        const pidToDelete = target.pid;
-
-        this.state.presets[this.pclass].splice(targetIndex, 1);
-
-        const isStillUsed = this.state.presets[this.pclass].some(p => p.pid === pidToDelete);
-        if (pidToDelete && !isStillUsed) {
-            this.n_select.value = pidToDelete;
-            this.n_select.dispatchEvent(new Event('input', { bubbles: true }));
-            this.n_select.dispatchEvent(new Event('change', { bubbles: true })); 
-            
-            if (this.n_barTop.children[3]) this.n_barTop.children[3].click(); 
-            
-            await new Promise(res => setTimeout(res, 50));
-            
-            this.state.presets[this.pclass].forEach(p => { p.s = 0; });
+        if (Array.isArray(incoming)) {
+            this.state.presets = incoming;
+            this.toolTip.innerText = "Presets Replaced!";
+        } else {
+            this.state.presets.push(incoming);
+            this.toolTip.innerText = "Preset Added!";
         }
-
         this.editingIndex = null;
+        this.gridUpdate();
+
+        setTimeout(() => this.toolTip.innerText = "", 2000);
+    },
+    async export(index = null) {
+        const presets = this.state.presets || [];
+        let output = "";
+
+        if (index !== null) {
+            output = JSON.stringify(presets[index]);
+        } else {
+            const rows = presets.map(item => "  " + JSON.stringify(item));
+            output = "[\n" + rows.join(",\n") + "\n]";
+        }
+        await navigator.clipboard.writeText(output);
+        try {
+            await navigator.clipboard.writeText(output);
+            !this.state.locked && (this.toolTip.innerText = index !== null ? "Preset Copied!" : "All Exported!");
+            setTimeout(() => this.toolTip.innerText = "", 2000);
+        } catch (err) {
+            console.log("Export failed", err);
+        }
+    },
+    addPreset() {
+        this.state.presets.push({ "My New Preset": this.getSkills() });
+        this.editingIndex = this.state.presets.length - 1;
+        this.gridUpdate();
+    },
+    addLabel() {
+        this.state.presets.push("New Label");
+        this.editingIndex = this.state.presets.length - 1;
         this.gridUpdate();
     },
     editingIndex: null,
     gridUpdate() {
-        const scrollContainer = this.grid.element; 
+        const scrollContainer = this.grid.element;
         const currentScroll = scrollContainer.scrollTop;
-        
-        this.grid.clear().style({"grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)`});
 
-        if (this.state.presets[this.pclass].length==0) {
+        scrollContainer.innerHTML = "";
+
+        this.grid.clear().style({ "grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)` });
+
+        if (this.state.presets.length == 0) {
             const wrapper = element("div").style({
                 "display": "flex",
                 "flex-direction": "column",
                 "justify-content": "center",
                 "align-items": "center",
                 "height": "450px",
-                "gap": "12px"     
+                "gap": "12px"
             });
 
             const defBtn = element("div").css("btn green textcenter").text("Load Examples")
@@ -7840,260 +7868,182 @@ const presetManager = {
             return
         }
 
-        this.state.presets[this.pclass].forEach((p, i) => {
-            p.s = (p.pid === this.n_select.value) ? 1 : 0;
-        });
-
-        const presets = this.state.presets[this.pclass] || [];
+        const presets = this.state.presets || [];
 
         presets.forEach((item, index) => {
             const card = this.createCard(item, index);
             this.grid.add(card);
         });
 
-        scrollContainer.scrollTop = currentScroll;
-    },
-    createBottomDropZone(lastIndex) {
-        const zone = element("div").style({
-            "width": "100%",
-            "height": "30px",
-            // "margin-top": "5px",
-            "border": "1px dashed transparent",
-            // "border": "1px dashed red",
-            // "transition": "all 0.1s ease"
-        });
-
-        zone.on("dragover", (e) => {
-            e.preventDefault();
-            zone.style({
-                "border": "1px dashed orange",
-                "background": "rgba(255, 165, 0, 0.1)",
-                "height": "100px"
-            });
-        });
-
-        zone.on("dragleave", () => {
-            zone.style({
-                "border": "1px dashed transparent",
-                "background": "transparent",
-                "height": "30px"
-            });
-        });
-
-        zone.on("drop", (e) => {
-            e.preventDefault();
-            const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
-            const toIndex = lastIndex; 
-
-            this.handleReorder(fromIndex, toIndex);
-        });
-
-        return zone;
+        const targetCard = scrollContainer.children[this.editingIndex];
+        if (this.editingIndex !== undefined && targetCard) {
+            targetCard.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+        } else {
+            scrollContainer.scrollTop = currentScroll;
+        }
     },
     createCard(item, index) {
-        const isLabel = !item.pid;
+        const isLabel = typeof item === 'string';
+        const name = isLabel ? item : Object.keys(item)[0];
         const isEditing = this.editingIndex === index;
-        const isActive = item.s === 1;
+        const isActive = this.state.activeIndex === index;
 
-        const colCount = this.state.columns || 1;
-        
-        const isDragging = this.draggedIndex === index;
+        let card = element("div")
+            .css(`pm-card ${isLabel ? "pm-label" : "pm-preset"}${isEditing ? " is-editing" : ""}`)
+            .data("index", index);
 
-        let card = element("div").css(`btn ${isLabel ? "textwhite bold" : "grey"}`)
-        .style({
-            "display": "flex",          
-            "align-items": "center",
-            "min-height": "32px",
-            "min-width": "100px",
-            // "gap": "4px",
-            "width": "100%",            
-            "box-sizing": "border-box",
-            "grid-column": isLabel ? `1 / span ${colCount}` : "auto",
-            "cursor": isLabel ? "default" : "pointer",
-            "background": isLabel ? "#0000" : "#19202d",
-            "opacity": isDragging ? "0.3" : "1",
-            "border": isDragging ? "2px dashed orange" : (isLabel ? "none" : "none"),
-            "background": isLabel ? "#0000" : (isDragging ? "transparent" : "#19202d"),
-            "pointer-events": isDragging ? "none" : "auto" 
-        })
-        .data("index", index)
-        .data("type", isLabel ? "label" : "card");
+        if (this.draggedIndex === index) card.toggle("ghost");
 
-        isEditing && card.css("");
+        const dotControl = element("div").css("pm-card-dots").text("⋮");
+        const actionControl = element("div")
+                .css(isEditing ? "pm-card-action is-deleting" : "pm-card-action is-exporting");
 
-        const dotControl = element("div").css(`textcenter`).text("⋮")
-            .style({
-                "width": "12px",
-                "opacity": "0",
-                "cursor": "pointer"
-            })
-            .on("mouseenter", () => {dotControl.style({
-                "opacity": "1"
-            });})
-            .on("mouseleave", () => {dotControl.style({
-                "opacity": "0.2"
-            });})
-            .on("click", (e) => {
-                e.stopPropagation();
-                this.editingIndex = index;
-                this.gridUpdate();
-            })
-            .on("mousedown", () => card.attr("draggable", "true"));
-        
-        const delControl = element("div")
-            .css("textred textcenter")
-            .text("🞮")
-            .style({
-                "width": "12px",
-                "opacity": "1",
-                "cursor": "pointer"
-            })
-            .on("mousedown", async (e) => {
-                e.stopPropagation(); 
-                e.preventDefault(); 
-
-                const targetIndex = index;
-                this.editingIndex = null; 
-                
-                await this.actionDelete(targetIndex); 
-            });
-            
-        const label = element(isEditing ? "input" : "span")
-            .css(isLabel ? "textwhite bold" : (isActive && !isEditing ? "textorange" : "textgrey"))
-            .style({ 
-                "flex-grow": "1", 
-                "text-align": "left", 
-            });
+        const labelClass = isLabel ? "textwhite bold" : (isActive && !isEditing ? "textorange" : "textgrey");
+        const label = element(isEditing ? "input" : "span").css(`pm-card-edit ${labelClass}`);
 
         if (isEditing) {
-            label.element.value = item.name;
-            setTimeout(() => label.element.select(), 0);
-            label.element.focus();
+            label.element.value = name;
+            setTimeout(() => { label.element.focus(); label.element.select(); }, 10);
+
+            const saveRename = () => {
+                const newVal = label.element.value.trim();
+                if (newVal) {
+                    if (isLabel) {
+                        this.state.presets[index] = newVal;
+                    } else {
+                        const val = item[name];
+                        delete item[name];
+                        item[newVal] = val;
+                    }
+                }
+                this.editingIndex = null;
+                this.gridUpdate();
+            };
 
             label.on("keyup", (e) => {
-                if (e.key === "Enter" || e.key === "Escape") {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    
-                    if (e.key === "Enter") {
-                        const newVal = label.element.value.trim();
-                        if (newVal) {
-                            this.state.presets[this.pclass][index].name = newVal;
-                        }
-                    }
-                    this.editingIndex = null;
-                    this.gridUpdate();
-                }
+                if (e.key === "Enter") saveRename();
+                if (e.key === "Escape") { this.editingIndex = null; this.gridUpdate(); }
             });
-            label.on("blur", () => {
-                if (this.editingIndex === index) {
-                    const newVal = label.element.value.trim();
-                    if (newVal) this.state.presets[this.pclass][index].name = newVal;
-                    this.editingIndex = null;
-                    this.gridUpdate();
-                }
-            });
-            
+            label.on("blur", () => { if (this.editingIndex === index) saveRename(); });
         } else {
-            label.text(item.name);
+            label.text(name);
         }
 
-        if (!isLabel) card.on("click", () => {
-            if (this.editingIndex === index) return;
-            this.state.presets[this.pclass].forEach((p, i) => {
-                p.s = (i === index) ? 1 : 0;
-            });
-            this.n_select.value = item.pid;
-            this.n_select.dispatchEvent(new Event('input', { bubbles: true }));
-            this.n_select.dispatchEvent(new Event('change', { bubbles: true }));
-            this.gridUpdate();
-          });
-            
-        card
-            .on("mouseenter", () => {dotControl.style({
-                "opacity": isEditing ? "1" : "0.2"
-            });})
-            .on("mouseleave", () => {dotControl.style({
-                "opacity": isEditing ? "1" : "0"
-            });});
+        if (!this.state.locked) card.add(dotControl);
+        card.add(label);
+        if (!this.state.locked) card.add(actionControl);
 
-        if (!this.state.locked && !isEditing) card.add(dotControl);
-        
-            card.add(label);
-        if (isEditing) card.add(delControl);
-        return card
+        return card;
     },
     initGridEvents() {
-    const grid = this.grid;
+        const grid = this.grid;
 
-    grid.on("dragstart", (e) => {
-        const card = e.target.closest("[data-index]");
-        if (card) {
+        this.grid.on("mousedown", (e) => {
+            const dotBtn = e.target.closest(".pm-card-dots");
+            if (dotBtn) {
+                const card = dotBtn.closest("[data-index]");
+                card.setAttribute("draggable", "true");
+            }
+        });
+
+        this.grid.on("click", (e) => {
+            const target = e.target;
+            const card = target.closest("[data-index]");
+            if (!card) return;
+
+            const index = parseInt(card.dataset.index);
+            const isLabel = card.classList.contains("pm-label");
+            const actionBtn = target.closest(".pm-card-action");
+            const dotBtn = target.closest(".pm-card-dots");
+
+            if (actionBtn) {
+                if (actionBtn.classList.contains("is-deleting")) {
+                    this.state.presets.splice(index, 1);
+                    this.editingIndex = null;
+                } else if (!isLabel) {
+                    this.export(index);
+                }
+                this.gridUpdate();
+                return;
+            }
+
+            if (dotBtn) {
+                this.editingIndex = index;
+                this.gridUpdate();
+                return;
+            }
+
+            if (!isLabel && this.editingIndex === null) {
+                const item = this.state.presets[index];
+                const name = Object.keys(item)[0];
+                const skills = item[name];
+
+                this.updateSkills(skills);
+                this.state.activeIndex = index;
+                this.gridUpdate();
+            }
+        });
+
+        grid.on("dragstart", (e) => {
+            const card = e.target.closest("[data-index]");
+            if (!card) return;
+
             this.draggedIndex = parseInt(card.dataset.index);
-            e.dataTransfer.setData("text/plain", card.dataset.index);
+
+            card.classList.add("ghost");
+
             e.dataTransfer.effectAllowed = "move";
-            setTimeout(() => this.gridUpdate(), 0);
-        }
-    });
+            e.dataTransfer.setData("text/plain", this.draggedIndex);
 
-    grid.on("dragover", (e) => {
-        e.preventDefault();
-        const card = e.target.closest("[data-index]");
-        const fromIndex = this.draggedIndex;
-        if (fromIndex === null) return;
+            grid.element.classList.add("is-dragging");
 
-        if (card) {
+            setTimeout(() => card.classList.add("ghost"), 0);
+        });
+        // let lastMove = 0;
+        grid.on("dragover", (e) => {
+            e.preventDefault();
+            // const now = Date.now();
+            // if (now - lastMove < 16) return; 
+            // lastMove = now;
+
+            const card = e.target.closest("[data-index]");
+            const fromIndex = this.draggedIndex;
+            if (fromIndex === null || !card) return;
+
             const toIndex = parseInt(card.dataset.index);
             if (toIndex === fromIndex) return;
 
             const rect = card.getBoundingClientRect();
-            const isSingleCol = (this.state.columns || 1) === 1;
-            const isAfter = isSingleCol 
-                ? (e.clientY - rect.top > rect.height / 2) 
-                : (e.clientX - rect.left > rect.width / 2);
+            const isAfter = (this.state.columns || 1) === 1
+                ? (e.clientY > rect.top + rect.height / 2)
+                : (e.clientX > rect.left + rect.width / 2);
 
-            this.liveReorder(fromIndex, toIndex, isAfter);
-        } else {
-            const list = this.state.presets[this.pclass];
-            const lastIndex = list.length - 1;
-            
-            if (fromIndex !== lastIndex) {
-                const lastCard = grid.element.querySelector(`[data-index="${lastIndex}"]`);
-                if (lastCard) {
-                    const rect = lastCard.getBoundingClientRect();
-                    if (e.clientY > rect.bottom || (e.clientY > rect.top && e.clientX > rect.right)) {
-                        this.liveReorder(fromIndex, lastIndex, true);
-                    }
-                }
+            const list = this.state.presets;
+
+            const item = list.splice(fromIndex, 1)[0];
+
+            let target = toIndex;
+            if (isAfter) target = (fromIndex < toIndex) ? toIndex : toIndex + 1;
+            else target = (fromIndex < toIndex) ? toIndex - 1 : toIndex;
+            list.splice(target, 0, item);
+            this.draggedIndex = target;
+            const draggedCard = grid.element.querySelector(`[data-index="${fromIndex}"]`);
+            if (draggedCard) {
+                if (isAfter) card.after(draggedCard);
+                else card.before(draggedCard);
+                Array.from(this.grid.element.children).forEach((child, i) => {
+                    child.dataset.index = i;
+                });
             }
-        }
-    });
-
-    grid.on("dragend", () => {
-        this.draggedIndex = null;
-        this.gridUpdate();
-    });
-
-    grid.on("drop", (e) => {
-        e.preventDefault();
-        this.draggedIndex = null;
-        this.gridUpdate();
-    });
-},
-
-    liveReorder(fromIndex, toIndex, isAfter) {
-        const list = this.state.presets[this.pclass];
-        const item = list.splice(fromIndex, 1)[0];
-        
-        let target = toIndex;
-        if (isAfter) target = (fromIndex < toIndex) ? toIndex : toIndex + 1;
-        else target = (fromIndex < toIndex) ? toIndex - 1 : toIndex;
-
-        list.splice(target, 0, item);
-        this.draggedIndex = target;
-        this.gridUpdate(); 
-    }
-
+        });
+        grid.on("dragend", () => {
+            this.draggedIndex = null;
+            this.gridUpdate(); 
+        });
+        grid.on("drop", (e) => {
+            e.preventDefault();
+        });
+    },
 };
 window.pmm = presetManager;
 
