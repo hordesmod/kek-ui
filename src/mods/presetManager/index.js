@@ -466,6 +466,16 @@ const presetManager = {
     },
     editingIndex: null,
     gridUpdate() {
+
+
+        this.getSkills()
+
+        const scrollContainer = this.grid.element;
+        const currentScroll = scrollContainer.scrollTop;
+
+        scrollContainer.innerHTML = "";
+
+        this.grid.clear().style({ "grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)` });
         ////////////////
         if (this.state.presets.length == 0) {
             const wrapper = element("div").style({
@@ -486,16 +496,6 @@ const presetManager = {
             return
         }
         ////////////////
-
-        this.getSkills()
-
-        const scrollContainer = this.grid.element;
-        const currentScroll = scrollContainer.scrollTop;
-
-        scrollContainer.innerHTML = "";
-
-        this.grid.clear().style({ "grid-template-columns": `repeat(${this.state.columns || 1}, 1fr)` });
-
 
         const presets = this.state.presets || [];
 
