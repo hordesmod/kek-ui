@@ -41,7 +41,7 @@ const chatEmoji = {
     },
     addControlBtn(channelSelect) {
         this.controlBtn = element("small")
-            .css("btn border black textgrey")
+            .css("btn sm border dark textgrey")
             .text(this.name)
             .style({ lineHeight: "1em", marginRight: "4px" })
             .on("click", () => {this.generateUI()})
@@ -67,7 +67,7 @@ const chatEmoji = {
                 const emoji = this.state.emojiList[emojiName]
 
                 const emojiItem = document.createElement('div');
-                emojiItem.className = 'emoji-item btn black textsecondary';
+                emojiItem.className = 'emoji-item btn sm dark textsecondary';
                 const emojiNameSpan = document.createElement("span")
                 emojiNameSpan.classList.add("textsecondary")
                 emojiNameSpan.textContent = emojiName
@@ -148,7 +148,7 @@ const chatEmoji = {
 
                 // Create an "Import" button
                 const importButton = document.createElement('button');
-                importButton.className = 'btn black textsecondary';
+                importButton.className = 'btn sm dark textsecondary';
                 importButton.textContent = 'Import';
 
                 const container = document.createElement('div');
@@ -261,7 +261,7 @@ const chatEmoji = {
         emojiNameField.placeholder = 'Enter emoji name';
 
         const saveButton = document.createElement('div');
-        saveButton.className = 'btn black textsecondary';
+        saveButton.className = 'btn sm dark textsecondary';
         saveButton.textContent = 'Save Emoji';
         saveButton.addEventListener('click', function () {
             const emoji = inputField.value.trim();
@@ -277,7 +277,7 @@ const chatEmoji = {
 
         // Add "Export" button
         const exportButton = document.createElement('div');
-        exportButton.className = 'btn black textsecondary';
+        exportButton.className = 'btn sm dark textsecondary';
         exportButton.textContent = 'Export Emojis';
         exportButton.addEventListener('click', function (event) {
             handleExportEmojis(event);
@@ -285,7 +285,7 @@ const chatEmoji = {
 
         // Add "Import" button
         const importButtonMain = document.createElement('div');
-        importButtonMain.className = 'btn black textsecondary import-emoji-btn';
+        importButtonMain.className = 'btn sm dark textsecondary import-emoji-btn';
         importButtonMain.textContent = 'Import Emojis';
 
         importButtonMain.addEventListener('click', function importEmojiBtn(event) {

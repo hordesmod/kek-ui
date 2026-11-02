@@ -72,7 +72,7 @@ class UpdateManager {
                             fontWeight: "700",
                             pointerEvents: "none",
                         })
-                    const closeBtn = element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
+                    const closeBtn = element("img").css("btn sm dark svgicon").attr("src", "/data/ui/icons/cross.svg")
                         .on("click", () => posWindow.remove())
                     titleframe.add(title).add(closeBtn)
 

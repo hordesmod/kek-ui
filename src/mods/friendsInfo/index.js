@@ -45,7 +45,7 @@ const friendsInfo = {
         const btnImg = element("span").css("textsecondary").text(" 👤 ")
         this.btnBl = element("span").css("textf1").text("0")
 
-        this.btn = element("div").css("btn border black")
+        this.btn = element("div").css("btn sm border dark")
             .on("pointerenter", this.showFrame.bind(this))
             .on("pointerleave", this.removeFrameDelay.bind(this))
             .add(btnName)

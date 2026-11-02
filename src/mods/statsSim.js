@@ -619,14 +619,14 @@ const statsSim = {
                                 inputElement.value = itemInfo.id + `+${itemInfo.upgrade || 0}`
                                 const overlay = inputElement.nextElementSibling
                                 if (overlay) {
-                                    overlay.className = "btn black textsecondary stat-sim-overlay"
+                                    overlay.className = "btn sm dark textsecondary stat-sim-overlay"
                                     overlay.classList.add("text" + getTextColor(itemInfo.quality))
                                 }
                             } else {
                                 inputElement.value = ""
                                 const overlay = inputElement.nextElementSibling
                                 if (overlay) {
-                                    overlay.className = "btn black textsecondary overlay"
+                                    overlay.className = "btn sm dark textsecondary overlay"
                                 }
                             }
                         });
@@ -667,14 +667,14 @@ const statsSim = {
                                     inputElement.value = itemInfo.id + `+${itemInfo.upgrade || 0}`
                                     const overlay = inputElement.nextElementSibling
                                     if (overlay) {
-                                        overlay.className = "btn black textsecondary overlay"
+                                        overlay.className = "btn sm dark textsecondary overlay"
                                         overlay.classList.add("text" + getTextColor(itemInfo.quality))
                                     }
                                 } else {
                                     inputElement.value = ""
                                     const overlay = inputElement.nextElementSibling
                                     if (overlay) {
-                                        overlay.className = "btn black textsecondary overlay"
+                                        overlay.className = "btn sm dark textsecondary overlay"
                                     }
                                 }
                             });
@@ -782,7 +782,7 @@ const statsSim = {
                 }
                 const statOverlays = document.querySelectorAll(".stat-sim-overlay")
                 for (let overlay of statOverlays) {
-                    overlay.className = "btn black textsecondary stat-sim-overlay"
+                    overlay.className = "btn sm dark textsecondary stat-sim-overlay"
                 }
             })
             // Append the checkbox container to the button container

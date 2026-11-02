@@ -24,7 +24,7 @@ function createWindow(titleName, left = '200px', top = '50px', transform, onClos
 
     // Create the close button using the element function
     const closeBtn = element('img', {
-        className: 'btn black svgicon',
+        className: 'btn sm dark svgicon',
         src: '/data/ui/icons/cross.svg?v=8498194',
         style: "margin-top: 6px;"
     });
@@ -62,7 +62,7 @@ function createGrid(columnNames, className, marginVal = "3px", paddingVal = "5px
     // Create header row using the element function
     columnNames.forEach(columnName => {
         const headerCell = element('div', {
-            className: 'btn black textprimary grid-header',
+            className: 'btn sm dark textprimary grid-header',
             textContent: columnName,
             style: `margin: ${marginVal}; padding: ${paddingVal};`
         });

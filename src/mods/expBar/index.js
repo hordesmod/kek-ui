@@ -17,7 +17,6 @@ const expbar = {
         ui.expbar?.element && this.handle()
     },
     stop() {
-        log(stop)
         eventManager.off("ui.expbar", this.handle, this)
         ui.expbar.element.style.display = "block"
     },

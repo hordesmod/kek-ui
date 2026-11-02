@@ -40,7 +40,7 @@ const runeTracker = {
     addBtn(partyBtnbar) {
         partyBtnbar = partyBtnbar.element
         const btnImg = element("img").css("icon svelte-erbdzy").attr("src", "data/items/rune/rune6_q0.avif")
-        this.btn = element("div").css("btn border black textgrey")
+        this.btn = element("div").css("btn sm border dark textgrey")
             .on("click", this.generateUI.bind(this))
             .add(btnImg)
 
@@ -209,7 +209,7 @@ const runeTracker = {
             startBtn.className = `btn textprimary rune-tracker-startbtn red`
         } else {
             startBtn.textContent = "Start";
-            startBtn.className = `btn textprimary rune-tracker-startbtn grey`
+            startBtn.className = `btn textprimary rune-tracker-startbtn sm grey`
         }
 
         startBtn.addEventListener('click', () => {
@@ -226,7 +226,7 @@ const runeTracker = {
 
                 // Change button text and style back to start functionality
                 startBtn.textContent = "Start";
-                startBtn.className = "btn textsecondary rune-tracker-startbtn grey"; // Change class as needed
+                startBtn.className = "btn textsecondary rune-tracker-startbtn sm grey"; // Change class as needed
 
                 // Set isRuneTrackerActive to false in local storage
                 this.state.isActive = false
@@ -237,7 +237,7 @@ const runeTracker = {
         newBtn.style.flex = 1
         newBtn.textContent = "New";
         newBtn.style.width = "100px"
-        newBtn.className = `btn textprimary rune-tracker-btn grey`
+        newBtn.className = `btn textprimary rune-tracker-btn sm grey`
 
         // Add event listener to the start button
         newBtn.addEventListener('click', () => {
@@ -287,7 +287,7 @@ const runeTracker = {
 
         // Create header row for player names
         const playerHeader = document.createElement('div');
-        playerHeader.className = 'btn black textprimary rune-tracker-item';
+        playerHeader.className = 'btn sm dark textprimary rune-tracker-item';
         playerHeader.textContent = 'Players';
         playerHeader.style.width = '100px'; // Width of player names
         playerHeader.style.padding = this.paddingValue;
@@ -321,7 +321,7 @@ const runeTracker = {
             const indexInput = document.createElement('input');
 
             const prevButton = document.createElement('button');
-            prevButton.className = "btn grey textsecondary"
+            prevButton.className = "btn sm grey textsecondary"
             prevButton.textContent = '<';
             prevButton.style.padding = "10px"
             prevButton.style.marginLeft = "5px"
@@ -338,7 +338,7 @@ const runeTracker = {
             const nextButton = document.createElement('button');
             nextButton.textContent = '>';
             nextButton.style.padding = "10px"
-            nextButton.className = "btn grey textsecondary"
+            nextButton.className = "btn sm grey textsecondary"
             nextButton.addEventListener('click', () => {
                 const dataLength = this.getRuneTrackerDataLength();
                 if (this.idx < dataLength - 1) {
@@ -388,7 +388,7 @@ const runeTracker = {
         // Create close button element
         const closeBtn = document.createElement('img');
         closeBtn.src = '/data/ui/icons/cross.svg?v=8498194';
-        closeBtn.className = 'btn black svgicon';
+        closeBtn.className = 'btn sm dark svgicon';
 
         // Append close button to titleFrame
         titleFrame.appendChild(closeBtn);
@@ -405,7 +405,7 @@ const runeTracker = {
             // Create header row for rune names
             this.runeNames.forEach(runeName => {
                 const runeHeader = document.createElement('div');
-                runeHeader.className = 'btn black textprimary rune-tracker-item';
+                runeHeader.className = 'btn sm dark textprimary rune-tracker-item';
                 runeHeader.textContent = runeName;
                 runeHeader.style.padding = this.paddingValue;
                 runeHeader.style.margin = this.marginValue;
@@ -421,7 +421,7 @@ const runeTracker = {
             for (const playerName in dataToShow) {
                 if (playerName === "by") { continue; }
                 const playerRow = document.createElement('div');
-                playerRow.className = 'btn black textsecondary rune-tracker-item';
+                playerRow.className = 'btn sm dark textsecondary rune-tracker-item';
                 playerRow.textContent = playerName;
                 const isMe = playerName == profileManager.playerName
                 const state = this.runeData.rawCount[playerName].state
@@ -438,7 +438,7 @@ const runeTracker = {
 
                 for (let tier = 0; tier < this.runeNames.length; tier++) {
                     const runeCell = document.createElement('div');
-                    runeCell.className = 'btn black textsecondary rune-tracker-item';
+                    runeCell.className = 'btn sm dark textsecondary rune-tracker-item';
                     if (isMe) {
                         runeCell.classList.add("textgreen")
                     }

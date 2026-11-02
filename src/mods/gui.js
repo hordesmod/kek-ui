@@ -409,7 +409,7 @@ const gui = {
     },
     createBtn(text, title, handleFunc) {
         const button = element("div", {
-            className: "btn border black textsecondary",
+            className: "btn sm border dark textsecondary",
             textContent: text,
             tooltip: title,
             style: "padding-left: 3px; padding-right: 3px; margin: 2px;"
@@ -822,7 +822,7 @@ const gui = {
             flexContainer.style.display = "flex";
             flexContainer.style.alignItems = "center";
             const colorItem = document.createElement("div");
-            colorItem.className = "color-item-party btn black textsecondary";
+            colorItem.className = "color-item-party btn sm dark textsecondary";
             const classIdx = key.split("bgc")[1];
             colorItem.textContent = this.getClassName(classIdx);
 
@@ -1004,7 +1004,7 @@ const gui = {
 
         const resetBtn = document.createElement("button");
         const resetDiv = document.createElement("div");
-        resetBtn.className = "btn black textsecondary";
+        resetBtn.className = "btn sm dark textsecondary";
         resetBtn.textContent = "Reset";
         resetBtn.addEventListener("click", () => {
             this.setChatColors(this.chatColors);
@@ -1175,7 +1175,7 @@ const gui = {
         // );
         // Add a button for chat color customization
         // const chatColorButton = document.createElement("div");
-        // chatColorButton.className = "kek-ui-btn btn black textsecondary";
+        // chatColorButton.className = "kek-ui-btn btn sm dark textsecondary";
         // chatColorButton.textContent = "Colors";
         // chatColorButton.title = "Click to change chat colors";
         // chatColorButton.style.width = "300px";
@@ -1563,7 +1563,7 @@ const gui = {
             // console.log(guiState)
             // Create buttons for each player
 
-            const presetSelect = element("select").css("btn grey").on("input", e => {
+            const presetSelect = element("select").css("btn sm grey").on("input", e => {
                 // console.log(e.target.value)
                 const profileName = e.target.value
                 const propsString = JSON.stringify(guiState[profileName])
@@ -1609,7 +1609,7 @@ const gui = {
 
             // Create an "Import" button
             const importButton = document.createElement('button');
-            importButton.className = "btn black";
+            importButton.className = "btn sm dark";
             const importSpan = document.createElement("span");
             importSpan.classList.add("textsecondary");
             importSpan.textContent = "Import";

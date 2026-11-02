@@ -60,7 +60,7 @@ const mouseOver = {
     },
     addBtn(sysbtnbar) {
         this.btn = element("div")
-            .css(`btn border black ${this.state.enabled ? "textgreen" : "textgrey"}`)
+            .css(`btn sm border dark ${this.state.enabled ? "textgreen" : "textgrey"}`)
             .text("Mo")
             .style({ paddingLeft: "3px",paddingRight: "3px", margin: "2px" })
             .on("click", () => this.toggleBtn());

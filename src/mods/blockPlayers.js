@@ -71,7 +71,7 @@ const blockPlayers = {
                 // console.log(blockedPlayers)
                 for (let playerName of blockedPlayers) {
                     const blockedPlayerItem = document.createElement('div');
-                    blockedPlayerItem.className = 'blocked-player-item btn black textsecondary';
+                    blockedPlayerItem.className = 'blocked-player-item btn sm dark textsecondary';
                     // blockedPlayerItem.style.padding = "15px"
                     blockedPlayerItem.style.margin = "1px"
                     blockedPlayerItem.style.display = "flex";
@@ -106,7 +106,7 @@ const blockPlayers = {
         inputField.placeholder = 'Enter player name';
 
         const blockButton = document.createElement('div');
-        blockButton.className = 'btn black textsecondary';
+        blockButton.className = 'btn sm dark textsecondary';
         blockButton.textContent = 'Block Player';
         blockButton.style.marginTop = "5px"
         blockButton.addEventListener('click', () => {

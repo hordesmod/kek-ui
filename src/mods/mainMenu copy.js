@@ -22,7 +22,7 @@ const menuFunctions = {
 let inputDisplayEle = null
 function inputMouseEnter(e) {
     const displayEle = element("div", {
-        className: "btn black textprimary",
+        className: "btn sm dark textprimary",
         textContent: e.target.placeholder,
         style: `
         position: absolute;
@@ -132,7 +132,7 @@ const mainMenu = {
 
         const closeButton = document.createElement('img');
         closeButton.src = '/data/ui/icons/cross.svg?v=8498194';
-        closeButton.className = 'btn black svgicon';
+        closeButton.className = 'btn sm dark svgicon';
         closeButton.style.padding = "5px"
         closeButton.addEventListener('click', function () {
             contextMenu.remove();
@@ -154,7 +154,7 @@ const mainMenu = {
         // Add choices to the context menu
         choices.forEach(choiceText => {
             const choiceElement = document.createElement('div');
-            choiceElement.className = 'choice-item btn black textsecondary'; // Updated class to "choice-item"
+            choiceElement.className = 'choice-item btn sm dark textsecondary'; // Updated class to "choice-item"
             choiceElement.textContent = choiceText;
             choiceElement.style.padding = "5px"
             choiceElement.style.fontSize = "15px"

@@ -121,7 +121,7 @@ class SettingsManager {
 
             settings.add(modName)
 
-            const modField = element("div").css(`btn checkbox${moduleManager.status(mod.name) && " active" || ""}`)
+            const modField = element("div").css(`checkbox${moduleManager.status(mod.name) && " active" || ""}`)
                 .on("click", () => {
                     moduleManager.toggle(mod.name)
                     modField.toggle("active")
@@ -154,7 +154,7 @@ class SettingsManager {
                                 e.target.value = e.key.toLowerCase()
                                 keyManager.updateKey(modName, keyDescription, e.target.value)
                             })
-                        const fieldBtn = element("div").css("btn grey textwhite").text("clear")
+                        const fieldBtn = element("div").css("btn sm grey textwhite").text("clear")
                             .on("click", () => {
                                 fieldControl.element.value = ""
                                 keyManager.updateKey(modName, keyDescription, "")
@@ -215,7 +215,7 @@ class SettingsManager {
         const title = element("h3").css("textprimary").text("KEK Settings")
 
         const modSelectContainer = element("div").css("panel-black")
-        const modSelect = element("select").css("btn grey")
+        const modSelect = element("select").css("btn sm grey")
             .on("change", e => {
                 const selectedOption = document.getElementById(e.target.value)
                 const scrollableElement = this.panel.element
@@ -273,7 +273,7 @@ class SettingsManager {
 
         if (field.control === "checkbox") {
             control = element("div")
-                .css(`btn checkbox${mod.state[fieldName] ? " active" : ""}`)
+                .css(`checkbox${mod.state[fieldName] ? " active" : ""}`)
                 .on("pointerup", e => {
                     if (e.button === 0) {
                         e.target.classList.toggle("active")
@@ -348,7 +348,7 @@ class SettingsManager {
                 soundManager.play(mod.state[fieldName])
                 field.onupdate && mod[field.onupdate]()
             })
-            const play = element("div").css("btn grey textwhite").text("⏵")
+            const play = element("div").css("btn sm grey textwhite").text("⏵")
                 .on("click", () => {
                     soundManager.play(mod.state[fieldName])
                 })
@@ -364,7 +364,7 @@ class SettingsManager {
                     mod.state[fieldName] = e.target.value
                     field.onupdate && mod[field.onupdate]()
                 })
-            const reset = element("div").css("btn black").text("default color").style({ color: field.default })
+            const reset = element("div").css("btn sm dark").text("default color").style({ color: field.default })
                 .on("click", () => {
                     colorpicker.element.value = field.default
                     mod.state[fieldName] = field.default

@@ -98,7 +98,7 @@ class MultiSelect {
                     option.element.children[0].classList.toggle("active")
                     this.update()
                 })
-            const checkbox = element("div").css("btn checkbox")
+            const checkbox = element("div").css("checkbox")
             const label = element("div").text(value).style({
                 // color: "#a6dcd5",
                 paddingLeft: "0.7em",

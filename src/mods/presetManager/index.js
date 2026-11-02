@@ -40,9 +40,9 @@ const presetManager = {
         ],
         3: [
             "STARTER SHAMPACK",
-            {"Gloom":{"Revitalize":5,"Decay":1,"Mimir's Well":4,"Canine Howl":5,"Healing Totem":4,"Summon":1,"Spirit Animal":1,"Mount Riding":1,"Plaguespreader":5}},
-            {"Farming":{"Revitalize":5,"Decay":5,"Canine Howl":5,"Summon":1,"Mount Riding":1,"Soul Harvest":5,"Plaguespreader":5}},
-            {"Obelisk":{"Mend":4,"Revitalize":5,"Decay":1,"Mimir's Well":2,"Healing Totem":4,"Summon":1,"Spirit Animal":1,"Agonize":1,"Mount Riding":1,"Plaguespreader":5,"Mimir's Cleanse":2}},
+            {"Gloom":{"Revitalize":5,"Decay":1,"Mimir's Well":4,"Canine Howl":5,"Healing Totem":4,"Spirit Animal":1,"Mount Riding":1,"Plaguespreader":5}},
+            {"Farming":{"Revitalize":5,"Decay":5,"Canine Howl":5,"Mount Riding":1,"Soul Harvest":5,"Plaguespreader":5}},
+            {"Obelisk":{"Mend":4,"Revitalize":5,"Decay":1,"Mimir's Well":2,"Healing Totem":4,"Spirit Animal":1,"Agonize":1,"Mount Riding":1,"Plaguespreader":5,"Mimir's Cleanse":2}},
             "Example Arena Builds",
             { "3vs3": { "Filler": 1 } },
         ]
@@ -63,10 +63,7 @@ const presetManager = {
             grid-template-columns: 1fr 1fr !important; 
             contain: layout style; 
         }
-        .flexer.svelte-1e0alkc {
-            display: grid;
-            gap: 2px;
-        }
+
         .pm-actionbar {
             display: grid;
             grid-gap: 4px;
@@ -84,7 +81,7 @@ const presetManager = {
         }
         .pm-tooltip {
         }
-        .ghost { 
+        .gghost { 
             border: 2px dashed orange !important;
             background: transparent !important;
             opacity: 0.4;
@@ -235,6 +232,16 @@ const presetManager = {
         skillMenu.classList.add("pm-kek");
         // -----------------------------------------------
 
+        // .flexer.svelte-1e0alkc {
+        //     display: grid !important;
+        //     gap: 2px;
+        //     grid-template-columns: 1fr auto !important;
+        // }
+        const flexer = skillMenu.querySelector('.flexer.svelte-1e0alkc')
+        flexer.style.display = "grid"
+        flexer.style.gap = "2px"
+        // flexer.style.display = "grid"
+
         this.n_skilllist = skillMenu.querySelector('#skilllist');
         this.n_barBot = skillMenu.querySelector(".bar-bot");
 
@@ -260,7 +267,7 @@ const presetManager = {
         this.doggy.observe(this.n_skilllist, { childList: true});
         this.piggy = (e) => {
             const c = e.target.className;
-            if (c === 'btn incbtn green svelte-1e0alkc' || c === 'btn incbtn grey svelte-1e0alkc') {
+            if (c === 'btn incbtn green svelte-1e0alkc' || c === 'btn incbtn sm grey svelte-1e0alkc') {
                 setTimeout(() => this.gridUpdate(), 0);
             }
         };
@@ -271,39 +278,64 @@ const presetManager = {
         this.n_skilllist.removeEventListener("pointerup", this.piggy);
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+    toggleImport(show) {
+        const controls = [this.presetBtn, this.labelBtn, this.exportBtn, this.colBtn, this.toggleBtn];
+        controls.forEach(c => c.element.style.display = show ? "none" : "block");
+        
+        this.importInput.element.style.display = show ? "block" : "none";
+        if (show) {
+            this.importInput.element.focus();
+            this.importBtn.css("green");
+        } else {
+            this.importBtn.css("black");
+        }
+    },
     updateControls() {
         this.n_skilllist.style.display = this.state.locked ? "none" : "grid";
         this.n_barBot.style.gridTemplateColumns = this.state.locked ? "auto auto 1fr" : "180px auto 1fr";
         this.n_tutapplyskills.style.display = this.state.locked ? "none" : "block";
 
-        this.presetBtn ||= element("div").css("btn black pm-icon pm-preset-icon").data("tip", "Add Preset")
+        this.presetBtn ||= element("div").css("btn sm dark pm-icon pm-preset-icon").data("tip", "Add Preset")
             .on("click", (e) => this.addPreset())
         this.presetBtn.element.style.display = this.state.locked ? "none" : "block"
 
             
-        this.labelBtn ||= element("div").css("btn black pm-icon pm-label-icon").data("tip", "Add Label")
+        this.labelBtn ||= element("div").css("btn sm dark pm-icon pm-label-icon").data("tip", "Add Label")
             .on("click", (e) => this.addLabel())
         this.labelBtn.element.style.display = this.state.locked ? "none" : "block"
 
         if (!this.colBtn) {
-            this.colBtn = element("select").css("btn black textgrey textcenter").data("tip", "Columns")
+            this.colBtn = element("select").css("btn sm dark textgrey textcenter").data("tip", "Columns")
                 .on("change", (e) => {this.state.columns = parseInt(e.target.value);this.updateControls();});
             [1, 2, 3, 4, 5].forEach(num => {this.colBtn.add(element("option").attr("value", num).text(num))});
         }
 
-        this.toggleBtn ||= element("div").css("btn black textgrey textcenter").data("tip", "Lock")
+        this.toggleBtn ||= element("div").css("btn sm dark textgrey textcenter").data("tip", "Lock")
             .on("click", () => {
                 this.state.locked ^= 1;
                 this.updateControls();
             });
 
-        this.importBtn ||= element("div").css("btn black pm-icon pm-import-icon").data("tip", "Import")
+        this.importInput ||= element("input")
+            .css("pm-card-edit textgrey")
+            .attr("placeholder", "Paste JSON...")
+            .style({
+                "display": "none",
+                "grid-column": "1 / span 3"
+            })
+            .on("keyup", (e) => {
+                if (e.key === "Enter") this.processImport(e.target.value);
+                if (e.key === "Escape") this.toggleImport(false);
+            });
+
+        this.importBtn ||= element("div").css("btn sm dark pm-icon pm-import-icon").data("tip", "Import")
             .on("click", () => {
-                this.import();
+                this.toggleImport(true)
+                // this.import();
             });
         this.importBtn.element.style.display = this.state.locked ? "none" : "block"
 
-        this.exportBtn ||= element("div").css("btn black pm-icon pm-export-icon").data("tip", "Export All")
+        this.exportBtn ||= element("div").css("btn sm dark pm-icon pm-export-icon").data("tip", "Export All")
             .on("click", () => {
                 this.export();
             });
@@ -315,13 +347,14 @@ const presetManager = {
                 if (tip && !this.state.locked) this.toolTip.textContent = tip;
             })
             .on("mouseout", () => this.toolTip.textContent = "")
+            // .add(this.importInput)
             .add(this.toggleBtn)
             .add(this.colBtn)
             .add(element("div"))
             .add(this.presetBtn)
             .add(this.labelBtn)
-            .add(this.importBtn)
             .add(this.exportBtn)
+            .add(this.importBtn)
         
         this.grid ||= element("div").css("pm-grid scrollbar panel-black")
         this.grid._initialized ||= (this.initGridEvents(), true);
@@ -448,7 +481,7 @@ const presetManager = {
         await navigator.clipboard.writeText(output);
         try {
             await navigator.clipboard.writeText(output);
-            !this.state.locked && (this.toolTip.innerText = index !== null ? "Preset Copied to Clipboard!" : "Exported to Clipboard!");
+            !this.state.locked && (this.toolTip.innerText = index !== null ? "Copied to Clipboard!" : "Exported to Clipboard!");
             setTimeout(() => this.toolTip.innerText = "", 2000);
         } catch (err) {
             this.toolTip.innerText = "Export failed" + err
@@ -535,7 +568,7 @@ const presetManager = {
             .css(`pm-card ${isLabel ? "pm-label" : "pm-preset"}${isEditing ? " is-editing" : ""}`)
             .data("index", index);
 
-        if (this.draggedIndex === index) card.toggle("ghost");
+        if (this.draggedIndex === index) card.toggle("gghost");
 
         const dotControl = element("div").css("pm-card-dots").text("⋮");
         const actionControl = element("div")
@@ -632,14 +665,14 @@ const presetManager = {
 
             this.draggedIndex = parseInt(card.dataset.index);
 
-            card.classList.add("ghost");
+            card.classList.add("gghost");
 
             e.dataTransfer.effectAllowed = "move";
             e.dataTransfer.setData("text/plain", this.draggedIndex);
 
             grid.element.classList.add("is-dragging");
 
-            setTimeout(() => card.classList.add("ghost"), 0);
+            setTimeout(() => card.classList.add("gghost"), 0);
         });
         // let lastMove = 0;
         grid.on("dragover", (e) => {

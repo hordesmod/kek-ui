@@ -22,7 +22,7 @@ const MinimalUI = {
     change: 0,
     addBtn(sysbtnbar) {
         this.btn = element("div")
-            .css("btn border black textgrey")
+            .css("btn sm border dark textgrey")
             .style({
                 paddingLeft: "3px",
                 paddingRight: "3px",

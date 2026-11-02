@@ -27,7 +27,7 @@ const buffOnly = {
     addBtn(sysbtnbar) {
         const status = localStorage.getItem("buffsHideIrrelevant") === "true"
         this.btn = element("div")
-            .css(`btn border black text${status ? "green" : "grey"}`)
+            .css(`btn sm border dark text${status ? "green" : "grey"}`)
             .style({
                 paddingLeft: "3px",
                 paddingRight: "3px",
@@ -53,7 +53,7 @@ const buffOnly = {
     toggleSetting() {
         if (this.change) {
             ui.settingsParent.element.children[0].children[1].children[0].children[0].children[0].click() //kek
-            ui.settingsParent.element.children[0].children[1].children[0].children[1].children[1].children[61].click() //kek^2
+            ui.settingsParent.element.children[0].children[1].children[0].children[1].children[1].children[63].click() //kek^2
             ui.syscog.element.click()
             this.change = 0
         }

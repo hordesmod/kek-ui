@@ -81,7 +81,7 @@ const itemFilters = {
 
         const filterContainer = element("div").style({ display: "grid", gridTemplateColumns: "1fr auto", gridGap: "4px", marginBottom: "8px", })
 
-        this.presetSelect = element("select").css("btn grey")
+        this.presetSelect = element("select").css("btn sm grey")
             .on("input", e => {
                 this.state.preset = e.target.value
             })
@@ -89,7 +89,7 @@ const itemFilters = {
 
         this.enabled = 0
         const btn = element("div")
-            .css("btn border grey")
+            .css("btn sm border grey")
             .text("Filter")
             .on("pointerup", e => {
                 if (e.button == 0) {
@@ -414,7 +414,7 @@ const itemFilters = {
         this.newRecordContainer.add(colorLabel).add(this.colorSelect)
 
         const clearBtn = element("div")
-            .css("btn grey")
+            .css("btn sm grey")
             .style({
                 gridColumn: "span 7",
                 width: "80px",
@@ -471,7 +471,7 @@ const itemFilters = {
 
         // EDIT RECORD BTN
         const editBtn = element("div")
-            .css("btn grey textgreen")
+            .css("btn sm grey textgreen")
             .text("Edit Filter")
             .on("click", () => {
                 const displayValue = this.newRecordContainer.element.style.display === "none" ? "grid" : "none"
@@ -515,7 +515,7 @@ const itemFilters = {
 
         const selectControl = () => {
             presetAction.clear()
-            const select = element("select").css("btn grey")
+            const select = element("select").css("btn sm grey")
                 .on("input", e => {
                     this.state.preset = e.target.value
                     this.updatePresetSelect()
@@ -622,10 +622,10 @@ const itemFilters = {
         element("div").css("btn green").text("Create").on("click", () => {
             createControl()
         }).to(presetContainer)
-        element("div").css("btn grey").text("Import").on("click", () => {
+        element("div").css("btn sm grey").text("Import").on("click", () => {
             importControl()
         }).to(presetContainer)
-        element("div").css("btn grey").text("Export").on("click", () => {
+        element("div").css("btn sm grey").text("Export").on("click", () => {
             exportControl()
         }).to(presetContainer)
         element("div").css("btn red").text("Delete").on("click", () => {

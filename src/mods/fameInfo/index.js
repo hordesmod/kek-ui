@@ -59,7 +59,7 @@ const fameInfo = {
         this.btnFame = element("span").css("textfame").text("...")
         const btnFameImg = element("img").css("icon svelte-erbdzy").attr("src", "/data/ui/currency/fame.svg")
 
-        this.btn = element("div").css("btn border black")
+        this.btn = element("div").css("btn sm border dark")
             .on("mouseover", this.showFrame.bind(this))
             .on("mouseleave", this.removeFrameDelay.bind(this))
             .on("click", this.execBtn)

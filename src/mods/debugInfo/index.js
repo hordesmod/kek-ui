@@ -33,7 +33,7 @@ const debugInfo = {
         partyBtnbar = partyBtnbar.element
         this.btnLabel = element("span").css("textexp").text("DISABLE devMode!")
 
-        this.btn = element("div").css("btn border black textgrey")
+        this.btn = element("div").css("btn sm border dark textgrey")
             .on("click", this.toggleFrame.bind(this))
             .add(this.btnLabel)
 
@@ -45,7 +45,7 @@ const debugInfo = {
     createFrame() {
         this.frame = frame({ title: "DEBUG", y: 10 })
         const frameSelect = element("div").css("dbg select")
-        const select = element("select").css("btn grey").on("change", () => {
+        const select = element("select").css("btn sm grey").on("change", () => {
             this.updateFrame(select.element.value)
         })
         frameSelect.add(select)

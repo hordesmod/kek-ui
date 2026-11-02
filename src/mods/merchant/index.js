@@ -63,7 +63,7 @@ const merchant = {
         this.filters = Array(this.stats.length).fill(0)
         for (const stat of ["Strength", "Intelligence", "Dexterity", "Wisdom", null, "Critical", "Haste", null, "Min Dmg.", "Max Dmg.", null, "Stamina", "Defense", "Block"]) {
             const filter = element("div").text(stat)
-            const checkbox = stat && element("div").css("btn checkbox").on("click", () => {
+            const checkbox = stat && element("div").css("checkbox").on("click", () => {
                 checkbox.toggle("active")
                 const statIdx = this.stats.indexOf(stat)
                 this.filters[statIdx] ^= 1
@@ -80,7 +80,7 @@ const merchant = {
             "Epic": { color: "purp", value: 90 },
             "99+": { color: "orange", value: 99 },
         }
-        const qualitySelect = element("select").css("btn grey").style({ gridColumn: "span 2", height: "30px" }).on("change", e => {
+        const qualitySelect = element("select").css("btn sm grey").style({ gridColumn: "span 2", height: "30px" }).on("change", e => {
             this.qualityFilter = e.target.value
             this.filter()
         })

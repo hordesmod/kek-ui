@@ -33,7 +33,7 @@ const whispers = {
     },
     addControlBtn(channelSelect) {
         this.controlBtn = element("small")
-            .css("btn border black textgrey")
+            .css("btn sm border dark textgrey")
             .text("Whispers")
             .style({ lineHeight: "1em", marginRight: "4px" })
             .on("click", () => {this.generateUI()})
@@ -406,7 +406,7 @@ const whispers = {
     handlePartyBtn(partyBtnbar) {
         partyBtnbar = partyBtnbar.element
         const btn = element("div", {
-            className: "btn border black textsecondary",
+            className: "btn sm border dark textsecondary",
             textContent: "Whispers"
         }).element
         btn.addEventListener("click", this.generateUI.bind(this))

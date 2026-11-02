@@ -13,7 +13,7 @@ function addSysbtn(sysbtnbar, btn) {
     btn.addEventListener("mouseenter", () => {
         if (customBtnbar) {
             const displayBtn = element("div", {
-                className: "btn black displayBtnKEK border textsecondary",
+                className: "btn sm dark displayBtnKEK border textsecondary",
                 textContent: btn.tooltip,
                 style: "padding-left: 3px; padding-right: 3px; margin: 2px;"
             }).element

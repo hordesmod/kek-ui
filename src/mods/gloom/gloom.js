@@ -78,7 +78,7 @@ const gloom = {
     },
     createBtn(text, title) {
         const button = element("div", {
-            className: "btn border black textsecondary",
+            className: "btn sm border dark textsecondary",
             tooltip: title,
             style: "padding-left: 3px; padding-right: 3px; margin: 2px;"
         }).element
@@ -175,16 +175,16 @@ const gloom = {
             const gloomGrid = createGrid(["Event", "Time"], "gloomGridKEK").element
 
             const gloomTimeDiv = document.createElement('div');
-            gloomTimeDiv.className = 'textsecondary btn black';
+            gloomTimeDiv.className = 'textsecondary btn sm dark';
             gloomTimeDiv.textContent = `${this.updateGloomTime()}`;
 
             const obeliskTimeDiv = document.createElement('div');
-            obeliskTimeDiv.className = 'textsecondary btn black';
+            obeliskTimeDiv.className = 'textsecondary btn sm dark';
             obeliskTimeDiv.textContent = `${this.updateObeliskTime()}`;
 
-            gloomGrid.appendChild(element("div", {textContent: "Gloom", className: "btn black textsecondary"}).element)
+            gloomGrid.appendChild(element("div", {textContent: "Gloom", className: "btn sm dark textsecondary"}).element)
             gloomGrid.appendChild(gloomTimeDiv)
-            gloomGrid.appendChild(element("div", {textContent: "Obelisk", className: "btn black textsecondary"}).element)
+            gloomGrid.appendChild(element("div", {textContent: "Obelisk", className: "btn sm dark textsecondary"}).element)
             gloomGrid.appendChild(obeliskTimeDiv)
 
             gloomDiv.appendChild(gloomGrid);
@@ -352,13 +352,13 @@ const gloom = {
 
             // Add specific classes for styling and identification
             if (type === "submit") {
-                button.className = `btn black textprimary submit-btn-kek`;
+                button.className = `btn sm dark textprimary submit-btn-kek`;
             }
             if (type === "optional") {
-                button.className = `btn black textsecondary optional-btn-${group}`;
+                button.className = `btn sm dark textsecondary optional-btn-${group}`;
             }
             if (type === "required") {
-                button.className = `btn black textsecondary required-btn-kek`;
+                button.className = `btn sm dark textsecondary required-btn-kek`;
             }
 
             return button;
@@ -435,7 +435,7 @@ const gloom = {
         // Create label for required buttons
         const requiredLabel = document.createElement("div");
         requiredLabel.textContent = "Required";
-        requiredLabel.className = "btn black textprimary";
+        requiredLabel.className = "btn sm dark textprimary";
 
 
         // Create row for required buttons
@@ -462,7 +462,7 @@ const gloom = {
         for (const group in this.optionalButtonGroups) {
             const label = document.createElement("div");
             label.textContent = group.charAt(0).toUpperCase() + group.slice(1);
-            label.className = "btn black textprimary";
+            label.className = "btn sm dark textprimary";
 
             const buttonsRow = createOptionalButtonsForGroup(group);
             buttonsRow.insertBefore(label, buttonsRow.firstChild)
@@ -520,7 +520,7 @@ const gloom = {
                 let cellValue = log[col]
 
                 const cell = document.createElement("div")
-                cell.className = "btn black textsecondary personal-gloom-item"
+                cell.className = "btn sm dark textsecondary personal-gloom-item"
                 if (col.toLowerCase() == "faction") {
                     cell.classList.remove("textsecondary")
                     cell.classList.add(`textf${cellValue}`)
@@ -573,7 +573,7 @@ const gloom = {
         for (let key in data) {
             let cellValue = data[key];
             const cell = document.createElement("div");
-            cell.className = "btn black textsecondary personal-gloom-item";
+            cell.className = "btn sm dark textsecondary personal-gloom-item";
             cell.textContent = cellValue;
             cell.style.margin = marginVal;
             cell.style.padding = paddingVal;
@@ -581,7 +581,7 @@ const gloom = {
         }
         let cellValue = (data.kills / data.deaths).toFixed(2);
         const cellkd = document.createElement("div");
-        cellkd.className = "btn black textsecondary personal-gloom-item";
+        cellkd.className = "btn sm dark textsecondary personal-gloom-item";
         cellkd.textContent = cellValue;
         cellkd.style.margin = marginVal;
         cellkd.style.padding = paddingVal;

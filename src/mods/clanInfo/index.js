@@ -76,7 +76,7 @@ const clanInfo = {
         this.infoElement.insertAdjacentElement("afterend", this.frame.element)
 
         this.btn = element("div")
-            .css("btn navbtn grey")
+            .css("btn navbtn sm grey")
             .style({ marginLeft: "auto" })
             .text("Extended Info")
             .on("click", this.toggleFrame.bind(this))

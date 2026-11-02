@@ -364,7 +364,7 @@ function generateItemDescription(item, left, top) {
 
         // if (!document.querySelector(".copyitemBtnKEK")) {
         //     const copyBtn = document.createElement("div")
-        //     copyBtn.className = "btn black textsecondary copyitemBtnKEK"
+        //     copyBtn.className = "btn sm dark textsecondary copyitemBtnKEK"
         //     copyBtn.textContent = "Copy"
         //     copyBtn.style.padding = "5px"
         //     copyBtn.style.top = "300px"

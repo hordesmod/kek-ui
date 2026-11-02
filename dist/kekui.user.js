@@ -7,16 +7,16 @@
 // @icon        https://www.google.com/s2/favicons?sz=64&domain=hordes.io
 // @license     KEK
 // @author      Scrizz and Grigory. QA Contributors: POG.
-// @version     0.55.0
+// @version     0.90.0
 // @grant       none
 // ==/UserScript==
-/* Version: 0.55.0 - April 7, 2026 22:10:18 */
+/* Version: 0.90.0 - November 2, 2026 20:53:40 */
 'use strict';
 
 const config = {
     appName: "KEK",
     devMode: false,
-    version: "0.55.0",
+    version: "0.90.0",
     localStorageKey: "kekStorage"
 };
 
@@ -470,11 +470,11 @@ const selectors = {
     "partybtn": { selector: ".btn.party", bruteForce: true },
     "skillbar": { selector: "#skillbar", bruteForce: true },
     "expbar": { selector: "#expbar", bruteForce: true },
-    "sysbtnbar": { selector: ".btnbar.svelte-133q4bd", bruteForce: true },
+    "sysbtnbar": { selector: ".l-corner-ur .svelte-1fcu1tf", bruteForce: true },
     "sysbag": { selector: "#sysbag", bruteforce: true },
     "syssocial": { selector: "#syssocial", bruteforce: true },
     "syscog": { selector: "#syscog", bruteforce: true },
-    "partyBtnbar": { selector: ".btnbar", bruteForce: true },
+    "partyBtnbar": { selector: ".l-corner-ul .subnav", bruteForce: true },
     "minimap": { selector: "#minimapcontainer", bruteForce: true },
     "urContainer": { selector: ".l-corner-ur", bruteForce: true },
     "chatPanel":
@@ -866,7 +866,7 @@ function addSysbtn(sysbtnbar, btn) {
     btn.addEventListener("mouseenter", () => {
         if (customBtnbar) {
             const displayBtn = element("div", {
-                className: "btn black displayBtnKEK border textsecondary",
+                className: "btn sm dark displayBtnKEK border textsecondary",
                 textContent: btn.tooltip,
                 style: "padding-left: 3px; padding-right: 3px; margin: 2px;"
             }).element;
@@ -1404,7 +1404,7 @@ const gui = {
     },
     createBtn(text, title, handleFunc) {
         const button = element("div", {
-            className: "btn border black textsecondary",
+            className: "btn sm border dark textsecondary",
             textContent: text,
             tooltip: title,
             style: "padding-left: 3px; padding-right: 3px; margin: 2px;"
@@ -1817,7 +1817,7 @@ const gui = {
             flexContainer.style.display = "flex";
             flexContainer.style.alignItems = "center";
             const colorItem = document.createElement("div");
-            colorItem.className = "color-item-party btn black textsecondary";
+            colorItem.className = "color-item-party btn sm dark textsecondary";
             const classIdx = key.split("bgc")[1];
             colorItem.textContent = this.getClassName(classIdx);
 
@@ -1999,7 +1999,7 @@ const gui = {
 
         const resetBtn = document.createElement("button");
         const resetDiv = document.createElement("div");
-        resetBtn.className = "btn black textsecondary";
+        resetBtn.className = "btn sm dark textsecondary";
         resetBtn.textContent = "Reset";
         resetBtn.addEventListener("click", () => {
             this.setChatColors(this.chatColors);
@@ -2170,7 +2170,7 @@ const gui = {
         // );
         // Add a button for chat color customization
         // const chatColorButton = document.createElement("div");
-        // chatColorButton.className = "kek-ui-btn btn black textsecondary";
+        // chatColorButton.className = "kek-ui-btn btn sm dark textsecondary";
         // chatColorButton.textContent = "Colors";
         // chatColorButton.title = "Click to change chat colors";
         // chatColorButton.style.width = "300px";
@@ -2557,7 +2557,7 @@ const gui = {
             // console.log(guiState)
             // Create buttons for each player
 
-            const presetSelect = element("select").css("btn grey").on("input", e => {
+            const presetSelect = element("select").css("btn sm grey").on("input", e => {
                 // console.log(e.target.value)
                 const profileName = e.target.value;
                 const propsString = JSON.stringify(guiState[profileName]);
@@ -2603,7 +2603,7 @@ const gui = {
 
             // Create an "Import" button
             const importButton = document.createElement('button');
-            importButton.className = "btn black";
+            importButton.className = "btn sm dark";
             const importSpan = document.createElement("span");
             importSpan.classList.add("textsecondary");
             importSpan.textContent = "Import";
@@ -2802,7 +2802,7 @@ function createWindow(titleName, left = '200px', top = '50px', transform, onClos
 
     // Create the close button using the element function
     const closeBtn = element('img', {
-        className: 'btn black svgicon',
+        className: 'btn sm dark svgicon',
         src: '/data/ui/icons/cross.svg?v=8498194',
         style: "margin-top: 6px;"
     });
@@ -2840,7 +2840,7 @@ function createGrid(columnNames, className, marginVal = "3px", paddingVal = "5px
     // Create header row using the element function
     columnNames.forEach(columnName => {
         const headerCell = element('div', {
-            className: 'btn black textprimary grid-header',
+            className: 'btn sm dark textprimary grid-header',
             textContent: columnName,
             style: `margin: ${marginVal}; padding: ${paddingVal};`
         });
@@ -2888,7 +2888,7 @@ const chatEmoji = {
     },
     addControlBtn(channelSelect) {
         this.controlBtn = element("small")
-            .css("btn border black textgrey")
+            .css("btn sm border dark textgrey")
             .text(this.name)
             .style({ lineHeight: "1em", marginRight: "4px" })
             .on("click", () => {this.generateUI();});
@@ -2914,7 +2914,7 @@ const chatEmoji = {
                 const emoji = this.state.emojiList[emojiName];
 
                 const emojiItem = document.createElement('div');
-                emojiItem.className = 'emoji-item btn black textsecondary';
+                emojiItem.className = 'emoji-item btn sm dark textsecondary';
                 const emojiNameSpan = document.createElement("span");
                 emojiNameSpan.classList.add("textsecondary");
                 emojiNameSpan.textContent = emojiName;
@@ -2995,7 +2995,7 @@ const chatEmoji = {
 
                 // Create an "Import" button
                 const importButton = document.createElement('button');
-                importButton.className = 'btn black textsecondary';
+                importButton.className = 'btn sm dark textsecondary';
                 importButton.textContent = 'Import';
 
                 const container = document.createElement('div');
@@ -3108,7 +3108,7 @@ const chatEmoji = {
         emojiNameField.placeholder = 'Enter emoji name';
 
         const saveButton = document.createElement('div');
-        saveButton.className = 'btn black textsecondary';
+        saveButton.className = 'btn sm dark textsecondary';
         saveButton.textContent = 'Save Emoji';
         saveButton.addEventListener('click', function () {
             const emoji = inputField.value.trim();
@@ -3124,7 +3124,7 @@ const chatEmoji = {
 
         // Add "Export" button
         const exportButton = document.createElement('div');
-        exportButton.className = 'btn black textsecondary';
+        exportButton.className = 'btn sm dark textsecondary';
         exportButton.textContent = 'Export Emojis';
         exportButton.addEventListener('click', function (event) {
             handleExportEmojis(event);
@@ -3132,7 +3132,7 @@ const chatEmoji = {
 
         // Add "Import" button
         const importButtonMain = document.createElement('div');
-        importButtonMain.className = 'btn black textsecondary import-emoji-btn';
+        importButtonMain.className = 'btn sm dark textsecondary import-emoji-btn';
         importButtonMain.textContent = 'Import Emojis';
 
         importButtonMain.addEventListener('click', function importEmojiBtn(event) {
@@ -3268,7 +3268,7 @@ const mouseOver = {
     },
     addBtn(sysbtnbar) {
         this.btn = element("div")
-            .css(`btn border black ${this.state.enabled ? "textgreen" : "textgrey"}`)
+            .css(`btn sm border dark ${this.state.enabled ? "textgreen" : "textgrey"}`)
             .text("Mo")
             .style({ paddingLeft: "3px",paddingRight: "3px", margin: "2px" })
             .on("click", () => this.toggleBtn());
@@ -3295,7 +3295,7 @@ const menuFunctions = {
 let inputDisplayEle = null;
 function inputMouseEnter(e) {
     const displayEle = element("div", {
-        className: "btn black textprimary",
+        className: "btn sm dark textprimary",
         textContent: e.target.placeholder,
         style: `
         position: absolute;
@@ -3405,7 +3405,7 @@ const mainMenu = {
 
         const closeButton = document.createElement('img');
         closeButton.src = '/data/ui/icons/cross.svg?v=8498194';
-        closeButton.className = 'btn black svgicon';
+        closeButton.className = 'btn sm dark svgicon';
         closeButton.style.padding = "5px";
         closeButton.addEventListener('click', function () {
             contextMenu.remove();
@@ -3427,7 +3427,7 @@ const mainMenu = {
         // Add choices to the context menu
         choices.forEach(choiceText => {
             const choiceElement = document.createElement('div');
-            choiceElement.className = 'choice-item btn black textsecondary'; // Updated class to "choice-item"
+            choiceElement.className = 'choice-item btn sm dark textsecondary'; // Updated class to "choice-item"
             choiceElement.textContent = choiceText;
             choiceElement.style.padding = "5px";
             choiceElement.style.fontSize = "15px";
@@ -3534,7 +3534,7 @@ const blockPlayers = {
                 // console.log(blockedPlayers)
                 for (let playerName of blockedPlayers) {
                     const blockedPlayerItem = document.createElement('div');
-                    blockedPlayerItem.className = 'blocked-player-item btn black textsecondary';
+                    blockedPlayerItem.className = 'blocked-player-item btn sm dark textsecondary';
                     // blockedPlayerItem.style.padding = "15px"
                     blockedPlayerItem.style.margin = "1px";
                     blockedPlayerItem.style.display = "flex";
@@ -3569,7 +3569,7 @@ const blockPlayers = {
         inputField.placeholder = 'Enter player name';
 
         const blockButton = document.createElement('div');
-        blockButton.className = 'btn black textsecondary';
+        blockButton.className = 'btn sm dark textsecondary';
         blockButton.textContent = 'Block Player';
         blockButton.style.marginTop = "5px";
         blockButton.addEventListener('click', () => {
@@ -3720,7 +3720,6 @@ const expbar = {
         ui.expbar?.element && this.handle();
     },
     stop() {
-        log(stop);
         eventManager.off("ui.expbar", this.handle, this);
         ui.expbar.element.style.display = "block";
     },
@@ -3766,7 +3765,7 @@ const runeTracker = {
     addBtn(partyBtnbar) {
         partyBtnbar = partyBtnbar.element;
         const btnImg = element("img").css("icon svelte-erbdzy").attr("src", "data/items/rune/rune6_q0.avif");
-        this.btn = element("div").css("btn border black textgrey")
+        this.btn = element("div").css("btn sm border dark textgrey")
             .on("click", this.generateUI.bind(this))
             .add(btnImg);
 
@@ -3934,7 +3933,7 @@ const runeTracker = {
             startBtn.className = `btn textprimary rune-tracker-startbtn red`;
         } else {
             startBtn.textContent = "Start";
-            startBtn.className = `btn textprimary rune-tracker-startbtn grey`;
+            startBtn.className = `btn textprimary rune-tracker-startbtn sm grey`;
         }
 
         startBtn.addEventListener('click', () => {
@@ -3951,7 +3950,7 @@ const runeTracker = {
 
                 // Change button text and style back to start functionality
                 startBtn.textContent = "Start";
-                startBtn.className = "btn textsecondary rune-tracker-startbtn grey"; // Change class as needed
+                startBtn.className = "btn textsecondary rune-tracker-startbtn sm grey"; // Change class as needed
 
                 // Set isRuneTrackerActive to false in local storage
                 this.state.isActive = false;
@@ -3962,7 +3961,7 @@ const runeTracker = {
         newBtn.style.flex = 1;
         newBtn.textContent = "New";
         newBtn.style.width = "100px";
-        newBtn.className = `btn textprimary rune-tracker-btn grey`;
+        newBtn.className = `btn textprimary rune-tracker-btn sm grey`;
 
         // Add event listener to the start button
         newBtn.addEventListener('click', () => {
@@ -4012,7 +4011,7 @@ const runeTracker = {
 
         // Create header row for player names
         const playerHeader = document.createElement('div');
-        playerHeader.className = 'btn black textprimary rune-tracker-item';
+        playerHeader.className = 'btn sm dark textprimary rune-tracker-item';
         playerHeader.textContent = 'Players';
         playerHeader.style.width = '100px'; // Width of player names
         playerHeader.style.padding = this.paddingValue;
@@ -4046,7 +4045,7 @@ const runeTracker = {
             const indexInput = document.createElement('input');
 
             const prevButton = document.createElement('button');
-            prevButton.className = "btn grey textsecondary";
+            prevButton.className = "btn sm grey textsecondary";
             prevButton.textContent = '<';
             prevButton.style.padding = "10px";
             prevButton.style.marginLeft = "5px";
@@ -4063,7 +4062,7 @@ const runeTracker = {
             const nextButton = document.createElement('button');
             nextButton.textContent = '>';
             nextButton.style.padding = "10px";
-            nextButton.className = "btn grey textsecondary";
+            nextButton.className = "btn sm grey textsecondary";
             nextButton.addEventListener('click', () => {
                 const dataLength = this.getRuneTrackerDataLength();
                 if (this.idx < dataLength - 1) {
@@ -4113,7 +4112,7 @@ const runeTracker = {
         // Create close button element
         const closeBtn = document.createElement('img');
         closeBtn.src = '/data/ui/icons/cross.svg?v=8498194';
-        closeBtn.className = 'btn black svgicon';
+        closeBtn.className = 'btn sm dark svgicon';
 
         // Append close button to titleFrame
         titleFrame.appendChild(closeBtn);
@@ -4130,7 +4129,7 @@ const runeTracker = {
             // Create header row for rune names
             this.runeNames.forEach(runeName => {
                 const runeHeader = document.createElement('div');
-                runeHeader.className = 'btn black textprimary rune-tracker-item';
+                runeHeader.className = 'btn sm dark textprimary rune-tracker-item';
                 runeHeader.textContent = runeName;
                 runeHeader.style.padding = this.paddingValue;
                 runeHeader.style.margin = this.marginValue;
@@ -4146,7 +4145,7 @@ const runeTracker = {
             for (const playerName in dataToShow) {
                 if (playerName === "by") { continue; }
                 const playerRow = document.createElement('div');
-                playerRow.className = 'btn black textsecondary rune-tracker-item';
+                playerRow.className = 'btn sm dark textsecondary rune-tracker-item';
                 playerRow.textContent = playerName;
                 const isMe = playerName == profileManager.playerName;
                 const state = this.runeData.rawCount[playerName].state;
@@ -4163,7 +4162,7 @@ const runeTracker = {
 
                 for (let tier = 0; tier < this.runeNames.length; tier++) {
                     const runeCell = document.createElement('div');
-                    runeCell.className = 'btn black textsecondary rune-tracker-item';
+                    runeCell.className = 'btn sm dark textsecondary rune-tracker-item';
                     if (isMe) {
                         runeCell.classList.add("textgreen");
                     }
@@ -4296,7 +4295,7 @@ const whispers = {
     },
     addControlBtn(channelSelect) {
         this.controlBtn = element("small")
-            .css("btn border black textgrey")
+            .css("btn sm border dark textgrey")
             .text("Whispers")
             .style({ lineHeight: "1em", marginRight: "4px" })
             .on("click", () => {this.generateUI();});
@@ -4666,7 +4665,7 @@ const whispers = {
     handlePartyBtn(partyBtnbar) {
         partyBtnbar = partyBtnbar.element;
         const btn = element("div", {
-            className: "btn border black textsecondary",
+            className: "btn sm border dark textsecondary",
             textContent: "Whispers"
         }).element;
         btn.addEventListener("click", this.generateUI.bind(this));
@@ -5773,7 +5772,7 @@ function generateItemDescription(item, left, top) {
 
         // if (!document.querySelector(".copyitemBtnKEK")) {
         //     const copyBtn = document.createElement("div")
-        //     copyBtn.className = "btn black textsecondary copyitemBtnKEK"
+        //     copyBtn.className = "btn sm dark textsecondary copyitemBtnKEK"
         //     copyBtn.textContent = "Copy"
         //     copyBtn.style.padding = "5px"
         //     copyBtn.style.top = "300px"
@@ -6783,14 +6782,14 @@ const statsSim = {
                                 inputElement.value = itemInfo.id + `+${itemInfo.upgrade || 0}`;
                                 const overlay = inputElement.nextElementSibling;
                                 if (overlay) {
-                                    overlay.className = "btn black textsecondary stat-sim-overlay";
+                                    overlay.className = "btn sm dark textsecondary stat-sim-overlay";
                                     overlay.classList.add("text" + getTextColor(itemInfo.quality));
                                 }
                             } else {
                                 inputElement.value = "";
                                 const overlay = inputElement.nextElementSibling;
                                 if (overlay) {
-                                    overlay.className = "btn black textsecondary overlay";
+                                    overlay.className = "btn sm dark textsecondary overlay";
                                 }
                             }
                         });
@@ -6831,14 +6830,14 @@ const statsSim = {
                                     inputElement.value = itemInfo.id + `+${itemInfo.upgrade || 0}`;
                                     const overlay = inputElement.nextElementSibling;
                                     if (overlay) {
-                                        overlay.className = "btn black textsecondary overlay";
+                                        overlay.className = "btn sm dark textsecondary overlay";
                                         overlay.classList.add("text" + getTextColor(itemInfo.quality));
                                     }
                                 } else {
                                     inputElement.value = "";
                                     const overlay = inputElement.nextElementSibling;
                                     if (overlay) {
-                                        overlay.className = "btn black textsecondary overlay";
+                                        overlay.className = "btn sm dark textsecondary overlay";
                                     }
                                 }
                             });
@@ -6946,7 +6945,7 @@ const statsSim = {
                 }
                 const statOverlays = document.querySelectorAll(".stat-sim-overlay");
                 for (let overlay of statOverlays) {
-                    overlay.className = "btn black textsecondary stat-sim-overlay";
+                    overlay.className = "btn sm dark textsecondary stat-sim-overlay";
                 }
             });
             // Append the checkbox container to the button container
@@ -7440,9 +7439,9 @@ const presetManager = {
         ],
         3: [
             "STARTER SHAMPACK",
-            {"Gloom":{"Revitalize":5,"Decay":1,"Mimir's Well":4,"Canine Howl":5,"Healing Totem":4,"Summon":1,"Spirit Animal":1,"Mount Riding":1,"Plaguespreader":5}},
-            {"Farming":{"Revitalize":5,"Decay":5,"Canine Howl":5,"Summon":1,"Mount Riding":1,"Soul Harvest":5,"Plaguespreader":5}},
-            {"Obelisk":{"Mend":4,"Revitalize":5,"Decay":1,"Mimir's Well":2,"Healing Totem":4,"Summon":1,"Spirit Animal":1,"Agonize":1,"Mount Riding":1,"Plaguespreader":5,"Mimir's Cleanse":2}},
+            {"Gloom":{"Revitalize":5,"Decay":1,"Mimir's Well":4,"Canine Howl":5,"Healing Totem":4,"Spirit Animal":1,"Mount Riding":1,"Plaguespreader":5}},
+            {"Farming":{"Revitalize":5,"Decay":5,"Canine Howl":5,"Mount Riding":1,"Soul Harvest":5,"Plaguespreader":5}},
+            {"Obelisk":{"Mend":4,"Revitalize":5,"Decay":1,"Mimir's Well":2,"Healing Totem":4,"Spirit Animal":1,"Agonize":1,"Mount Riding":1,"Plaguespreader":5,"Mimir's Cleanse":2}},
             "Example Arena Builds",
             { "3vs3": { "Filler": 1 } },
         ]
@@ -7463,10 +7462,7 @@ const presetManager = {
             grid-template-columns: 1fr 1fr !important; 
             contain: layout style; 
         }
-        .flexer.svelte-1e0alkc {
-            display: grid;
-            gap: 2px;
-        }
+
         .pm-actionbar {
             display: grid;
             grid-gap: 4px;
@@ -7484,7 +7480,7 @@ const presetManager = {
         }
         .pm-tooltip {
         }
-        .ghost { 
+        .gghost { 
             border: 2px dashed orange !important;
             background: transparent !important;
             opacity: 0.4;
@@ -7635,6 +7631,16 @@ const presetManager = {
         skillMenu.classList.add("pm-kek");
         // -----------------------------------------------
 
+        // .flexer.svelte-1e0alkc {
+        //     display: grid !important;
+        //     gap: 2px;
+        //     grid-template-columns: 1fr auto !important;
+        // }
+        const flexer = skillMenu.querySelector('.flexer.svelte-1e0alkc');
+        flexer.style.display = "grid";
+        flexer.style.gap = "2px";
+        // flexer.style.display = "grid"
+
         this.n_skilllist = skillMenu.querySelector('#skilllist');
         this.n_barBot = skillMenu.querySelector(".bar-bot");
 
@@ -7660,7 +7666,7 @@ const presetManager = {
         this.doggy.observe(this.n_skilllist, { childList: true});
         this.piggy = (e) => {
             const c = e.target.className;
-            if (c === 'btn incbtn green svelte-1e0alkc' || c === 'btn incbtn grey svelte-1e0alkc') {
+            if (c === 'btn incbtn green svelte-1e0alkc' || c === 'btn incbtn sm grey svelte-1e0alkc') {
                 setTimeout(() => this.gridUpdate(), 0);
             }
         };
@@ -7671,39 +7677,64 @@ const presetManager = {
         this.n_skilllist.removeEventListener("pointerup", this.piggy);
     },
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+    toggleImport(show) {
+        const controls = [this.presetBtn, this.labelBtn, this.exportBtn, this.colBtn, this.toggleBtn];
+        controls.forEach(c => c.element.style.display = show ? "none" : "block");
+        
+        this.importInput.element.style.display = show ? "block" : "none";
+        if (show) {
+            this.importInput.element.focus();
+            this.importBtn.css("green");
+        } else {
+            this.importBtn.css("black");
+        }
+    },
     updateControls() {
         this.n_skilllist.style.display = this.state.locked ? "none" : "grid";
         this.n_barBot.style.gridTemplateColumns = this.state.locked ? "auto auto 1fr" : "180px auto 1fr";
         this.n_tutapplyskills.style.display = this.state.locked ? "none" : "block";
 
-        this.presetBtn ||= element("div").css("btn black pm-icon pm-preset-icon").data("tip", "Add Preset")
+        this.presetBtn ||= element("div").css("btn sm dark pm-icon pm-preset-icon").data("tip", "Add Preset")
             .on("click", (e) => this.addPreset());
         this.presetBtn.element.style.display = this.state.locked ? "none" : "block";
 
             
-        this.labelBtn ||= element("div").css("btn black pm-icon pm-label-icon").data("tip", "Add Label")
+        this.labelBtn ||= element("div").css("btn sm dark pm-icon pm-label-icon").data("tip", "Add Label")
             .on("click", (e) => this.addLabel());
         this.labelBtn.element.style.display = this.state.locked ? "none" : "block";
 
         if (!this.colBtn) {
-            this.colBtn = element("select").css("btn black textgrey textcenter").data("tip", "Columns")
+            this.colBtn = element("select").css("btn sm dark textgrey textcenter").data("tip", "Columns")
                 .on("change", (e) => {this.state.columns = parseInt(e.target.value);this.updateControls();});
             [1, 2, 3, 4, 5].forEach(num => {this.colBtn.add(element("option").attr("value", num).text(num));});
         }
 
-        this.toggleBtn ||= element("div").css("btn black textgrey textcenter").data("tip", "Lock")
+        this.toggleBtn ||= element("div").css("btn sm dark textgrey textcenter").data("tip", "Lock")
             .on("click", () => {
                 this.state.locked ^= 1;
                 this.updateControls();
             });
 
-        this.importBtn ||= element("div").css("btn black pm-icon pm-import-icon").data("tip", "Import")
+        this.importInput ||= element("input")
+            .css("pm-card-edit textgrey")
+            .attr("placeholder", "Paste JSON...")
+            .style({
+                "display": "none",
+                "grid-column": "1 / span 3"
+            })
+            .on("keyup", (e) => {
+                if (e.key === "Enter") this.processImport(e.target.value);
+                if (e.key === "Escape") this.toggleImport(false);
+            });
+
+        this.importBtn ||= element("div").css("btn sm dark pm-icon pm-import-icon").data("tip", "Import")
             .on("click", () => {
-                this.import();
+                this.toggleImport(true);
+                // this.import();
             });
         this.importBtn.element.style.display = this.state.locked ? "none" : "block";
 
-        this.exportBtn ||= element("div").css("btn black pm-icon pm-export-icon").data("tip", "Export All")
+        this.exportBtn ||= element("div").css("btn sm dark pm-icon pm-export-icon").data("tip", "Export All")
             .on("click", () => {
                 this.export();
             });
@@ -7715,13 +7746,14 @@ const presetManager = {
                 if (tip && !this.state.locked) this.toolTip.textContent = tip;
             })
             .on("mouseout", () => this.toolTip.textContent = "")
+            // .add(this.importInput)
             .add(this.toggleBtn)
             .add(this.colBtn)
             .add(element("div"))
             .add(this.presetBtn)
             .add(this.labelBtn)
-            .add(this.importBtn)
-            .add(this.exportBtn);
+            .add(this.exportBtn)
+            .add(this.importBtn);
         
         this.grid ||= element("div").css("pm-grid scrollbar panel-black");
         this.grid._initialized ||= (this.initGridEvents(), true);
@@ -7848,7 +7880,7 @@ const presetManager = {
         await navigator.clipboard.writeText(output);
         try {
             await navigator.clipboard.writeText(output);
-            !this.state.locked && (this.toolTip.innerText = index !== null ? "Preset Copied to Clipboard!" : "Exported to Clipboard!");
+            !this.state.locked && (this.toolTip.innerText = index !== null ? "Copied to Clipboard!" : "Exported to Clipboard!");
             setTimeout(() => this.toolTip.innerText = "", 2000);
         } catch (err) {
             this.toolTip.innerText = "Export failed" + err;
@@ -7935,7 +7967,7 @@ const presetManager = {
             .css(`pm-card ${isLabel ? "pm-label" : "pm-preset"}${isEditing ? " is-editing" : ""}`)
             .data("index", index);
 
-        if (this.draggedIndex === index) card.toggle("ghost");
+        if (this.draggedIndex === index) card.toggle("gghost");
 
         const dotControl = element("div").css("pm-card-dots").text("⋮");
         const actionControl = element("div")
@@ -8032,14 +8064,14 @@ const presetManager = {
 
             this.draggedIndex = parseInt(card.dataset.index);
 
-            card.classList.add("ghost");
+            card.classList.add("gghost");
 
             e.dataTransfer.effectAllowed = "move";
             e.dataTransfer.setData("text/plain", this.draggedIndex);
 
             grid.element.classList.add("is-dragging");
 
-            setTimeout(() => card.classList.add("ghost"), 0);
+            setTimeout(() => card.classList.add("gghost"), 0);
         });
         // let lastMove = 0;
         grid.on("dragover", (e) => {
@@ -8260,7 +8292,7 @@ const fameInfo = {
         this.btnFame = element("span").css("textfame").text("...");
         const btnFameImg = element("img").css("icon svelte-erbdzy").attr("src", "/data/ui/currency/fame.svg");
 
-        this.btn = element("div").css("btn border black")
+        this.btn = element("div").css("btn sm border dark")
             .on("mouseover", this.showFrame.bind(this))
             .on("mouseleave", this.removeFrameDelay.bind(this))
             .on("click", this.execBtn)
@@ -8508,7 +8540,7 @@ const chatTranslator = {
     },
     addControlBtn(channelSelect) {
         // log(channelSelect)
-        this.controlBtn = element("small").css(`btn border black text${this.state.auto && "green" || "grey"}`).text("Translate").style({ lineHeight: "1em" })
+        this.controlBtn = element("small").css(`btn sm border dark text${this.state.auto && "green" || "grey"}`).text("Translate").style({ lineHeight: "1em" })
             .on("click", e => {
                 if (e.button == 0) {
                     ["textgrey", "textgreen"].forEach(c => e.target.classList.toggle(c));
@@ -8567,7 +8599,7 @@ const chatTranslator = {
     },
     addInputBtn(chatInput) {
         chatInput.style = "grid-template-columns: auto 1fr auto";
-        this.inputBtn = element("div").css(`btn border black text${this.state.input && "green" || "grey"}`).text(`⇄ ${this.state.inputTo}`)
+        this.inputBtn = element("div").css(`btn sm border dark text${this.state.input && "green" || "grey"}`).text(`⇄ ${this.state.inputTo}`)
             .on("mouseup", e => {
                 if (e.button == 0) {
                     ["textgrey", "textgreen"].forEach(c => e.target.classList.toggle(c));
@@ -8592,7 +8624,7 @@ const chatTranslator = {
         const grid = element("div").css("menu panel-black grid four");
         let languages = this.state.lr && languageListReduced || languageList;
         for (const [key, value] of Object.entries(languages)) {
-            const langElement = element("small").css(`btn border black text${key === this.state.inputTo && "green" || "grey"}`).text(value).data("id", key);
+            const langElement = element("small").css(`btn sm border dark text${key === this.state.inputTo && "green" || "grey"}`).text(value).data("id", key);
             grid.add(langElement);
         }
         this.frame
@@ -8789,7 +8821,7 @@ const buffOnly = {
     addBtn(sysbtnbar) {
         const status = localStorage.getItem("buffsHideIrrelevant") === "true";
         this.btn = element("div")
-            .css(`btn border black text${status ? "green" : "grey"}`)
+            .css(`btn sm border dark text${status ? "green" : "grey"}`)
             .style({
                 paddingLeft: "3px",
                 paddingRight: "3px",
@@ -8815,7 +8847,7 @@ const buffOnly = {
     toggleSetting() {
         if (this.change) {
             ui.settingsParent.element.children[0].children[1].children[0].children[0].children[0].click(); //kek
-            ui.settingsParent.element.children[0].children[1].children[0].children[1].children[1].children[61].click(); //kek^2
+            ui.settingsParent.element.children[0].children[1].children[0].children[1].children[1].children[63].click(); //kek^2
             ui.syscog.element.click();
             this.change = 0;
         }
@@ -8975,7 +9007,7 @@ const killTracker = {
     },
     addBtn(partyBtnbar) {
         partyBtnbar = partyBtnbar.element;
-        const btn = element("div").css("btn black textwhite");
+        const btn = element("div").css("btn sm dark textwhite");
         const vgElement = element("span").css("textf0");
         const blElement = element("span").css("textf1");
         const killsTextSpan = element("span").css("textexp").text(`${this.state.isTitle && "Kills: " || ""}`);
@@ -9136,7 +9168,7 @@ const killTracker = {
 
         const tab = element("div", {
             textContent: textContent,
-            className: `btn black textsecondary ${isSelected ? "tab-button tab-selected" : "tab-button"}`,
+            className: `btn sm dark textsecondary ${isSelected ? "tab-button tab-selected" : "tab-button"}`,
         }).element;
 
         tab.addEventListener("click", () => {
@@ -9211,7 +9243,7 @@ const killTracker = {
     createFilterInput(placeholder, attribute) {
         const inputMouseEnter = (e) => {
             const displayEle = element("div", {
-                className: "btn black textprimary",
+                className: "btn sm dark textprimary",
                 textContent: e.target.placeholder,
                 style: `
                 position: absolute;
@@ -9232,7 +9264,7 @@ const killTracker = {
             type: "text",
             placeholder: placeholder,
             value: this.state.filters[attribute] || "",
-            className: "btn black textsilver"
+            className: "btn sm dark textsilver"
         }).element;
 
         if (attribute == "time") {
@@ -9294,7 +9326,7 @@ const killTracker = {
         });
         const titleframe = killWindow.querySelector(".titleframe");
         const sortingDisplay = element("div", {
-            className: "btn black textgrey sortingDisplay tab-button",
+            className: "btn sm dark textgrey sortingDisplay tab-button",
             textContent: `Sorting: ${this.state.sorting.column} in ${this.state.sorting.order == "asc" ? "Ascending" : "Descending"}`
         }).element;
 
@@ -9321,7 +9353,7 @@ const killTracker = {
         const topCurrencyTab = this.createTab("topCurrency", "Top Currency");
 
         const deleteBtn = element("div", {
-            className: "btn black textgrey tab-button",
+            className: "btn sm dark textgrey tab-button",
             textContent: "Delete Latest"
         }).element;
         deleteBtn.addEventListener("click", (e) => {
@@ -9425,7 +9457,7 @@ const killTracker = {
             for (const [key, value] of Object.entries(killInfo)) {
                 if (["targetFaction", "faction", "targetClass", "class", "level", "targetLevel"].includes(key)) continue
                 const killItem = element("div", {
-                    className: "btn black textsecondary kill-item",
+                    className: "btn sm dark textsecondary kill-item",
                     textContent: value,
                     style: "text-align: left; padding-left: 10px"
                 }).element;
@@ -9960,7 +9992,7 @@ const clanInfo = {
         this.infoElement.insertAdjacentElement("afterend", this.frame.element);
 
         this.btn = element("div")
-            .css("btn navbtn grey")
+            .css("btn navbtn sm grey")
             .style({ marginLeft: "auto" })
             .text("Extended Info")
             .on("click", this.toggleFrame.bind(this));
@@ -10333,7 +10365,7 @@ const merchant = {
         this.filters = Array(this.stats.length).fill(0);
         for (const stat of ["Strength", "Intelligence", "Dexterity", "Wisdom", null, "Critical", "Haste", null, "Min Dmg.", "Max Dmg.", null, "Stamina", "Defense", "Block"]) {
             const filter = element("div").text(stat);
-            const checkbox = stat && element("div").css("btn checkbox").on("click", () => {
+            const checkbox = stat && element("div").css("checkbox").on("click", () => {
                 checkbox.toggle("active");
                 const statIdx = this.stats.indexOf(stat);
                 this.filters[statIdx] ^= 1;
@@ -10350,7 +10382,7 @@ const merchant = {
             "Epic": { color: "purp", value: 90 },
             "99+": { color: "orange", value: 99 },
         };
-        const qualitySelect = element("select").css("btn grey").style({ gridColumn: "span 2", height: "30px" }).on("change", e => {
+        const qualitySelect = element("select").css("btn sm grey").style({ gridColumn: "span 2", height: "30px" }).on("change", e => {
             this.qualityFilter = e.target.value;
             this.filter();
         });
@@ -10467,7 +10499,7 @@ const timers = {
         this.btnLabel = element("span").css("textexp").text(`${this.state.isTitle && "Time: " || ""}`);
         this.btnText = element("span").css("textgreen").text(".");
 
-        this.btn = element("div").css("btn border black textgrey")
+        this.btn = element("div").css("btn sm border dark textgrey")
             .on("mouseenter", this.showFrame.bind(this))
             .on("mouseleave", () => this.removeFrameDelay(100))
             .add(this.btnLabel)
@@ -10545,12 +10577,12 @@ const timers = {
         // DEBUG RANGE
 
         // const btnbar = element("div").css("btnbar span")
-        // const play = element("div").css("btn grey textwhite textcenter").text("⏵").style({ width: "24px" })
+        // const play = element("div").css("btn sm grey textwhite textcenter").text("⏵").style({ width: "24px" })
         // btnbar.add(play)
 
         // const timerCustom = [10, 15, 20, 30, 45, 60]
         // for (const custom of timerCustom) {
-        //     const t = element("div").css("btn grey textwhite").text(`${custom}m`)
+        //     const t = element("div").css("btn sm grey textwhite").text(`${custom}m`)
         //     btnbar.add(t)
         // }
         // frame.add(btnbar)
@@ -10659,8 +10691,8 @@ const partyBtnTweaks = {
         const btn = ui.partybtn.element;
         btn.innerText = "Party";
         this.state.isBlack
-            ? (btn.classList.add("black"), btn.classList.add("textparty"))
-            : (btn.classList.remove("black"), btn.classList.remove("textparty"));
+            ? (btn.classList.add("dark"), btn.classList.add("textparty"))
+            : (btn.classList.remove("dark"), btn.classList.remove("textparty"));
 
         this.state.isAuto
             ? (btn.addEventListener("mouseup", this.control.bind(this)), eventManager.on("ui.contextMenu", this.contextMenu, this))
@@ -10807,7 +10839,7 @@ class Frame {
             })
             .to(this.titlebar);
 
-        this.closeBtn = element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
+        this.closeBtn = element("img").css("btn sm dark svgicon").attr("src", "/data/ui/icons/cross.svg")
             .on("click", this.remove.bind(this))
             .to(this.titlebar);
     }
@@ -11055,7 +11087,7 @@ class MultiSelect {
                     option.element.children[0].classList.toggle("active");
                     this.update();
                 });
-            const checkbox = element("div").css("btn checkbox");
+            const checkbox = element("div").css("checkbox");
             const label = element("div").text(value).style({
                 // color: "#a6dcd5",
                 paddingLeft: "0.7em",
@@ -11184,7 +11216,7 @@ const itemFilters = {
 
         const filterContainer = element("div").style({ display: "grid", gridTemplateColumns: "1fr auto", gridGap: "4px", marginBottom: "8px", });
 
-        this.presetSelect = element("select").css("btn grey")
+        this.presetSelect = element("select").css("btn sm grey")
             .on("input", e => {
                 this.state.preset = e.target.value;
             });
@@ -11192,7 +11224,7 @@ const itemFilters = {
 
         this.enabled = 0;
         const btn = element("div")
-            .css("btn border grey")
+            .css("btn sm border grey")
             .text("Filter")
             .on("pointerup", e => {
                 if (e.button == 0) {
@@ -11517,7 +11549,7 @@ const itemFilters = {
         this.newRecordContainer.add(colorLabel).add(this.colorSelect);
 
         const clearBtn = element("div")
-            .css("btn grey")
+            .css("btn sm grey")
             .style({
                 gridColumn: "span 7",
                 width: "80px",
@@ -11574,7 +11606,7 @@ const itemFilters = {
 
         // EDIT RECORD BTN
         const editBtn = element("div")
-            .css("btn grey textgreen")
+            .css("btn sm grey textgreen")
             .text("Edit Filter")
             .on("click", () => {
                 const displayValue = this.newRecordContainer.element.style.display === "none" ? "grid" : "none";
@@ -11618,7 +11650,7 @@ const itemFilters = {
 
         const selectControl = () => {
             presetAction.clear();
-            const select = element("select").css("btn grey")
+            const select = element("select").css("btn sm grey")
                 .on("input", e => {
                     this.state.preset = e.target.value;
                     this.updatePresetSelect();
@@ -11725,10 +11757,10 @@ const itemFilters = {
         element("div").css("btn green").text("Create").on("click", () => {
             createControl();
         }).to(presetContainer);
-        element("div").css("btn grey").text("Import").on("click", () => {
+        element("div").css("btn sm grey").text("Import").on("click", () => {
             importControl();
         }).to(presetContainer);
-        element("div").css("btn grey").text("Export").on("click", () => {
+        element("div").css("btn sm grey").text("Export").on("click", () => {
             exportControl();
         }).to(presetContainer);
         element("div").css("btn red").text("Delete").on("click", () => {
@@ -12037,7 +12069,7 @@ const chatLog = {
 
         const createButton = (stateProperty, text, className, onClick) => {
             return element("small")
-                .css(`btn border black text${this.state[stateProperty] ? className : "grey"}`)
+                .css(`btn sm border dark text${this.state[stateProperty] ? className : "grey"}`)
                 .text(text)
                 .on("click", e => {
                     this.state[stateProperty] ^= 1;
@@ -12451,34 +12483,74 @@ const chatLog = {
 
 class StyleManager {
     constructor() {
-        this.cssStyleSheet = new CSSStyleSheet();
-        document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.cssStyleSheet];
+        if (window.__STYLE_MANAGER_SHEET__) {
+            this.cssStyleSheet = window.__STYLE_MANAGER_SHEET__;
+            return;
+        }
 
+        this.cssStyleSheet = new CSSStyleSheet();
+        window.__STYLE_MANAGER_SHEET__ = this.cssStyleSheet;
+        
+        document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.cssStyleSheet];
     }
+
     init() {
-        this.css_mods = [...moduleManager$1].map(mod => mod.style || "").join("");
-        this.cssStyleSheet.replaceSync(this.css_mods);
+        const css_mods = [...moduleManager$1].map(mod => mod.style || "").join("");
+        this.cssStyleSheet.replaceSync(css_mods);
     }
+
     add(cssRules) {
-        // Split the rules into an array and insert each rule individually
         cssRules.split("}").forEach((rule) => {
             const trimmedRule = rule.trim();
             if (trimmedRule !== "") {
-                this.cssStyleSheet.insertRule(trimmedRule, this.cssStyleSheet.cssRules.length);
+                try {
+                    this.cssStyleSheet.insertRule(trimmedRule + "}", this.cssStyleSheet.cssRules.length);
+                } catch(e) {}
             }
         });
-        document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.cssStyleSheet];
-    }
-    show() {
-        for (const rule of this.cssStyleSheet.cssRules) {
-            console.log(rule.cssText);
-        }
     }
 }
 
-
-
 const styleManager = new StyleManager();
+
+// class StyleManager {
+//     constructor() {
+//   const existingSheet = document.adoptedStyleSheets.find(s => s._isStyleManager);
+    
+//     if (existingSheet) {
+//         this.cssStyleSheet = existingSheet;
+//     } else {
+//         this.cssStyleSheet = new CSSStyleSheet();
+//         this.cssStyleSheet._isStyleManager = true; // Mark it
+//         document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.cssStyleSheet];
+//     }
+//     }
+//     init() {
+//         this.css_mods = [...moduleManager].map(mod => mod.style || "").join("")
+//         this.cssStyleSheet.replaceSync(this.css_mods)
+//     }
+//     add(cssRules) {
+//         // Split the rules into an array and insert each rule individually
+//         cssRules.split("}").forEach((rule) => {
+//             const trimmedRule = rule.trim()
+//             if (trimmedRule !== "") {
+//                 this.cssStyleSheet.insertRule(trimmedRule, this.cssStyleSheet.cssRules.length)
+//             }
+//         })
+//         document.adoptedStyleSheets = [...document.adoptedStyleSheets, this.cssStyleSheet]
+//     }
+//     show() {
+//         for (const rule of this.cssStyleSheet.cssRules) {
+//             console.log(rule.cssText)
+//         }
+//     }
+// }
+
+
+
+// const styleManager = new StyleManager()
+
+// export default styleManager
 
 const skillbar = {
     name: "Skillbar Tweaks",
@@ -12596,7 +12668,7 @@ const MinimalUI = {
     change: 0,
     addBtn(sysbtnbar) {
         this.btn = element("div")
-            .css("btn border black textgrey")
+            .css("btn sm border dark textgrey")
             .style({
                 paddingLeft: "3px",
                 paddingRight: "3px",
@@ -12885,7 +12957,7 @@ const bosslog = {
             // .text("The rules don't matter — only the data and the chaos do."));
             .text("Net positive Digital Valhalla (Whiners Excluded)"));
             
-        titleFrame.add(element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
+        titleFrame.add(element("img").css("btn sm dark svgicon").attr("src", "/data/ui/icons/cross.svg")
             .on("click", () => this.toggleFrame()));
         const toolbarSlot = element("div").css("slot");
         const toolbarLayout = element("div").css("bosslog-grid");
@@ -12935,7 +13007,7 @@ const bosslog = {
         const parent = partyBtnbar.element || partyBtnbar;
         this.btnLabel = element("span").css("textprestige").text(this.state.isTitle ? "ossLog" : "");
         this.icon = element("div").css("textprestige bosslog-btn-icon").text("B");
-        this.btn = element("div").css("btn border black").on("click", () => this.toggleFrame()).add(this.icon).add(this.btnLabel);
+        this.btn = element("div").css("btn sm border dark").on("click", () => this.toggleFrame()).add(this.icon).add(this.btnLabel);
         parent.appendChild(this.btn.element);
     },
     updateBtnTitle() {
@@ -13198,8 +13270,8 @@ const bosslog = {
         const color = item.color || "textwhite";
         const filterKey = text.toLowerCase();
         const isActive = this.filters[filterKey] === 1;
-        const activeClass = `bosslog-btn btn grey border ${color} active`;
-        const inactiveClass = `bosslog-btn btn grey ${color}`;
+        const activeClass = `bosslog-btn btn sm grey border ${color} active`;
+        const inactiveClass = `bosslog-btn btn sm grey ${color}`;
         const btn = element("div")
             .css(isActive ? activeClass : inactiveClass) // Set correct class on creation
             .text(text)
@@ -13219,7 +13291,7 @@ const bosslog = {
             const leftGroup = element("div").style({ "display": "flex", "gap": "8px" });
             config.buttons.forEach(btn => {
                 leftGroup.add(element("div")
-                    .css(`btn black textwhite ${btn.css || ""}`)
+                    .css(`btn sm dark textwhite ${btn.css || ""}`)
                     .style({ "padding": "4px 12px", "cursor": "pointer", "white-space": "nowrap" })
                     .text(btn.text)
                     .on("click", () => btn.click()));
@@ -13613,7 +13685,7 @@ class UpdateManager {
                             fontWeight: "700",
                             pointerEvents: "none",
                         });
-                    const closeBtn = element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
+                    const closeBtn = element("img").css("btn sm dark svgicon").attr("src", "/data/ui/icons/cross.svg")
                         .on("click", () => posWindow.remove());
                     titleframe.add(title).add(closeBtn);
 
@@ -13788,7 +13860,7 @@ class SettingsManager {
 
             settings.add(modName);
 
-            const modField = element("div").css(`btn checkbox${moduleManager$1.status(mod.name) && " active" || ""}`)
+            const modField = element("div").css(`checkbox${moduleManager$1.status(mod.name) && " active" || ""}`)
                 .on("click", () => {
                     moduleManager$1.toggle(mod.name);
                     modField.toggle("active");
@@ -13821,7 +13893,7 @@ class SettingsManager {
                                 e.target.value = e.key.toLowerCase();
                                 keyManager.updateKey(modName, keyDescription, e.target.value);
                             });
-                        const fieldBtn = element("div").css("btn grey textwhite").text("clear")
+                        const fieldBtn = element("div").css("btn sm grey textwhite").text("clear")
                             .on("click", () => {
                                 fieldControl.element.value = "";
                                 keyManager.updateKey(modName, keyDescription, "");
@@ -13882,7 +13954,7 @@ class SettingsManager {
         const title = element("h3").css("textprimary").text("KEK Settings");
 
         const modSelectContainer = element("div").css("panel-black");
-        const modSelect = element("select").css("btn grey")
+        const modSelect = element("select").css("btn sm grey")
             .on("change", e => {
                 const selectedOption = document.getElementById(e.target.value);
                 const scrollableElement = this.panel.element;
@@ -13940,7 +14012,7 @@ class SettingsManager {
 
         if (field.control === "checkbox") {
             control = element("div")
-                .css(`btn checkbox${mod.state[fieldName] ? " active" : ""}`)
+                .css(`checkbox${mod.state[fieldName] ? " active" : ""}`)
                 .on("pointerup", e => {
                     if (e.button === 0) {
                         e.target.classList.toggle("active");
@@ -14015,7 +14087,7 @@ class SettingsManager {
                 soundManager.play(mod.state[fieldName]);
                 field.onupdate && mod[field.onupdate]();
             });
-            const play = element("div").css("btn grey textwhite").text("⏵")
+            const play = element("div").css("btn sm grey textwhite").text("⏵")
                 .on("click", () => {
                     soundManager.play(mod.state[fieldName]);
                 });
@@ -14031,7 +14103,7 @@ class SettingsManager {
                     mod.state[fieldName] = e.target.value;
                     field.onupdate && mod[field.onupdate]();
                 });
-            const reset = element("div").css("btn black").text("default color").style({ color: field.default })
+            const reset = element("div").css("btn sm dark").text("default color").style({ color: field.default })
                 .on("click", () => {
                     colorpicker.element.value = field.default;
                     mod.state[fieldName] = field.default;

@@ -62,7 +62,7 @@ const timers = {
         this.btnLabel = element("span").css("textexp").text(`${this.state.isTitle && "Time: " || ""}`)
         this.btnText = element("span").css("textgreen").text(".")
 
-        this.btn = element("div").css("btn border black textgrey")
+        this.btn = element("div").css("btn sm border dark textgrey")
             .on("mouseenter", this.showFrame.bind(this))
             .on("mouseleave", () => this.removeFrameDelay(100))
             .add(this.btnLabel)
@@ -140,12 +140,12 @@ const timers = {
         // DEBUG RANGE
 
         // const btnbar = element("div").css("btnbar span")
-        // const play = element("div").css("btn grey textwhite textcenter").text("⏵").style({ width: "24px" })
+        // const play = element("div").css("btn sm grey textwhite textcenter").text("⏵").style({ width: "24px" })
         // btnbar.add(play)
 
         // const timerCustom = [10, 15, 20, 30, 45, 60]
         // for (const custom of timerCustom) {
-        //     const t = element("div").css("btn grey textwhite").text(`${custom}m`)
+        //     const t = element("div").css("btn sm grey textwhite").text(`${custom}m`)
         //     btnbar.add(t)
         // }
         // frame.add(btnbar)

@@ -172,7 +172,7 @@ const chatLog = {
 
         const createButton = (stateProperty, text, className, onClick) => {
             return element("small")
-                .css(`btn border black text${this.state[stateProperty] ? className : "grey"}`)
+                .css(`btn sm border dark text${this.state[stateProperty] ? className : "grey"}`)
                 .text(text)
                 .on("click", e => {
                     this.state[stateProperty] ^= 1

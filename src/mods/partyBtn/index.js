@@ -27,8 +27,8 @@ const partyBtnTweaks = {
         const btn = ui.partybtn.element
         btn.innerText = "Party"
         this.state.isBlack
-            ? (btn.classList.add("black"), btn.classList.add("textparty"))
-            : (btn.classList.remove("black"), btn.classList.remove("textparty"))
+            ? (btn.classList.add("dark"), btn.classList.add("textparty"))
+            : (btn.classList.remove("dark"), btn.classList.remove("textparty"))
 
         this.state.isAuto
             ? (btn.addEventListener("mouseup", this.control.bind(this)), eventManager.on("ui.contextMenu", this.contextMenu, this))

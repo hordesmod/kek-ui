@@ -158,7 +158,7 @@ const killTracker = {
     },
     addBtn(partyBtnbar) {
         partyBtnbar = partyBtnbar.element
-        const btn = element("div").css("btn black textwhite")
+        const btn = element("div").css("btn sm dark textwhite")
         const vgElement = element("span").css("textf0")
         const blElement = element("span").css("textf1")
         const killsTextSpan = element("span").css("textexp").text(`${this.state.isTitle && "Kills: " || ""}`)
@@ -319,7 +319,7 @@ const killTracker = {
 
         const tab = element("div", {
             textContent: textContent,
-            className: `btn black textsecondary ${isSelected ? "tab-button tab-selected" : "tab-button"}`,
+            className: `btn sm dark textsecondary ${isSelected ? "tab-button tab-selected" : "tab-button"}`,
         }).element;
 
         tab.addEventListener("click", () => {
@@ -394,7 +394,7 @@ const killTracker = {
     createFilterInput(placeholder, attribute) {
         const inputMouseEnter = (e) => {
             const displayEle = element("div", {
-                className: "btn black textprimary",
+                className: "btn sm dark textprimary",
                 textContent: e.target.placeholder,
                 style: `
                 position: absolute;
@@ -415,7 +415,7 @@ const killTracker = {
             type: "text",
             placeholder: placeholder,
             value: this.state.filters[attribute] || "",
-            className: "btn black textsilver"
+            className: "btn sm dark textsilver"
         }).element;
 
         if (attribute == "time") {
@@ -477,7 +477,7 @@ const killTracker = {
         })
         const titleframe = killWindow.querySelector(".titleframe")
         const sortingDisplay = element("div", {
-            className: "btn black textgrey sortingDisplay tab-button",
+            className: "btn sm dark textgrey sortingDisplay tab-button",
             textContent: `Sorting: ${this.state.sorting.column} in ${this.state.sorting.order == "asc" ? "Ascending" : "Descending"}`
         }).element
 
@@ -504,7 +504,7 @@ const killTracker = {
         const topCurrencyTab = this.createTab("topCurrency", "Top Currency");
 
         const deleteBtn = element("div", {
-            className: "btn black textgrey tab-button",
+            className: "btn sm dark textgrey tab-button",
             textContent: "Delete Latest"
         }).element
         deleteBtn.addEventListener("click", (e) => {
@@ -608,7 +608,7 @@ const killTracker = {
             for (const [key, value] of Object.entries(killInfo)) {
                 if (["targetFaction", "faction", "targetClass", "class", "level", "targetLevel"].includes(key)) continue
                 const killItem = element("div", {
-                    className: "btn black textsecondary kill-item",
+                    className: "btn sm dark textsecondary kill-item",
                     textContent: value,
                     style: "text-align: left; padding-left: 10px"
                 }).element

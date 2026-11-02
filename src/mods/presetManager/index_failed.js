@@ -156,22 +156,22 @@ const presetManager = {
     toggleBtn: NaN,
     uiCreate(){
         this.btnTip ||= element("div").css("btn textgrey textright")
-        this.addBtn ||= element("div").css("btn black textgrey textcenter").text("🞤")
+        this.addBtn ||= element("div").css("btn sm dark textgrey textcenter").text("🞤")
             .on("click", e => this.addPreset())
             .on("pointerenter", e => this.btnTip.text("Add Preset"))
             .on("pointerleave", e => this.btnTip.text(""))
-        this.lblBtn ||= element("div").css("btn black textgrey textcenter").text("🞸")
+        this.lblBtn ||= element("div").css("btn sm dark textgrey textcenter").text("🞸")
             .on("click", e => this.addLabel())
             .on("pointerenter", e => this.btnTip.text("Add Label"))
             .on("pointerleave", e => this.btnTip.text(""))
 
-        this.impexBtn ||= element("div").css("btn black textgrey textcenter").text("🗘")
+        this.impexBtn ||= element("div").css("btn sm dark textgrey textcenter").text("🗘")
             .on("click", e => this.addLabel())
             .on("pointerenter", e => this.btnTip.text("Import | Export"))
             .on("pointerleave", e => this.btnTip.text(""))
         
         if (!this.columnsBtn) {
-            this.columnsBtn = element("select").css("btn black textgrey").style({ "width": "40px", "height": "32px" })
+            this.columnsBtn = element("select").css("btn sm dark textgrey").style({ "width": "40px", "height": "32px" })
                 .on("change", (e) => {
                     this.state.columns = parseInt(e.target.value);
                     this.gridUpdate(); 
@@ -183,7 +183,7 @@ const presetManager = {
             .on("pointerenter", e => this.btnTip.text("Columns"))
             .on("pointerleave", e => this.btnTip.text(""))
             
-        this.toggleBtn ||= element("div").css("btn black textgrey textcenter")
+        this.toggleBtn ||= element("div").css("btn sm dark textgrey textcenter")
                 .style({"width": "20px"})
                 .text(this.state.locked ? "🞂" : "🞀")
                 .on("click", () => {

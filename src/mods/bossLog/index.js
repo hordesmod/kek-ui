@@ -237,7 +237,7 @@ const bosslog = {
             // .text("The rules don't matter — only the data and the chaos do."));
             .text("Net positive Digital Valhalla (Whiners Excluded)"));
             
-        titleFrame.add(element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
+        titleFrame.add(element("img").css("btn sm dark svgicon").attr("src", "/data/ui/icons/cross.svg")
             .on("click", () => this.toggleFrame()));
         const toolbarSlot = element("div").css("slot");
         const toolbarLayout = element("div").css("bosslog-grid");
@@ -287,7 +287,7 @@ const bosslog = {
         const parent = partyBtnbar.element || partyBtnbar;
         this.btnLabel = element("span").css("textprestige").text(this.state.isTitle ? "ossLog" : "");
         this.icon = element("div").css("textprestige bosslog-btn-icon").text("B");
-        this.btn = element("div").css("btn border black").on("click", () => this.toggleFrame()).add(this.icon).add(this.btnLabel);
+        this.btn = element("div").css("btn sm border dark").on("click", () => this.toggleFrame()).add(this.icon).add(this.btnLabel);
         parent.appendChild(this.btn.element);
     },
     updateBtnTitle() {
@@ -550,8 +550,8 @@ const bosslog = {
         const color = item.color || "textwhite";
         const filterKey = text.toLowerCase();
         const isActive = this.filters[filterKey] === 1;
-        const activeClass = `bosslog-btn btn grey border ${color} active`;
-        const inactiveClass = `bosslog-btn btn grey ${color}`;
+        const activeClass = `bosslog-btn btn sm grey border ${color} active`;
+        const inactiveClass = `bosslog-btn btn sm grey ${color}`;
         const btn = element("div")
             .css(isActive ? activeClass : inactiveClass) // Set correct class on creation
             .text(text)
@@ -571,7 +571,7 @@ const bosslog = {
             const leftGroup = element("div").style({ "display": "flex", "gap": "8px" });
             config.buttons.forEach(btn => {
                 leftGroup.add(element("div")
-                    .css(`btn black textwhite ${btn.css || ""}`)
+                    .css(`btn sm dark textwhite ${btn.css || ""}`)
                     .style({ "padding": "4px 12px", "cursor": "pointer", "white-space": "nowrap" })
                     .text(btn.text)
                     .on("click", () => btn.click()));

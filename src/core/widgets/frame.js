@@ -91,7 +91,7 @@ class Frame {
             })
             .to(this.titlebar)
 
-        this.closeBtn = element("img").css("btn black svgicon").attr("src", "/data/ui/icons/cross.svg")
+        this.closeBtn = element("img").css("btn sm dark svgicon").attr("src", "/data/ui/icons/cross.svg")
             .on("click", this.remove.bind(this))
             .to(this.titlebar)
     }

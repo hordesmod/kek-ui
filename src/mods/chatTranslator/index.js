@@ -66,7 +66,7 @@ const chatTranslator = {
     },
     addControlBtn(channelSelect) {
         // log(channelSelect)
-        this.controlBtn = element("small").css(`btn border black text${this.state.auto && "green" || "grey"}`).text("Translate").style({ lineHeight: "1em" })
+        this.controlBtn = element("small").css(`btn sm border dark text${this.state.auto && "green" || "grey"}`).text("Translate").style({ lineHeight: "1em" })
             .on("click", e => {
                 if (e.button == 0) {
                     ["textgrey", "textgreen"].forEach(c => e.target.classList.toggle(c))
@@ -125,7 +125,7 @@ const chatTranslator = {
     },
     addInputBtn(chatInput) {
         chatInput.style = "grid-template-columns: auto 1fr auto"
-        this.inputBtn = element("div").css(`btn border black text${this.state.input && "green" || "grey"}`).text(`⇄ ${this.state.inputTo}`)
+        this.inputBtn = element("div").css(`btn sm border dark text${this.state.input && "green" || "grey"}`).text(`⇄ ${this.state.inputTo}`)
             .on("mouseup", e => {
                 if (e.button == 0) {
                     ["textgrey", "textgreen"].forEach(c => e.target.classList.toggle(c))
@@ -150,7 +150,7 @@ const chatTranslator = {
         const grid = element("div").css("menu panel-black grid four")
         let languages = this.state.lr && languageListReduced || languageList
         for (const [key, value] of Object.entries(languages)) {
-            const langElement = element("small").css(`btn border black text${key === this.state.inputTo && "green" || "grey"}`).text(value).data("id", key)
+            const langElement = element("small").css(`btn sm border dark text${key === this.state.inputTo && "green" || "grey"}`).text(value).data("id", key)
             grid.add(langElement)
         }
         this.frame

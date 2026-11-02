@@ -54,7 +54,7 @@ const skillPreset = {
             presetInput.placeholder = "Enter preset name";
             // Add save button
             const saveButton = document.createElement("div");
-            saveButton.className = "btn black textsecondary";
+            saveButton.className = "btn sm dark textsecondary";
             saveButton.textContent = "Save";
             saveButton.style.textAlign = "center";
             saveButton.addEventListener("click", () => {
@@ -77,7 +77,7 @@ const skillPreset = {
             });
             // Add import button
             const importButton = document.createElement("div");
-            importButton.className = "btn black textsecondary";
+            importButton.className = "btn sm dark textsecondary";
             importButton.textContent = "Import";
             importButton.style.textAlign = "center";
             importButton.addEventListener("click", (event) => {
@@ -219,7 +219,7 @@ const skillPreset = {
             flexContainer.className = "preset-flex-container"; // Apply styling for the flex container
             flexContainer.style.display = "flex";
             const presetItem = document.createElement("div");
-            presetItem.className = "preset-item btn black textsilver";
+            presetItem.className = "preset-item btn sm dark textsilver";
             presetItem.style.padding = "5px";
             presetItem.style.minWidth = "150px";
             presetItem.textContent = presetName;
@@ -228,7 +228,7 @@ const skillPreset = {
             });
             // Add delete button
             const deleteButton = document.createElement("div");
-            deleteButton.className = "btn black delete-btn textsecondary";
+            deleteButton.className = "btn sm dark delete-btn textsecondary";
             deleteButton.style.padding = "5px";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", (event) => {
@@ -238,7 +238,7 @@ const skillPreset = {
 
             // Add export button
             const exportButton = document.createElement("div");
-            exportButton.className = "btn black export-btn textsecondary";
+            exportButton.className = "btn sm dark export-btn textsecondary";
             exportButton.style.padding = "5px";
             exportButton.textContent = "Copy";
             exportButton.addEventListener("click", (event) => {
